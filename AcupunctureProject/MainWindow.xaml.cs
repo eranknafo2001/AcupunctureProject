@@ -20,9 +20,21 @@ namespace AcupunctureProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        string folder;
         public MainWindow()
         {
             InitializeComponent();
+            string[] tempFolder = System.Reflection.Assembly.GetEntryAssembly().Location.Split('\\');
+            folder = "";
+            for (int i = 0; i < tempFolder.Length - 1; i++)
+            {
+                folder += tempFolder[i] + "\\";
+            }
+            BitmapImage backimagesource = new BitmapImage();
+            backimagesource.BeginInit();
+            backimagesource.UriSource = new Uri(folder + "images\\backpic.jpg");
+            backimagesource.EndInit();
+            backImage.Source = backimagesource;
         }
     }
 }
