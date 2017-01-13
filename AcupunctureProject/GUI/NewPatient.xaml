@@ -1,0 +1,53 @@
+﻿<Window x:Class="GUI.NewPatient"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AcupunctureProject"
+        mc:Ignorable="d"
+        Title="יצירת מטופל" WindowStartupLocation="CenterOwner" FlowDirection="RightToLeft" Height="400" ResizeMode="NoResize" Width="400">
+    <Grid FlowDirection="RightToLeft">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="26*"/>
+            <RowDefinition Height="26*"/>
+            <RowDefinition Height="26*"/>
+            <RowDefinition Height="26*"/>
+            <RowDefinition Height="26*"/>
+            <RowDefinition Height="26*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="155*"/>
+            <RowDefinition Height="25*"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="label" Content="שם" HorizontalAlignment="Left" Width="74" Grid.Row="1" Margin="0,1,0,0"/>
+        <Label x:Name="label1" Content="תאריך לידה" HorizontalAlignment="Left" Grid.Row="2" Width="72" Height="26" VerticalAlignment="Top"/>
+        <Label x:Name="label2" Content="כתובת" HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Top" Height="26" Width="73"/>
+        <Label x:Name="label3" Content="סלולרי" HorizontalAlignment="Left" Grid.Row="3" Width="72" Height="27" VerticalAlignment="Top"/>
+        <Label x:Name="label5" Content=" טלפון" HorizontalAlignment="Left" Margin="0" Grid.Row="4" Width="72" Height="23" VerticalAlignment="Top"/>
+        <DatePicker Grid.Column="1" Grid.Row="2" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="106"/>
+        <TextBox x:Name="textBox" Margin="0,1,0,0" TextWrapping="Wrap" Grid.Row="1" Height="18" VerticalAlignment="Top" Grid.Column="1" HorizontalAlignment="Left" Width="106"/>
+        <TextBox x:Name="textBox1" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" HorizontalAlignment="Left" Width="106" Margin="0,3,0,0"/>
+        <TextBox x:Name="textBox2" Grid.Row="4" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" HorizontalAlignment="Left" Width="106" Grid.Column="1"/>
+        <TextBox x:Name="textBox3" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" HorizontalAlignment="Left" Width="284" Grid.Column="1" Margin="0,0,-132,0"/>
+        <TextBox x:Name="textBox4" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" HorizontalAlignment="Left" Width="284" Margin="0,0,-130,0"/>
+        <Label x:Name="label6" Content="דא&quot;ל" HorizontalAlignment="Left" Grid.Row="6" VerticalAlignment="Top" Height="26" Width="35"/>
+        <Label x:Name="label7" Content="מין" Grid.Row="7" HorizontalAlignment="Left" Width="39" RenderTransformOrigin="1.064,0.141" Height="24" VerticalAlignment="Top"/>
+        <ComboBox x:Name="comboBox" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="7" VerticalAlignment="Top" Width="69"/>
+        <Label x:Name="label4" Content="היסטוריה רפואית" Grid.Row="8" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100"/>
+        <Button x:Name="button" Content="ביטול" Margin="14,0,10,0" Grid.Row="9" VerticalAlignment="Top"/>
+        <Button x:Name="button1" Content="שמור והבא" Grid.Column="1" HorizontalAlignment="Left" Margin="209,0,-126,0" Grid.Row="9" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="button2" Content="שמור וסגור" HorizontalAlignment="Left" Margin="129,0,-45,0" Grid.Row="9" VerticalAlignment="Top" Width="75" Grid.Column="1"/>
+        <RichTextBox x:Name="richTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="145" Grid.Row="8" VerticalAlignment="Top" Width="284" Margin="0,0,-131,0">
+            <FlowDocument>
+                <Paragraph>
+                    <Run/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+    </Grid>
+</Window>

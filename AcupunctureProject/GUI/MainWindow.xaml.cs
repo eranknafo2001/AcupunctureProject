@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AcupunctureProject
+namespace GUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -35,6 +35,12 @@ namespace AcupunctureProject
             backimagesource.UriSource = new Uri(folder + "images\\backpic.jpg");
             backimagesource.EndInit();
             backImage.Source = backimagesource;
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            NewPatient p = new NewPatient();
+            p.Show();
         }
     }
 }

@@ -1,15 +1,15 @@
-﻿<Window x:Class="AcupunctureProject.MainWindow"
+﻿<Window x:Class="GUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcupunctureProject"
         mc:Ignorable="d"
-        Title="Acupuncture" Height="350" Width="525" ResizeMode="CanResizeWithGrip">
+        Title="Acupuncture" Height="350" Width="525" ResizeMode="CanResizeWithGrip" WindowState="Maximized">
     <Grid FlowDirection="RightToLeft">
         <Menu Height="17" VerticalAlignment="Top">
             <MenuItem Header="מטופל">
-                <MenuItem Header="הוסף מטופל"/>
+                <MenuItem Header="הוסף מטופל" Click="MenuItem_Click"/>
                 <MenuItem Header="רשימת מטופלים"/>
             </MenuItem>
             <MenuItem Header="טפולים">
