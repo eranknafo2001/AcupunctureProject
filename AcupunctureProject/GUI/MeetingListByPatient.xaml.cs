@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace AcupunctureProject.GUI
 {
     /// <summary>
-    /// Interaction logic for NewPatient.xaml
+    /// Interaction logic for MeetingListByPatient.xaml
     /// </summary>
-    public partial class NewPatient : Window
+    public partial class MeetingListByPatient : Window
     {
-        public NewPatient()
+        public MeetingListByPatient()
         {
             InitializeComponent();
         }

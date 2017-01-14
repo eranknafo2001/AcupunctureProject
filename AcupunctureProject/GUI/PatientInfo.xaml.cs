@@ -17,9 +17,9 @@ namespace AcupunctureProject.GUI
     /// <summary>
     /// Interaction logic for NewPatient.xaml
     /// </summary>
-    public partial class NewPatient : Window
+    public partial class PatientInfo : Window
     {
-        public NewPatient()
+        public PatientInfo()
         {
             InitializeComponent();
         }

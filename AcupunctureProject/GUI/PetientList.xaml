@@ -1,0 +1,27 @@
+﻿<Window x:Class="AcupunctureProject.GUI.PatientList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AcupunctureProject.GUI"
+        mc:Ignorable="d"
+        Title="PetientList" Height="300" Width="300">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Row="0" Grid.Column="0"/>
+        <DataGrid Grid.Row="2" Grid.Column="0" FlowDirection="RightToLeft">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{x:Null}" CanUserSort="False" ClipboardContentBinding="{x:Null}" Header="שם"/>
+                <DataGridTextColumn Binding="{x:Null}" CanUserSort="False" ClipboardContentBinding="{x:Null}" Header="תאריך לידה"/>
+                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="מין"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

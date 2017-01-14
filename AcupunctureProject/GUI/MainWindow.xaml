@@ -1,22 +1,8 @@
-﻿<Window x:Class="GUI.MainWindow"
+﻿<Window x:Class="AcupunctureProject.GUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcupunctureProject"
         mc:Ignorable="d"
-        Title="Acupuncture" Height="350" Width="525" ResizeMode="CanResizeWithGrip" WindowState="Maximized">
-    <Grid FlowDirection="RightToLeft">
-        <Menu Height="17" VerticalAlignment="Top">
-            <MenuItem Header="מטופל">
-                <MenuItem Header="הוסף מטופל" Click="MenuItem_Click"/>
-                <MenuItem Header="רשימת מטופלים"/>
-            </MenuItem>
-            <MenuItem Header="טפולים">
-                <MenuItem Header="הוספת טפול"/>
-                <MenuItem Header="רשימת טיפולים"/>
-            </MenuItem>
-        </Menu>
-        <Image x:Name="backImage" Source="C:\Users\magshimim\Desktop\AcupunctureProject\images\backpic.jpg" Stretch="UniformToFill" Margin="0,17,0,0"/>
-    </Grid>
-</Window>
+        Title="Acupuncture" Height="350" Width="525" ResizeMode="CanResizeWithGrip" WindowState="Maximized" FlowDirection="RightToLeft"/>

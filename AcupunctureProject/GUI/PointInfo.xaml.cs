@@ -15,13 +15,14 @@ using System.Windows.Shapes;
 namespace AcupunctureProject.GUI
 {
     /// <summary>
-    /// Interaction logic for NewPatient.xaml
+    /// Interaction logic for PointInfo.xaml
     /// </summary>
-    public partial class NewPatient : Window
+    public partial class PointInfo : Window
     {
-        public NewPatient()
+        public PointInfo()
         {
             InitializeComponent();
+            points.Items.Add(new ListViewItem() { Content = "test" });
         }
     }
 }
