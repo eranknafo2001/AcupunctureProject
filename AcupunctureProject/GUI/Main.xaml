@@ -14,7 +14,7 @@
                 <MenuItem x:Name="newPatientMI" Header="הוסף מטופל" Click="newPatientMI_Click"/>
                 <MenuItem x:Name="PatientListMI" Header="רשימת מטופלים" Click="PatientListMI_Click"/>
             </MenuItem>
-            <MenuItem Header="טפולים">
+            <MenuItem Header="טיפולים">
                 <MenuItem x:Name="newMeetingMI" Header="הוספת טפול" Click="newMeetingMI_Click"/>
                 <MenuItem x:Name="meetingListMI" Header="רשימת טיפולים"/>
             </MenuItem>
