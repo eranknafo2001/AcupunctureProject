@@ -20,6 +20,7 @@ namespace AcupunctureProject.GUI
     public partial class NewMeeting : Page
     {
         private Window perent;
+        private object selectedPatient;
 
         public NewMeeting(Window perent)
         {
@@ -30,7 +31,7 @@ namespace AcupunctureProject.GUI
         private void symptomSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             symptomSearchList.Items.Clear();
-            symptomSearchList.Items.Add(new ListBoxItem() { Content = "te1st", ContentStringFormat = "" });
+            symptomSearchList.Items.Add(new ListBoxItem() { Content = "te1st", ContentstringFormat = "" });
         }
 
         private void censel_Click(object sender, RoutedEventArgs e)
@@ -40,30 +41,85 @@ namespace AcupunctureProject.GUI
 
         private void patientSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            reloadPatientList();
+        }
+
+        private void reloadPatientList()
+        {
             patientSearchList.Items.Clear();
-            patientSearchList.Items.Add(new ListViewItem() { Content = "te1st", ContentStringFormat = "" });
+            patientSearchList.Items.Add(new ListViewItem() { Content = "te1st", ContentstringFormat = "" });
+            patientSearchList.Items.Add(new ListViewItem() { Content = "te1st", ContentstringFormat = "" });
+            patientSearchList.Items.Add(new ListViewItem() { Content = "te1st", ContentstringFormat = "" });
+            patientSearchList.SelectedIndex = 0;
         }
 
         private void patientSearchTextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             patientSearchList.Visibility = Visibility.Hidden;
+            patientSearchList.Height = 0;
         }
 
         private void patientSearchTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
+            patientSearchList.Height = 100;
             patientSearchList.Margin = new Thickness(symptomSearch.Margin.Left, symptomSearch.Margin.Top + symptomSearch.ExtentHeight, 0, 0);
             patientSearchList.Visibility = Visibility.Visible;
+            reloadPatientList();
         }
 
         private void symptomSearch_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
+            symptomSearchList.Height = 100;
             symptomSearchList.Margin = new Thickness(symptomSearch.Margin.Left, symptomSearch.Margin.Top + symptomSearch.ExtentHeight, 0, 0);
             symptomSearchList.Visibility = Visibility.Visible;
         }
 
         private void symptomSearch_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
+            symptomSearchList.Height = 0;
             symptomSearchList.Visibility = Visibility.Hidden;
+        }
+
+        private void patientSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            selectPatient();
+        }
+
+        private void selectPatient()
+        {
+            //ListViewItem item = (ListViewItem)patientSearchList.SelectedItem;
+            //selectedPatient = item.Content;
+            patientSearchTextBox.IsEnabled = false;
+            openPatientButton.IsEnabled = true;
+            date.IsEnabled = true;
+            symptomSearch.IsEnabled = true;
+            symptomTreeView.IsEnabled = true;
+            symptomTreeDelete.IsEnabled = true;
+            pointsThatUsed.IsEnabled = true;
+            notes.IsEnabled = true;
+            summeryTextBox.IsEnabled = true;
+            resoltSummeryTextBox.IsEnabled = true;
+            resolt.IsEnabled = true;
+            save.IsEnabled = true;
+            saveAndExit.IsEnabled = true;
+        }
+
+        private void openPatientButton_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.Down))
+            {
+                if (patientSearchList.SelectedIndex != patientSearchList.Items.Count - 1)
+                    patientSearchList.SelectedIndex++;
+            }
+            else if (e.Key.Equals(Key.Up))
+            {
+                if (patientSearchList.SelectedIndex != 0)
+                    patientSearchList.SelectedIndex--;
+            }
+            else if (e.Key.Equals(Key.Enter))
+            {
+                selectPatient();
+            }
         }
     }
 }
