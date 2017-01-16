@@ -90,6 +90,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Database\Channel.cs" />
+    <Compile Include="Database\ConnectionValue.cs" />
+    <Compile Include="Database\Database.cs" />
+    <Compile Include="Database\Meeting.cs" />
+    <Compile Include="Database\Patient.cs" />
+    <Compile Include="Database\Point.cs" />
+    <Compile Include="Database\Symptom.cs" />
     <Compile Include="GUI\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
