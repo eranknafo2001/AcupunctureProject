@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MeetingListByPatient" Height="300" Width="300" FlowDirection="RightToLeft">
     <Grid Margin="10">
-        <DataGrid FlowDirection="RightToLeft">
+        <DataGrid x:Name="meetings" FlowDirection="RightToLeft">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="מטופל"/>
                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="תאריך" SortDirection="Ascending"/>

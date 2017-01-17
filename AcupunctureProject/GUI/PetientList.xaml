@@ -18,7 +18,7 @@
         <TextBox Grid.Row="0" Grid.Column="0"/>
         <DataGrid Grid.Row="2" Grid.Column="0" FlowDirection="RightToLeft">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{x:Null}" CanUserSort="False" ClipboardContentBinding="{x:Null}" Header="שם"/>
+                <DataGridTextColumn x:Name="dataGridTextColumn" Binding="{Binding Header, ElementName=dataGridTextColumn}" CanUserSort="False" ClipboardContentBinding="{x:Null}" Header="שם"/>
                 <DataGridTextColumn Binding="{x:Null}" CanUserSort="False" ClipboardContentBinding="{x:Null}" Header="תאריך לידה"/>
                 <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="מין"/>
             </DataGrid.Columns>

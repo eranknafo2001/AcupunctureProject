@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AcupunctureProject.Database
+namespace AcupunctureProject.database
 {
     public class Point
     {
@@ -27,7 +27,7 @@ namespace AcupunctureProject.Database
         public string Position { get; set; }
         public int Importance { get; set; }
         public string Comment1 { get; set; }
-        public string comment2 { get; set; }
+        public string Comment2 { get; set; }
         public string Note { get; set; }
         public string Image { get; set; }
 
@@ -42,7 +42,7 @@ namespace AcupunctureProject.Database
             this.Position = position;
             this.Importance = importance;
             this.Comment1 = comment1;
-            this.comment2 = comment2;
+            this.Comment2 = comment2;
             this.Note = note;
             this.Image = image;
         }
@@ -52,7 +52,7 @@ namespace AcupunctureProject.Database
         }
 
         public Point(int id, Point other) : this(id, other.Name, other.MinNeedleDepth, other.MaxNeedleDepth, other.NeedleDescription, other.Position,
-                    other.Importance, other.Comment1, other.comment2, other.Note, other.Image)
+                    other.Importance, other.Comment1, other.Comment2, other.Note, other.Image)
         {
 
         }

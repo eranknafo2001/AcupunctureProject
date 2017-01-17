@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AcupunctureProject.Database
+namespace AcupunctureProject.database
 {
     public class Patient
     {
@@ -21,16 +21,21 @@ namespace AcupunctureProject.Database
         {
             public static readonly Gender MALE = new Gender(0), FEMALE = new Gender(1), OTHER = new Gender(2);
 
-            private int value;
+            public int Value { get; private set; }
 
             private Gender(int value)
             {
-                this.value = value;
+                this.Value = value;
             }
 
-            public int getValue()
+            public string toString()
             {
-                return value;
+                if (Value == 0)
+                    return "זכר";
+                else if (Value == 1)
+                    return "נקבה";
+                else
+                    return "אחר";
             }
         };
 

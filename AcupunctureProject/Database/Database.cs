@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 
-namespace AcupunctureProject.Database
+namespace AcupunctureProject.database
 {
     public class Database
     {
@@ -341,9 +341,9 @@ namespace AcupunctureProject.Database
         //		return null;
         //    }
 
-        //    public static Database getInstance() throws ClassNotFoundException, SQLException, FileNotFoundException {
+        //    public static database getInstance() throws ClassNotFoundException, SQLException, FileNotFoundException {
         //		if (instance == null)
-        //			instance = new Database();
+        //			instance = new database();
         //		return instance;
         //	}
 

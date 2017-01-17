@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 
-namespace AcupunctureProject.Database
+namespace AcupunctureProject.database
 {
     public class Meeting
     {
@@ -21,31 +21,21 @@ namespace AcupunctureProject.Database
         {
             public static readonly ResultValue BETTER = new ResultValue(0), WORSE = new ResultValue(1), NO_CHANGE = new ResultValue(2);
 
-            private int value;
+            public int Value { get; private set; }
 
             private ResultValue(int value)
             {
-                this.value = value;
+                this.Value = value;
             }
 
-            public int getValue()
+            public string toString()
             {
-                return value;
-            }
-
-            public string tostring()
-            {
-                if (value == 0)
-                {
+                if (Value == 0)
                     return "יותר טוב";
-                }
-                else if (value == 1)
-                {
+                else if (Value == 1)
                     return "החמיר";
-                }
-                else {
+                else 
                     return "אין שינוי";
-                }
             }
         };
 
