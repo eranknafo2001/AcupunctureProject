@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 
-namespace AcupunctureProject.Database
+namespace AcupunctureProject.database
 {
     public class Meeting
     {
@@ -37,16 +37,11 @@ namespace AcupunctureProject.Database
             public override string ToString()
             {
                 if (Value == 0)
-                {
                     return "יותר טוב";
-                }
                 else if (Value == 1)
-                {
                     return "החמיר";
-                }
-                else {
+                else
                     return "אין שינוי";
-                }
             }
         };
 
@@ -59,8 +54,7 @@ namespace AcupunctureProject.Database
         public string ResultDescription { get; set; }
         public ResultValue Result { get; set; }
 
-        public Meeting(int id, int patiantId, string purpose, DateTime date, string description, string summery,
-                string resultDescription, ResultValue resultValue)
+        public Meeting(int id, int patiantId, string purpose, DateTime date, string description, string summery, string resultDescription, ResultValue resultValue)
         {
             this.Id = id;
             this.PatientId = patiantId;

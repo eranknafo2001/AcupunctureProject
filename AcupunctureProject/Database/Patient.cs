@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AcupunctureProject.Database
+namespace AcupunctureProject.database
 {
     public class Patient
     {

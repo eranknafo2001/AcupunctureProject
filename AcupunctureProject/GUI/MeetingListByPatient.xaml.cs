@@ -22,6 +22,8 @@ namespace AcupunctureProject.GUI
         public MeetingListByPatient()
         {
             InitializeComponent();
+            //List<Meeting>
+            //meetings.Items.Add
         }
     }
 }
