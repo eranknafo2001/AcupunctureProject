@@ -7,8 +7,27 @@ using System.Data.SQLite;
 
 namespace AcupunctureProject.Database
 {
+    public static class Extension
+    {
+        public static string GetStringL(this SQLiteDataReader reader, string str)
+        {
+            return reader.GetString(reader.GetOrdinal(str));
+        }
+
+        public static DateTime GetDateTimeL(this SQLiteDataReader reader, string str)
+        {
+            return reader.GetDateTime(reader.GetOrdinal(str));
+        }
+
+        public static int GetIntL(this SQLiteDataReader reader, string str)
+        {
+            return reader.GetInt32(reader.GetOrdinal(str));
+        }
+    }
+
     public class Database
     {
+        private static readonly string ID = "ID";
         private static Database database = null;
         public static Database Instance
         {
@@ -59,6 +78,11 @@ namespace AcupunctureProject.Database
         private SQLiteCommand getPointByIdSt;
         private SQLiteCommand getChannelByIdSt;
 
+        private SQLiteCommand findSymptomSt;
+        private SQLiteCommand findPatientSt;
+
+        private SQLiteCommand getAllMeetingsRelativeToSymptomsSt;
+
         private SQLiteCommand getAllPointsSt;
 
         public Database()
@@ -81,8 +105,8 @@ namespace AcupunctureProject.Database
 
             insertSymptomSt = new SQLiteCommand("insert into SYMPTOM(NAME,COMMENT) values(@name,@comment);", connection);
             insertSymptomSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@comment") });
-            insertMeetingSt = new SQLiteCommand("insert into MEETING(PATIENT_ID,PURPOSE,DATE,DESCRIPTION,SUMMERY,RESULT_DESCRIPTION,RESULT_VALUE) values(@patiantId,@purpose,@date,@description,@summery,@resultDescription,@resultValue);", connection);
-            insertMeetingSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@patiantId"), new SQLiteParameter("@purpose"), new SQLiteParameter("@date"), new SQLiteParameter("@description"), new SQLiteParameter("@summery"), new SQLiteParameter("@resultDescription"), new SQLiteParameter("@resultValue") });
+            insertMeetingSt = new SQLiteCommand("insert into MEETING(PATIENT_ID,PURPOSE,DATE,DESCRIPTION,SUMMERY,RESULT_DESCRIPTION,RESULT_VALUE) values(@patintId,@purpose,@date,@description,@summery,@resultDescription,@resultValue);", connection);
+            insertMeetingSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@patientId"), new SQLiteParameter("@purpose"), new SQLiteParameter("@date"), new SQLiteParameter("@description"), new SQLiteParameter("@summery"), new SQLiteParameter("@resultDescription"), new SQLiteParameter("@resultValue") });
             insertPatientSt = new SQLiteCommand("insert into PATIENT(NAME,TELEPHONE,CELLPHONE,BIRTHDAY,GENDER,ADDRESS,EMAIL,MEDICAL_DESCRIPTION) values(@name,@telephone,@cellphone,@birthday,@gender,@address,@email,@medicalDescription);", connection);
             insertPatientSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@telephone"), new SQLiteParameter("@cellphone"), new SQLiteParameter("@birthday"), new SQLiteParameter("@gender"), new SQLiteParameter("@address"), new SQLiteParameter("@email"), new SQLiteParameter("@medicalDescription") });
             insertPointsSt = new SQLiteCommand("insert into POINTS(NAME,MIN_NEEDLE_DEPTH,MAX_NEEDLE_DEPTH,POSITION,IMPORTENCE,COMMENT1,COMMENT2,NOTE,IMAGE) values(@name,@minNeedleDepth,@maxNeedleDepth,@position,@importance,@comment1,@comment2,@note,@image);", connection);
@@ -100,9 +124,9 @@ namespace AcupunctureProject.Database
 
             updateSymptomSt = new SQLiteCommand("update SYMPTOM set NAME = @name ,COMMENT = @comment where ID = @symptomId;", connection);
             updateSymptomSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@comment") });
-            updateMeetingSt = new SQLiteCommand("update MEETING set PATIENT_ID = @patiantId ,PURPOSE = @purpose ,DATE = @date ,DESCRIPTION = @description ,SUMMERY = @summery ,RESULT_DESCRIPTION = @resultDescription ,RESULT_VALUE = @resultValue where ID = @meetingId;", connection);
-            updateMeetingSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@patiantId"), new SQLiteParameter("@purpose"), new SQLiteParameter("@date"), new SQLiteParameter("@description"), new SQLiteParameter("@summery"), new SQLiteParameter("@resultDescription"), new SQLiteParameter("@resultValue") });
-            updatePatientSt = new SQLiteCommand("update PATIENT set NAME = @name ,TELEPHONE = @telephone ,CELLPHONE = @cellphone ,BIRTHDAY = @birthday ,GENDER = @gander ,ADDRESS = @address ,EMAIL = @email ,MEDICAL_DESCRIPTION = @medicalDescription where ID = @patiantId;", connection);
+            updateMeetingSt = new SQLiteCommand("update MEETING set PATIENT_ID = @patientId ,PURPOSE = @purpose ,DATE = @date ,DESCRIPTION = @description ,SUMMERY = @summery ,RESULT_DESCRIPTION = @resultDescription ,RESULT_VALUE = @resultValue where ID = @meetingId;", connection);
+            updateMeetingSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@patientId"), new SQLiteParameter("@purpose"), new SQLiteParameter("@date"), new SQLiteParameter("@description"), new SQLiteParameter("@summery"), new SQLiteParameter("@resultDescription"), new SQLiteParameter("@resultValue") });
+            updatePatientSt = new SQLiteCommand("update PATIENT set NAME = @name ,TELEPHONE = @telephone ,CELLPHONE = @cellphone ,BIRTHDAY = @birthday ,GENDER = @gander ,ADDRESS = @address ,EMAIL = @email ,MEDICAL_DESCRIPTION = @medicalDescription where ID = @patientId;", connection);
             updatePatientSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@telephone"), new SQLiteParameter("@cellphone"), new SQLiteParameter("@birthday"), new SQLiteParameter("@gender"), new SQLiteParameter("@address"), new SQLiteParameter("@email"), new SQLiteParameter("@medicalDescription") });
             updatePointSt = new SQLiteCommand("update POINTS set NAME = @name ,MIN_NEEDLE_DEPTH = @minNeeleDepth ,MAX_NEEDLE_DEPTH = @maxNeedleDepth ,POSITION = @position ,IMPORTENCE = @importance ,COMMENT1 = @comment1 ,COMMENT2 = @comment2,NOTE = @note,IMAGE = @image where ID = @pointId;", connection);
             updatePointSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@minNeedleDepth"), new SQLiteParameter("@maxNeedleDepth"), new SQLiteParameter("@position"), new SQLiteParameter("@importance"), new SQLiteParameter("@comment1"), new SQLiteParameter("@comment2"), new SQLiteParameter("@note"), new SQLiteParameter("@image") });
@@ -118,8 +142,8 @@ namespace AcupunctureProject.Database
             deleteSymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
             deleteMeetingSt = new SQLiteCommand("delete from MEETING where ID = @meetingId;", connection);
             deleteMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
-            deletePatientSt = new SQLiteCommand("delete from PATIENT where ID = @patiantId;", connection);
-            deletePatientSt.Parameters.Add(new SQLiteParameter("@patiantId"));
+            deletePatientSt = new SQLiteCommand("delete from PATIENT where ID = @patientId;", connection);
+            deletePatientSt.Parameters.Add(new SQLiteParameter("@patientId"));
             deletePointSt = new SQLiteCommand("delete from POINTS where ID = @pointId;", connection);
             deletePointSt.Parameters.Add(new SQLiteParameter("@pointId"));
             deleteChannelSt = new SQLiteCommand("delete from CHANNEL where ID = @channelId;", connection);
@@ -143,6 +167,12 @@ namespace AcupunctureProject.Database
             getChannelByIdSt.Parameters.Add(new SQLiteParameter("@id"));
 
             getAllPointsSt = new SQLiteCommand("select * from POINTS;", connection);
+            findSymptomSt = new SQLiteCommand("SELECT * FROM SYMPTOM where NAME like '%@name%';", connection);
+            findSymptomSt.Parameters.Add(new SQLiteParameter("@name"));
+            findPatientSt = new SQLiteCommand("SELECT * FROM PATIENT where NAME like '%@name%';", connection);
+            findPatientSt.Parameters.Add(new SQLiteParameter("@name"));
+
+            getAllMeetingsRelativeToSymptomsSt = new SQLiteCommand(connection);
         }
 
         ~Database()
@@ -158,432 +188,430 @@ namespace AcupunctureProject.Database
             updateSymptomSt.ExecuteNonQuery();
         }
 
-        //        public void updateMeeting( Meeting meeting) 
-        //        {
-        //            updateMeetingSt.setInt(1, meeting.getPatiantId());
-        //            updateMeetingSt.setString(2, meeting.getPurpose());
-        //            updateMeetingSt.setDate(3, meeting.getDate());
-        //            updateMeetingSt.setString(4, meeting.getDescription());
-        //            updateMeetingSt.setString(5, meeting.getSummery());
-        //            updateMeetingSt.setString(6, meeting.getResultDescription());
-        //            updateMeetingSt.setInt(7, meeting.getResultValue().getValue());
-        //            updateMeetingSt.setInt(8, meeting.getId());
-        //            updateMeetingSt.executeUpdate();
-        //        }
+        public void updateMeeting(Meeting meeting)
+        {
+            updateMeetingSt.Parameters["@patientId"].Value = meeting.PatientId;
+            updateMeetingSt.Parameters["@purpese"].Value = meeting.Purpose;
+            updateMeetingSt.Parameters["@date"].Value = meeting.Date;
+            updateMeetingSt.Parameters["@description"].Value = meeting.Description;
+            updateMeetingSt.Parameters["@summery"].Value = meeting.Summery;
+            updateMeetingSt.Parameters["@resultDecription"].Value = meeting.ResultDescription;
+            updateMeetingSt.Parameters["@resultValue"].Value = meeting.Result.Value;
+            updateMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
+            updateMeetingSt.ExecuteNonQuery();
+        }
 
-        //        public void updatePatient( Patient patient) 
-        //        {
-        //            updatePatientSt.setString(1, patient.getName());
-        //            updatePatientSt.setString(2, patient.getTelephone());
-        //            updatePatientSt.setString(3, patient.getCellphone());
-        //            updatePatientSt.setDate(4, patient.getBirthday());
-        //            updatePatientSt.setInt(5, patient.getGender().getValue());
-        //            updatePatientSt.setString(6, patient.getAddress());
-        //            updatePatientSt.setString(7, patient.getEmail());
-        //            updatePatientSt.setString(8, patient.getNedicalDescription());
-        //            updatePatientSt.setInt(9, patient.getId());
-        //            updatePatientSt.executeUpdate();
-        //        }
+        public void updatePatient(Patient patient)
+        {
+            updatePatientSt.Parameters["@name"].Value = patient.Name;
+            updatePatientSt.Parameters["@telephone"].Value = patient.Telephone;
+            updatePatientSt.Parameters["@Cellphone"].Value = patient.Cellphone;
+            updatePatientSt.Parameters["@birthday"].Value = patient.Birthday;
+            updatePatientSt.Parameters["@gender"].Value = patient.Gend.Value;
+            updatePatientSt.Parameters["@address"].Value = patient.Address;
+            updatePatientSt.Parameters["@email"].Value = patient.Email;
+            updatePatientSt.Parameters["@medicalDescription"].Value = patient.MedicalDescription;
+            updatePatientSt.Parameters["@patientId"].Value = patient.Id;
+            updatePatientSt.ExecuteNonQuery();
+        }
 
-        //        public void updatePoint( Point point) 
-        //        {
-        //            updatePointSt.setString(1, point.getName());
-        //            updatePointSt.setInt(2, point.getMinNeedleDepth());
-        //            updatePointSt.setInt(3, point.getMaxNeedleDepth());
-        //            updatePointSt.setString(4, point.getPosition());
-        //            updatePointSt.setInt(5, point.getImportance());
-        //            updatePointSt.setString(6, point.getComment1());
-        //            updatePointSt.setString(7, point.getComment2());
-        //            updatePointSt.setString(8, point.getNote());
-        //            updatePointSt.setString(9, point.getImage());
-        //            updatePointSt.setInt(10, point.getId());
-        //            updatePointSt.executeUpdate();
-        //        }
+        public void updatePoint(Point point)
+        {
+            updatePointSt.Parameters["@name"].Value = point.Name;
+            updatePointSt.Parameters["@minNeedleDepth"].Value = point.MinNeedleDepth;
+            updatePointSt.Parameters["@maxNeedleDepth"].Value = point.MaxNeedleDepth;
+            updatePointSt.Parameters["@position"].Value = point.Position;
+            updatePointSt.Parameters["@importance"].Value = point.Importance;
+            updatePointSt.Parameters["@comment1"].Value = point.Comment1;
+            updatePointSt.Parameters["@comment2"].Value = point.Comment2;
+            updatePointSt.Parameters["@note"].Value = point.Note;
+            updatePointSt.Parameters["@image"].Value = point.Image;
+            updatePointSt.Parameters["@pointId"].Value = point.Id;
+            updatePointSt.ExecuteNonQuery();
+        }
 
-        //        public void updateChannel( Channel channel) 
-        //        {
-        //            updateChannelSt.setString(1, channel.getName());
-        //            updateChannelSt.setString(2, channel.getRt());
-        //            updateChannelSt.setInt(3, channel.getMainPoint());
-        //            updateChannelSt.setInt(4, channel.getEvenPoint());
-        //            updateChannelSt.setString(5, channel.getPath());
-        //            updateChannelSt.setString(6, channel.getRole());
-        //            updateChannelSt.setString(7, channel.getComments());
-        //            updateChannelSt.setInt(8, channel.getId());
-        //            updateChannelSt.executeUpdate();
-        //        }
+        public void updateChannel(Channel channel)
+        {
+            updateChannelSt.Parameters["@name"].Value = channel.Name;
+            updateChannelSt.Parameters["@rt"].Value = channel.Rt;
+            updateChannelSt.Parameters["@mainPoint"].Value = channel.MainPoint;
+            updateChannelSt.Parameters["@evenPoint"].Value = channel.EvenPoint;
+            updateChannelSt.Parameters["@path"].Value = channel.Path;
+            updateChannelSt.Parameters["@role"].Value = channel.Role;
+            updateChannelSt.Parameters["@comments"].Value = channel.Comments;
+            updateChannelSt.Parameters["@channelId"].Value = channel.Id;
+            updateChannelSt.ExecuteNonQuery();
+        }
 
-        //        public void updateChannelSymptomRelation( Channel channel,  Symptom symptom, int importance,
-        //                String comment) 
-        //        {
-        //            updateChannelSymptomRelationSt.setInt(1, importance);
-        //            updateChannelSymptomRelationSt.setString(2, comment);
-        //            updateChannelSymptomRelationSt.setInt(3, channel.getId());
-        //            updateChannelSymptomRelationSt.setInt(4, symptom.getId());
-        //            updateChannelSymptomRelationSt.executeUpdate();
-        //        }
+        public void updateChannelSymptomRelation(Channel channel, Symptom symptom, int importance, string comment)
+        {
+            updateChannelSymptomRelationSt.Parameters["@importance"].Value = importance;
+            updateChannelSymptomRelationSt.Parameters["@comment"].Value = comment;
+            updateChannelSymptomRelationSt.Parameters["@channelId"].Value = channel.Id;
+            updateChannelSymptomRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            updateChannelSymptomRelationSt.ExecuteNonQuery();
+        }
 
-        //        public void updatePointSymptomRelation( Point point,  Symptom symptom, int importance, String comment)
+        public void updatePointSymptomRelation(Point point, Symptom symptom, int importance, string comment)
+        {
+            updatePointSymptomRelationSt.Parameters["@importance"].Value = importance;
+            updatePointSymptomRelationSt.Parameters["@comment"].Value = comment;
+            updatePointSymptomRelationSt.Parameters["@pointId"].Value = point.Id;
+            updatePointSymptomRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            updatePointSymptomRelationSt.ExecuteNonQuery();
+        }
 
+        public void deleteSymptom(Symptom symptom)
+        {
+            deleteSymptomSt.Parameters["@symptomId"].Value = symptom.Id;
+            deleteSymptomSt.ExecuteNonQuery();
+        }
 
-        //        {
-        //            updatePointSymptomRelationSt.setInt(1, importance);
-        //            updatePointSymptomRelationSt.setString(2, comment);
-        //            updatePointSymptomRelationSt.setInt(3, point.getId());
-        //            updatePointSymptomRelationSt.setInt(4, symptom.getId());
-        //            updatePointSymptomRelationSt.executeUpdate();
-        //        }
+        public void deleteMeeting(Meeting meeting)
+        {
+            deleteMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
+            deleteMeetingSt.ExecuteNonQuery();
+        }
 
-        //        public void deleteSymptom( Symptom symptom) 
-        //        {
-        //            deleteSymptomSt.setInt(1, symptom.getId());
-        //            deleteSymptomSt.executeUpdate();
-        //        }
+        public void deletePatient(Patient patient)
+        {
+            deletePatientSt.Parameters["@patientId"].Value = patient.Id;
+            deletePatientSt.ExecuteNonQuery();
+        }
 
-        //        public void deleteMeeting( Meeting meeting) 
-        //        {
-        //            deleteMeetingSt.setInt(1, meeting.getId());
-        //            deleteMeetingSt.executeUpdate();
-        //        }
+        public void deletePoint(Point point)
+        {
+            deletePointSt.Parameters["@pointId"].Value = point.Id;
+            deletePointSt.ExecuteNonQuery();
+        }
 
-        //        public void deletePatient( Patient patient) 
-        //        {
-        //            deletePatientSt.setInt(1, patient.getId());
-        //            deletePatientSt.executeUpdate();
-        //        }
+        public void deleteChannel(Channel channel)
+        {
+            deleteChannelSt.Parameters["@channelId"].Value = channel.Id;
+            deleteChannelSt.ExecuteNonQuery();
+        }
 
-        //        public void deletePoint( Point point) 
-        //        {
-        //            deletePointSt.setInt(1, point.getId());
-        //            deletePointSt.executeUpdate();
-        //        }
+        public void deleteSymptomPointRelation(Symptom symptom, Point point)
+        {
+            deleteSymptomPointRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            deleteSymptomPointRelationSt.Parameters["@pointId"].Value = point.Id;
+            deleteSymptomPointRelationSt.ExecuteNonQuery();
+        }
 
-        //        public void deleteChannel( Channel channel) 
-        //        {
-        //            deleteChannelSt.setInt(1, channel.getId());
-        //            deleteChannelSt.executeUpdate();
-        //        }
+        public void deleteSymptomMeetingRelation(Symptom symptom, Meeting meeting)
+        {
+            deleteSymptomMeetingRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            deleteSymptomMeetingRelationSt.Parameters["@meetingId"].Value = meeting.Id;
+            deleteSymptomMeetingRelationSt.ExecuteNonQuery();
+        }
 
-        //        public void deleteSymptomPointRelation( Symptom symptom,  Point point) 
-        //        {
-        //            deleteSymptomPointRelationSt.setInt(1, symptom.getId());
-        //            deleteSymptomPointRelationSt.setInt(2, point.getId());
-        //            deleteSymptomPointRelationSt.executeUpdate();
-        //        }
+        public void deleteSymptomChannelRelation(Symptom symptom, Channel channel)
+        {
+            deleteSymptomChannelRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            deleteSymptomChannelRelationSt.Parameters["@channelId"].Value = channel.Id;
+            deleteSymptomChannelRelationSt.ExecuteNonQuery();
+        }
 
-        //        public void deleteSymptomMeetingRelation( Symptom symptom,  Meeting meeting) 
-        //        {
-        //            deleteSymptomMeetingRelationSt.setInt(1, symptom.getId());
-        //            deleteSymptomMeetingRelationSt.setInt(2, meeting.getId());
-        //            deleteSymptomMeetingRelationSt.executeUpdate();
-        //        }
+        public void deleteMeetingPoint(Meeting meeting, Point point)
+        {
+            deleteMeetingPointSt.Parameters["@meetingId"].Value = meeting.Id;
+            deleteMeetingPointSt.Parameters["@pointId"].Value = point.Id;
+            deleteMeetingPointSt.ExecuteNonQuery();
+        }
 
-        //        public void deleteSymptomChannelRelation( Symptom symptom,  Channel channel) 
-        //        {
-        //            deleteSymptomChannelRelationSt.setInt(1, symptom.getId());
-        //            deleteSymptomChannelRelationSt.setInt(2, channel.getId());
-        //            deleteSymptomChannelRelationSt.executeUpdate();
-        //        }
+        public Channel getChannel(int id)
+        {
+            getChannelByIdSt.Parameters["@id"].Value = id;
+            SQLiteDataReader rs = getChannelByIdSt.ExecuteReader();
+            if (rs.NextResult())
+                return getChannel(rs);
+            return null;
+        }
 
-        //        public void deleteMeetingPoint( Meeting meeting,  Point point) 
-        //        {
-        //            deleteMeetingPointSt.setInt(1, meeting.getId());
-        //            deleteMeetingPointSt.setInt(2, point.getId());
-        //            deleteMeetingPointSt.executeUpdate();
-        //        }
+        private Channel getChannel(SQLiteDataReader rs)
+        {
+            return new Channel(rs.GetIntL(ID), rs.GetStringL(Channel.NAME), rs.GetStringL(Channel.RT),
+                    rs.GetIntL(Channel.MAIN_POINT), rs.GetIntL(Channel.EVEN_POINT), rs.GetStringL(Channel.PATH),
+                    rs.GetStringL(Channel.ROLE), rs.GetStringL(Channel.COMMENT));
+        }
 
-        //        public Channel getChannel( int id) 
-        //        {
-        //            getChannelByIdSt.setInt(1, id);
-        //            ResultSet rs = getChannelByIdSt.executeQuery();
-        //		if (rs.next())
-        //			return getChannel(rs);
-        //		return null;
-        //        }
+        public Point getPoint(int id)
+        {
+            getPointByIdSt.Parameters["@id"].Value = id;
+            SQLiteDataReader rs = getPointByIdSt.ExecuteReader();
+            if (rs.NextResult())
+                return getPoint(rs);
+            return null;
+        }
 
-        //        private Channel getChannel(ResultSet rs) 
-        //        {
-        //		return new Channel(rs.getInt(ID), rs.getString(Channel.NAME), rs.getString(Channel.RT),
-        //				rs.getInt(Channel.MAIN_POINT), rs.getInt(Channel.EVEN_POINT), rs.getString(Channel.PATH),
-        //				rs.getString(Channel.ROLE), rs.getString(Channel.COMMENT));
-        //	}
+        public List<Point> getAllPoints()
+        {
+            SQLiteDataReader rs = getAllPointsSt.ExecuteReader();
+            return getPoints(rs);
+        }
 
-        //    public Point getPoint( int id) 
-        //    {
-        //        getPointByIdSt.setInt(1, id);
-        //        ResultSet rs = getPointByIdSt.executeQuery();
-        //		if (rs.next())
-        //			return getPoint(rs);
-        //		return null;
-        //    }
+        public Point getPoint(string name)
+        {
+            getPointByNameSt.Parameters["@name"].Value = name;
+            SQLiteDataReader rs = getPointByNameSt.ExecuteReader();
+            if (rs.NextResult())
+                return getPoint(rs);
+            return null;
+        }
 
-        //    public ArrayList<Point> getAllPoints() 
-        //    {
-        //        ResultSet rs = getAllPoints.executeQuery();
-        //		return getPoints(rs);
-        //    }
+        public Symptom getSymptom(string name)
+        {
+            getSymptomSt.Parameters["@name"].Value = name;
+            SQLiteDataReader rs = getSymptomSt.ExecuteReader();
+            if (rs.NextResult())
+                return getSymptom(rs);
+            return null;
+        }
 
-        //    public Point getPoint( String name) 
-        //    {
-        //        getPointByNameSt.setString(1, name);
-        //        ResultSet rs = getPointByNameSt.executeQuery();
-        //		if (rs.next())
-        //			return getPoint(rs);
-        //		return null;
-        //    }
+        public List<Symptom> findSymptom(string name)
+        {
+            findSymptomSt.Parameters["@name"].Value = name;
+            SQLiteDataReader rs = findSymptomSt.ExecuteReader();
+            return getSymptoms(rs);
+        }
 
-        //    public Symptom getSymptom( String name) 
-        //    {
-        //        getSymptomSt.setString(1, name);
-        //        ResultSet rs = getSymptomSt.executeQuery();
-        //		if (rs.next())
-        //			return getSymptom(rs);
-        //		return null;
-        //    }
+        public List<Patient> findPatient(string name)
+        {
+            findPatientSt.Parameters["@name"].Value = name;
+            SQLiteDataReader rs = findPatientSt.ExecuteReader();
+            return getPatients(rs);
+        }
 
-        //    public static Database getInstance() throws ClassNotFoundException, SQLException, FileNotFoundException {
-        //		if (instance == null)
-        //			instance = new Database();
-        //		return instance;
-        //	}
+        public List<ConnectionValue<Channel>> getAllChannelRelativeToSymptom(Symptom symptom)
+        {
+            getAllChannelRelativeToSymptomSt.Parameters["@symptomId"].Value = symptom.Id;
+            SQLiteDataReader rs = getAllChannelRelativeToSymptomSt.ExecuteReader();
+            List<ConnectionValue<Channel>> o = new List<ConnectionValue<Channel>>();
+            while (rs.NextResult())
+                o.Add(new ConnectionValue<Channel>(getChannel(rs), rs.GetIntL(ConnectionValue<Channel>.IMPORTENCE),
+                        rs.GetStringL(ConnectionValue<Channel>.COMMENT)));
+            return o;
+        }
 
-        //public ArrayList<Symptom> findSymptom( String name) 
-        //{
-        //    Statement s = connection.createStatement();
-        //    ResultSet rs = s.executeQuery("SELECT * FROM SYMPTOM where NAME like '%" + name + "%';");
-        //		return getSymptoms(rs);
-        //}
+        public List<ConnectionValue<Point>> getAllPointRelativeToSymptom(Symptom symptom)
+        {
+            getAllPointRelativeToSymptomSt.Parameters["@symptomId"].Value = symptom.Id;
+            SQLiteDataReader rs = getAllPointRelativeToSymptomSt.ExecuteReader();
+            List<ConnectionValue<Point>> o = new List<ConnectionValue<Point>>();
+            while (rs.NextResult())
+                o.Add(new ConnectionValue<Point>(getPoint(rs), rs.GetIntL(ConnectionValue<Point>.IMPORTENCE),
+                        rs.GetStringL(ConnectionValue<Point>.COMMENT)));
+            return o;
+        }
 
-        //public ArrayList<Patient> findPatient( String name) 
-        //{
-        //    Statement s = connection.createStatement();
-        //    ResultSet rs = s.executeQuery("SELECT * FROM PATIENT where NAME like '%" + name + "%';");
-        //		return getPatients(rs);
-        //}
+        public List<Symptom> getAllSymptomRelativeToPoint(Point point)
+        {
+            getAllSymptomRelativeToPointSt.Parameters["@pointId"].Value = point.Id;
+            SQLiteDataReader rs = getAllSymptomRelativeToPointSt.ExecuteReader();
+            return getSymptoms(rs);
+        }
 
-        //public ArrayList<ConnectionValue<Channel>> getAllChannelRelativeToSymptom( Symptom symptom)
+        public List<Meeting> getAllMeetingsRelativeToSymptoms(List<Symptom> symptoms)
+        {
+            string sql = "select MEETING.*,count(MEETING.ID) from MEETING INNER JOIN MEETING_SYMPTOM ON MEETING.ID = MEETING_SYMPTOM.MEETING_ID where ";
+            for (int i = 0; i < symptoms.Count; i++)
+            {
+                sql += " MEETING_SYMPTOM.SYMPTOM_ID = " + symptoms[i].Id;
+                if (i < symptoms.Count - 1)
+                    sql += " or ";
+            }
+            sql += " having count(MEETING.ID) > 0 order by count(MEETING.ID) DESC;";
+            getAllMeetingsRelativeToSymptomsSt.CommandText = sql;
+            SQLiteDataReader rs = getAllMeetingsRelativeToSymptomsSt.ExecuteReader();
+            return getMeetings(rs);
+        }
 
+        public Channel insertChannel(Channel channel)
+        {
+            insertChannelSt.Parameters["@channelId"].Value = channel.Id;
+            insertChannelSt.Parameters["@name"].Value = channel.Name;
+            insertChannelSt.Parameters["@rt"].Value = channel.Rt;
+            insertChannelSt.Parameters["@aminPoint"].Value = channel.MainPoint;
+            insertChannelSt.Parameters["@evenPoint"].Value = channel.EvenPoint;
+            insertChannelSt.Parameters["@path"].Value = channel.Path;
+            insertChannelSt.Parameters["@role"].Value = channel.Role;
+            insertChannelSt.Parameters["@comments"].Value = channel.Comments;
+            insertChannelSt.ExecuteNonQuery();
+            return channel;
+        }
 
-        //{
-        //    getAllChannelRelativeToSymptomSt.setInt(1, symptom.getId());
-        //    ResultSet rs = getAllChannelRelativeToSymptomSt.executeQuery();
-        //    ArrayList<ConnectionValue<Channel>> out = new ArrayList<>();
-        //		while (rs.next())
-        //			out.add(new ConnectionValue<Channel>(getChannel(rs), rs.getInt(ConnectionValue.IMPORTENCE),
-        //					rs.getString(ConnectionValue.COMMENT)));
-        //		return out;
-        //	}
+        public void insertSymptomChannelRelation(Symptom symptom, Channel channel, int importance, string comment)
+        {
+            insertSymptomChannelRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            insertSymptomChannelRelationSt.Parameters["@channelId"].Value = channel.Id;
+            insertSymptomChannelRelationSt.Parameters["@importance"].Value = importance;
+            insertSymptomChannelRelationSt.Parameters["@comment"].Value = comment;
+            insertSymptomChannelRelationSt.ExecuteNonQuery();
+        }
 
-        //	public ArrayList<ConnectionValue<Point>> getAllPointRelativeToSymptom( Symptom symptom) 
-        //{
-        //    getAllPointRelativeToSymptomSt.setInt(1, symptom.getId());
-        //    ResultSet rs = getAllPointRelativeToSymptomSt.executeQuery();
-        //    ArrayList<ConnectionValue<Point>> out = new ArrayList<>();
-        //		while (rs.next())
-        //			out.add(new ConnectionValue<Point>(getPoint(rs), rs.getInt(ConnectionValue.IMPORTENCE),
-        //					rs.getString(ConnectionValue.COMMENT)));
-        //		return out;
-        //	}
+        public void insertMeetingPointRelation(Meeting meeting, Point point)
+        {
+            insertMeetingPointRelationSt.Parameters["@meetingId"].Value = meeting.Id;
+            insertMeetingPointRelationSt.Parameters["@pointId"].Value = point.Id;
+            insertMeetingPointRelationSt.ExecuteNonQuery();
+        }
 
-        //	public ArrayList<Symptom> getAllSymptomRelativeToPoint( Point point) 
-        //{
-        //    getAllSymptomRelativeToPointSt.setInt(1, point.getId());
-        //    ResultSet rs = getAllSymptomRelativeToPointSt.executeQuery();
-        //		return getSymptoms(rs);
-        //}
+        public void insertSymptomPointRelation(Symptom symptom, Point point, int importance, string comment)
+        {
+            insertSymptomPointRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            insertSymptomPointRelationSt.Parameters["@pointId"].Value = point.Id;
+            insertSymptomPointRelationSt.Parameters["@importance"].Value = importance;
+            insertSymptomPointRelationSt.Parameters["@comment"].Value = comment;
+            insertSymptomPointRelationSt.ExecuteNonQuery();
+        }
 
-        //public ArrayList<Meeting> getAllMeetingsRelativeToSymptoms( ArrayList<Symptom> symptoms) 
-        //{
-        //    String sql = "select MEETING.*,count(MEETING.ID) from MEETING INNER JOIN MEETING_SYMPTOM ON MEETING.ID = MEETING_SYMPTOM.MEETING_ID where ";
-        //		for (int i = 0; i < symptoms.size(); i++) {
-        //        sql += " MEETING_SYMPTOM.SYMPTOM_ID = " + symptoms.get(i).getId();
-        //        if (i < symptoms.size() - 1)
-        //            sql += " or ";
-        //    }
-        //    sql += " having count(MEETING.ID) > 0 order by count(MEETING.ID) DESC;";
-        //    Statement s = connection.createStatement();
-        //    ResultSet rs = s.executeQuery(sql);
-        //		return getMeetings(rs);
-        //}
+        public void insertSymptomMeetingRelation(Symptom symptom, Meeting meeting)
+        {
+            insertSymptomMeetingRelationSt.Parameters["@meentigId"].Value = meeting.Id;
+            insertSymptomMeetingRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            insertSymptomMeetingRelationSt.ExecuteNonQuery();
+        }
 
-        //public Channel insertChannel( Channel channel) 
-        //{
-        //    insertChannelSt.setInt(1, channel.getId());
-        //    insertChannelSt.setString(2, channel.getName());
-        //    insertChannelSt.setString(3, channel.getRt());
-        //    insertChannelSt.setInt(4, channel.getMainPoint());
-        //    insertChannelSt.setInt(5, channel.getEvenPoint());
-        //    insertChannelSt.setString(6, channel.getPath());
-        //    insertChannelSt.setString(7, channel.getRole());
-        //    insertChannelSt.setString(8, channel.getComments());
-        //    insertChannelSt.executeUpdate();
-        //		return channel;
-        //}
+        public Symptom insertSymptom(Symptom symptom)
+        {
+            insertSymptomSt.Parameters["@name"].Value = symptom.Name;
+            insertSymptomSt.Parameters["@comment"].Value = symptom.Comment;
+            insertSymptomSt.ExecuteNonQuery();
 
-        //public void insertSymptomChannelRelation( Symptom symptom,  Channel channel,  int importance,
-        //         String comment) 
-        //{
-        //    insertSymptomChannelRelationSt.setInt(1, symptom.getId());
-        //    insertSymptomChannelRelationSt.setInt(2, channel.getId());
-        //    insertSymptomChannelRelationSt.setInt(3, importance);
-        //    insertSymptomChannelRelationSt.setString(4, comment);
-        //    insertSymptomChannelRelationSt.executeUpdate();
-        //}
+            long rowId = connection.LastInsertRowId;
 
-        //public void insertMeetingPointRelation( Meeting meeting,  Point point) 
-        //{
-        //    insertMeetingPointRelationSt.setInt(1, meeting.getId());
-        //    insertMeetingPointRelationSt.setInt(2, point.getId());
-        //    insertMeetingPointRelationSt.executeUpdate();
-        //}
+            if (rowId != 0)
+            {
 
-        //public void insertSymptomPointRelation( Symptom symptom,  Point point, int importance, String comment)
+                int id = (int)new SQLiteCommand("select SYMPTOM_ID from SYMPTOM where rowId = " + rowId, connection).ExecuteScalar();
+                return new Symptom(id, symptom);
+            }
+            throw new Exception("ERORR:Insert didn't accure");
+        }
 
+        public Meeting insertMeeting(Meeting meeting)
+        {
+            insertMeetingSt.Parameters["@meetingId"].Value = meeting.PatientId;
+            insertMeetingSt.Parameters["@purpose"].Value = meeting.Purpose;
+            insertMeetingSt.Parameters["@date"].Value = meeting.Date;
+            insertMeetingSt.Parameters["@description"].Value = meeting.Description;
+            insertMeetingSt.Parameters["@summery"].Value = meeting.Summery;
+            insertMeetingSt.Parameters["@resultDescription"].Value = meeting.ResultDescription;
+            insertMeetingSt.Parameters["@resultValue"].Value = meeting.Result.Value;
+            insertMeetingSt.ExecuteNonQuery();
 
-        //{
-        //    insertSymptomPointRelationSt.setInt(1, symptom.getId());
-        //    insertSymptomPointRelationSt.setInt(2, point.getId());
-        //    insertSymptomPointRelationSt.setInt(3, importance);
-        //    insertSymptomPointRelationSt.setString(4, comment);
-        //    insertSymptomPointRelationSt.executeUpdate();
-        //}
+            long rowId = connection.LastInsertRowId;
 
-        //public void insertSymptomMeetingRelation( Symptom symptom,  Meeting meeting) 
-        //{
-        //    insertSymptomMeetingRelationSt.setInt(1, meeting.getId());
-        //    insertSymptomMeetingRelationSt.setInt(2, symptom.getId());
-        //    insertSymptomMeetingRelationSt.executeUpdate();
-        //}
+            if (rowId != 0)
+            {
+                int id = (int)new SQLiteCommand("select MEETING_ID from MEETING where rowId = " + rowId, connection).ExecuteScalar();
+                return new Meeting(id, meeting);
+            }
+            throw new Exception("ERORR:insert meeting didn't accure");
+        }
 
-        //public Symptom insertSymptom( Symptom symptom) throws Exception
-        //{
-        //    insertSymptomSt.setString(1, symptom.getName());
-        //    insertSymptomSt.setString(2, symptom.getComment());
-        //    insertSymptomSt.executeUpdate();
-        //    ResultSet rs = insertSymptomSt.getGeneratedKeys();
-        //		if (rs.next()) {
-        //        int id = rs.getInt(1);
-        //        return new Symptom(id, symptom);
-        //    }
-        //		throw new Exception("ERORR:Insert didn't accure");
-        //	}
+        public Patient insertPatient(Patient patient)
+        {
+            insertPatientSt.Parameters["@name"].Value = patient.Name;
+            insertPatientSt.Parameters["@telephone"].Value = patient.Telephone;
+            insertPatientSt.Parameters["@cellphone"].Value = patient.Cellphone;
+            insertPatientSt.Parameters["@birthday"].Value = patient.Birthday;
+            insertPatientSt.Parameters["@gender"].Value = patient.Gend.Value;
+            insertPatientSt.Parameters["@address"].Value = patient.Address;
+            insertPatientSt.Parameters["@email"].Value = patient.Email;
+            insertPatientSt.Parameters["@medicalDescription"].Value = patient.MedicalDescription;
+            insertPatientSt.ExecuteNonQuery();
 
-        //	public Meeting insertMeeting( Meeting meeting) throws Exception
-        //{
-        //    insertMeetingSt.setInt(1, meeting.getPatiantId());
-        //    insertMeetingSt.setString(2, meeting.getPurpose());
-        //    insertMeetingSt.setDate(3, meeting.getDate());
-        //    insertMeetingSt.setString(4, meeting.getDescription());
-        //    insertMeetingSt.setString(5, meeting.getSummery());
-        //    insertMeetingSt.setString(6, meeting.getResultDescription());
-        //    insertMeetingSt.setInt(7, meeting.getResultValue().getValue());
-        //    insertMeetingSt.executeUpdate();
-        //    ResultSet rs = insertMeetingSt.getGeneratedKeys();
-        //		if (rs.next()) {
-        //        int id = rs.getInt(1);
-        //        return new Meeting(id, meeting);
-        //    }
-        //		throw new Exception("ERORR:insert meeting didn't accure");
-        //	}
+            long rowId = connection.LastInsertRowId;
+            if (rowId != 0)
+            {
+                int id = (int)new SQLiteCommand("select PATIENT_ID from PATIENT where rowId = " + rowId, connection).ExecuteScalar();
+                return new Patient(id, patient);
+            }
+            throw new Exception("ERORR:insert patient didn't accure");
+        }
 
-        //	public Patient insertPatient( Patient patient) throws Exception
-        //{
-        //    insertPatientSt.setString(1, patient.getName());
-        //    insertPatientSt.setString(2, patient.getTelephone());
-        //    insertPatientSt.setString(3, patient.getCellphone());
-        //    insertPatientSt.setDate(4, patient.getBirthday());
-        //    insertPatientSt.setInt(5, patient.getGender().getValue());
-        //    insertPatientSt.setString(6, patient.getAddress());
-        //    insertPatientSt.setString(7, patient.getEmail());
-        //    insertPatientSt.setString(8, patient.getNedicalDescription());
-        //    insertPatientSt.executeUpdate();
-        //    ResultSet rs = insertPatientSt.getGeneratedKeys();
-        //		if (rs.next()) {
-        //        int id = rs.getInt(1);
-        //        return new Patient(id, patient);
-        //    }
-        //		throw new Exception("ERORR:insert patient didn't accure");
-        //	}
+        public Point insertPoint(Point point)
+        {
+            insertPointsSt.Parameters["@name"].Value = point.Name;
+            insertPointsSt.Parameters["@minNeedleDepth"].Value = point.MinNeedleDepth;
+            insertPointsSt.Parameters["@maxNeedleDepth"].Value = point.MaxNeedleDepth;
+            insertPointsSt.Parameters["@position"].Value = point.Position;
+            insertPointsSt.Parameters["@importance"].Value = point.Importance;
+            insertPointsSt.Parameters["@comment1"].Value = point.Comment1;
+            insertPointsSt.Parameters["@comment2"].Value = point.Comment2;
+            insertPointsSt.Parameters["@note"].Value = point.Note;
+            insertPointsSt.Parameters["@image"].Value = point.Image;
+            insertPointsSt.ExecuteNonQuery();
 
-        //	public Point insertPoint( Point point) throws Exception
-        //{
-        //    insertPointsSt.setString(1, point.getName());
-        //    insertPointsSt.setInt(2, point.getMinNeedleDepth());
-        //    insertPointsSt.setInt(3, point.getMaxNeedleDepth());
-        //    insertPointsSt.setString(4, point.getPosition());
-        //    insertPointsSt.setInt(5, point.getImportance());
-        //    insertPointsSt.setString(6, point.getComment1());
-        //    insertPointsSt.setString(7, point.getComment2());
-        //    insertPointsSt.setString(8, point.getNote());
-        //    insertPointsSt.setString(9, point.getImage());
-        //    insertPointsSt.executeUpdate();
-        //    ResultSet rs = insertPointsSt.getGeneratedKeys();
-        //		if (rs.next()) {
-        //        int id = rs.getInt(1);
-        //        return new Point(id, point);
-        //    }
-        //		throw new Exception("ERORR:insert point did't accure");
-        //	}
+            long rowId = connection.LastInsertRowId;
+            if (rowId != 0)
+            {
+                int id = (int)new SQLiteCommand("select POINT_ID from POINTS where rowId = " + rowId, connection).ExecuteScalar();
+                return new Point(id, point);
+            }
+            throw new Exception("ERORR:insert point did't accure");
+        }
 
-        //	private Meeting getMeeting(ResultSet rs) 
-        //{
-        //		return new Meeting(rs.getInt(ID), rs.getInt(Meeting.PATIENT_ID), rs.getString(Meeting.PURPOSE),
-        //				rs.getDate(Meeting.DATE), rs.getString(Meeting.DESCRIPTION), rs.getString(Meeting.SUMMERY),
-        //				rs.getString(Meeting.RESULT_DESCRIPTION),
-        //				Meeting.ResultValue.values()[rs.getInt(Meeting.RESULT_VALUE)]);
-        //	}
+        private Meeting getMeeting(SQLiteDataReader rs)
+        {
+            return new Meeting(rs.GetIntL(ID), rs.GetIntL(Meeting.PATIENT_ID), rs.GetStringL(Meeting.PURPOSE),
+                    rs.GetDateTimeL(Meeting.DATE), rs.GetStringL(Meeting.DESCRIPTION), rs.GetStringL(Meeting.SUMMERY),
+                    rs.GetStringL(Meeting.RESULT_DESCRIPTION),
+                    Meeting.ResultValue.FromValue(rs.GetIntL(Meeting.RESULT_VALUE)));
+        }
 
-        //	private ArrayList<Meeting> getMeetings(ResultSet rs) 
-        //{
-        //    ArrayList<Meeting> out = new ArrayList<>();
-        //		while (rs.next())
-        //			out.add(getMeeting(rs));
-        //		return out;
-        //	}
+        private List<Meeting> getMeetings(SQLiteDataReader rs)
+        {
+            List<Meeting> o = new List<Meeting>();
+            while (rs.NextResult())
+                o.Add(getMeeting(rs));
+            return o;
+        }
 
-        //	private Patient getPatient(ResultSet rs) 
-        //{
-        //		return new Patient(rs.getInt(ID), rs.getString(Patient.NAME), rs.getString(Patient.TELEPHONE),
-        //				rs.getString(Patient.CELLPHONE), rs.getDate(Patient.BIRTHDAY),
-        //				Gender.values()[rs.getInt(Patient.GENDER)], rs.getString(Patient.ADDRESS), rs.getString(Patient.EMAIL),
-        //				rs.getString(Patient.MEDICAL_DESCRIPTION));
-        //	}
+        private Patient getPatient(SQLiteDataReader rs)
+        {
+            return new Patient(rs.GetIntL(ID), rs.GetStringL(Patient.NAME), rs.GetStringL(Patient.TELEPHONE),
+                    rs.GetStringL(Patient.CELLPHONE), rs.GetDateTimeL(Patient.BIRTHDAY),
+                    Patient.Gender.FromValue(rs.GetIntL(Patient.GENDER)), rs.GetStringL(Patient.ADDRESS), rs.GetStringL(Patient.EMAIL),
+                    rs.GetStringL(Patient.MEDICAL_DESCRIPTION));
+        }
 
-        //	private ArrayList<Patient> getPatients(ResultSet rs) 
-        //{
-        //    ArrayList<Patient> out = new ArrayList<>();
-        //		while (rs.next())
-        //			out.add(getPatient(rs));
-        //		return out;
-        //	}
+        private List<Patient> getPatients(SQLiteDataReader rs)
+        {
+            List<Patient> o = new List<Patient>();
+            while (rs.NextResult())
+                o.Add(getPatient(rs));
+            return o;
+        }
 
-        //	private Point getPoint(ResultSet rs) 
-        //{
-        //		return new Point(rs.getInt(ID), rs.getString(Point.NAME), rs.getInt(Point.MIN_NEEDLE_DEPTH),
-        //				rs.getInt(Point.MAX_NEEDLE_DEPTH), rs.getString(Point.NEEDLE_DESCRIPTION), rs.getString(Point.POSITION),
-        //				rs.getInt(Point.IMPORTENCE), rs.getString(Point.COMMENT1), rs.getString(Point.COMMENT2),
-        //				rs.getString(Point.NOTE), rs.getString(Point.IMAGE));
-        //	}
+        private Point getPoint(SQLiteDataReader rs)
+        {
+            return new Point(rs.GetIntL(ID), rs.GetStringL(Point.NAME), rs.GetIntL(Point.MIN_NEEDLE_DEPTH),
+                    rs.GetIntL(Point.MAX_NEEDLE_DEPTH), rs.GetStringL(Point.NEEDLE_DESCRIPTION), rs.GetStringL(Point.POSITION),
+                    rs.GetIntL(Point.IMPORTENCE), rs.GetStringL(Point.COMMENT1), rs.GetStringL(Point.COMMENT2),
+                    rs.GetStringL(Point.NOTE), rs.GetStringL(Point.IMAGE));
+        }
 
-        //	private ArrayList<Point> getPoints(ResultSet rs) 
-        //{
-        //    ArrayList<Point> out = new ArrayList<>();
-        //		while (rs.next())
-        //			out.add(getPoint(rs));
-        //		return out;
-        //	}
+        private List<Point> getPoints(SQLiteDataReader rs)
+        {
+            List<Point> o = new List<Point>();
+            while (rs.NextResult())
+                o.Add(getPoint(rs));
+            return o;
+        }
 
-        //	private Symptom getSymptom(ResultSet rs) 
-        //{
-        //		return new Symptom(rs.getInt(ID), rs.getString(Symptom.NAME), rs.getString(Symptom.COMMENT));
-        //	}
+        private Symptom getSymptom(SQLiteDataReader rs)
+        {
+            return new Symptom(rs.GetIntL(ID), rs.GetStringL(Symptom.NAME), rs.GetStringL(Symptom.COMMENT));
+        }
 
-        //	private ArrayList<Symptom> getSymptoms(ResultSet rs) 
-        //{
-        //    ArrayList<Symptom> out = new ArrayList<>();
-        //		while (rs.next())
-        //			out.add(getSymptom(rs));
-        //		return out;
-        //	}
+        private List<Symptom> getSymptoms(SQLiteDataReader rs)
+        {
+            List<Symptom> o = new List<Symptom>();
+            while (rs.NextResult())
+                o.Add(getSymptom(rs));
+            return o;
+        }
     }
 }

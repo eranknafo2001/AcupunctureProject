@@ -21,25 +21,26 @@ namespace AcupunctureProject.Database
         {
             public static readonly ResultValue BETTER = new ResultValue(0), WORSE = new ResultValue(1), NO_CHANGE = new ResultValue(2);
 
-            private int value;
+            public int Value { get; private set; }
+            public static ResultValue FromValue(int value)
+            {
+                if (value < 0 || value > 2)
+                    throw new Exception("ERROR::ResultValue is not exist");
+                return new ResultValue(value);
+            }
 
             private ResultValue(int value)
             {
-                this.value = value;
+                this.Value = value;
             }
 
-            public int getValue()
+            public override string ToString()
             {
-                return value;
-            }
-
-            public string tostring()
-            {
-                if (value == 0)
+                if (Value == 0)
                 {
                     return "יותר טוב";
                 }
-                else if (value == 1)
+                else if (Value == 1)
                 {
                     return "החמיר";
                 }
@@ -50,7 +51,7 @@ namespace AcupunctureProject.Database
         };
 
         public int Id { get; private set; }
-        public int PatiantId { get; set; }
+        public int PatientId { get; set; }
         public string Purpose { get; set; }
         public DateTime Date { get; set; }
         public string Description { get; set; }
@@ -62,7 +63,7 @@ namespace AcupunctureProject.Database
                 string resultDescription, ResultValue resultValue)
         {
             this.Id = id;
-            this.PatiantId = patiantId;
+            this.PatientId = patiantId;
             this.Purpose = purpose;
             this.Date = date;
             this.Description = description;
@@ -74,7 +75,7 @@ namespace AcupunctureProject.Database
         public Meeting(int id, Meeting other)
         {
             this.Id = id;
-            this.PatiantId = other.PatiantId;
+            this.PatientId = other.PatientId;
             this.Purpose = other.Purpose;
             this.Date = other.Date;
             this.Description = other.Description;
@@ -86,7 +87,7 @@ namespace AcupunctureProject.Database
         public Meeting(int patiantId, string purpose, DateTime date, string description, string summery, string resultDescription, ResultValue resultValue)
         {
             this.Id = -1;
-            this.PatiantId = patiantId;
+            this.PatientId = patiantId;
             this.Purpose = purpose;
             this.Date = date;
             this.Description = description;

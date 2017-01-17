@@ -8,6 +8,9 @@ namespace AcupunctureProject.Database
 {
     public class ConnectionValue<V>
     {
+        public static readonly string IMPORTENCE = "IMPORTENCE";
+        public static readonly string COMMENT = "COMMENT";
+
         public V Value { get; private set; }
         public int Importance { get; private set; }
         public string Comment { get; private set; }

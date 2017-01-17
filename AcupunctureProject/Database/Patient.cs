@@ -21,16 +21,18 @@ namespace AcupunctureProject.Database
         {
             public static readonly Gender MALE = new Gender(0), FEMALE = new Gender(1), OTHER = new Gender(2);
 
-            private int value;
+            public int Value { get; private set; }
 
             private Gender(int value)
             {
-                this.value = value;
+                this.Value = value;
             }
 
-            public int getValue()
+            public static Gender FromValue(int value)
             {
-                return value;
+                if (value < 0 || value > 2)
+                    throw new Exception("ERROR::Gender is not exist");
+                return new Gender(value);
             }
         };
 
