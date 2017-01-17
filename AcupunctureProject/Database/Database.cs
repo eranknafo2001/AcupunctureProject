@@ -38,8 +38,9 @@ namespace AcupunctureProject.database
                 return database;
             }
         }
-        private SQLiteConnection connection;
 
+        private SQLiteConnection connection;
+        #region all SQLiteCommand declirations
         private SQLiteCommand getAllChannelRelativeToSymptomSt;
         private SQLiteCommand getAllPointRelativeToSymptomSt;
         private SQLiteCommand getAllSymptomRelativeToPointSt;
@@ -84,7 +85,7 @@ namespace AcupunctureProject.database
         private SQLiteCommand getAllMeetingsRelativeToSymptomsSt;
 
         private SQLiteCommand getAllPointsSt;
-
+        #endregion
         public Database()
         {
             string[] tempFolder = System.Reflection.Assembly.GetEntryAssembly().Location.Split('\\');
@@ -179,7 +180,7 @@ namespace AcupunctureProject.database
         {
             connection.Close();
         }
-
+        #region updates
         public void updateSymptom(Symptom symptom)
         {
             updateSymptomSt.Parameters["@name"].Value = symptom.Name;
@@ -260,7 +261,8 @@ namespace AcupunctureProject.database
             updatePointSymptomRelationSt.Parameters["@symptomId"].Value = symptom.Id;
             updatePointSymptomRelationSt.ExecuteNonQuery();
         }
-
+        #endregion
+        #region deletes
         public void deleteSymptom(Symptom symptom)
         {
             deleteSymptomSt.Parameters["@symptomId"].Value = symptom.Id;
@@ -318,97 +320,111 @@ namespace AcupunctureProject.database
             deleteMeetingPointSt.Parameters["@pointId"].Value = point.Id;
             deleteMeetingPointSt.ExecuteNonQuery();
         }
-
+        #endregion
+        #region finds objects
         public Channel getChannel(int id)
         {
             getChannelByIdSt.Parameters["@id"].Value = id;
-            SQLiteDataReader rs = getChannelByIdSt.ExecuteReader();
-            if (rs.NextResult())
-                return getChannel(rs);
-            return null;
-        }
-
-        private Channel getChannel(SQLiteDataReader rs)
-        {
-            return new Channel(rs.GetIntL(ID), rs.GetStringL(Channel.NAME), rs.GetStringL(Channel.RT),
-                    rs.GetIntL(Channel.MAIN_POINT), rs.GetIntL(Channel.EVEN_POINT), rs.GetStringL(Channel.PATH),
-                    rs.GetStringL(Channel.ROLE), rs.GetStringL(Channel.COMMENT));
+            using (SQLiteDataReader rs = getChannelByIdSt.ExecuteReader())
+            {
+                if (rs.NextResult())
+                    return getChannel(rs);
+                return null;
+            }
         }
 
         public Point getPoint(int id)
         {
             getPointByIdSt.Parameters["@id"].Value = id;
-            SQLiteDataReader rs = getPointByIdSt.ExecuteReader();
-            if (rs.NextResult())
-                return getPoint(rs);
-            return null;
+            using (SQLiteDataReader rs = getPointByIdSt.ExecuteReader())
+            {
+                if (rs.NextResult())
+                    return getPoint(rs);
+                return null;
+            }
         }
 
         public List<Point> getAllPoints()
         {
-            SQLiteDataReader rs = getAllPointsSt.ExecuteReader();
-            return getPoints(rs);
+            using (SQLiteDataReader rs = getAllPointsSt.ExecuteReader())
+            {
+                return getPoints(rs);
+            }
         }
 
         public Point getPoint(string name)
         {
             getPointByNameSt.Parameters["@name"].Value = name;
-            SQLiteDataReader rs = getPointByNameSt.ExecuteReader();
-            if (rs.NextResult())
-                return getPoint(rs);
-            return null;
+            using (SQLiteDataReader rs = getPointByNameSt.ExecuteReader())
+            {
+                if (rs.NextResult())
+                    return getPoint(rs);
+                return null;
+            }
         }
 
         public Symptom getSymptom(string name)
         {
             getSymptomSt.Parameters["@name"].Value = name;
-            SQLiteDataReader rs = getSymptomSt.ExecuteReader();
-            if (rs.NextResult())
-                return getSymptom(rs);
-            return null;
+            using (SQLiteDataReader rs = getSymptomSt.ExecuteReader())
+            {
+                if (rs.NextResult())
+                    return getSymptom(rs);
+                return null;
+            }
         }
 
         public List<Symptom> findSymptom(string name)
         {
             findSymptomSt.Parameters["@name"].Value = name;
-            SQLiteDataReader rs = findSymptomSt.ExecuteReader();
-            return getSymptoms(rs);
+            using (SQLiteDataReader rs = findSymptomSt.ExecuteReader())
+            {
+                return getSymptoms(rs);
+            }
         }
 
         public List<Patient> findPatient(string name)
         {
             findPatientSt.Parameters["@name"].Value = name;
-            SQLiteDataReader rs = findPatientSt.ExecuteReader();
-            return getPatients(rs);
+            using (SQLiteDataReader rs = findPatientSt.ExecuteReader())
+            {
+                return getPatients(rs);
+            }
         }
 
         public List<ConnectionValue<Channel>> getAllChannelRelativeToSymptom(Symptom symptom)
         {
             getAllChannelRelativeToSymptomSt.Parameters["@symptomId"].Value = symptom.Id;
-            SQLiteDataReader rs = getAllChannelRelativeToSymptomSt.ExecuteReader();
-            List<ConnectionValue<Channel>> o = new List<ConnectionValue<Channel>>();
-            while (rs.NextResult())
-                o.Add(new ConnectionValue<Channel>(getChannel(rs), rs.GetIntL(ConnectionValue<Channel>.IMPORTENCE),
-                        rs.GetStringL(ConnectionValue<Channel>.COMMENT)));
-            return o;
+            using (SQLiteDataReader rs = getAllChannelRelativeToSymptomSt.ExecuteReader())
+            {
+                List<ConnectionValue<Channel>> o = new List<ConnectionValue<Channel>>();
+                while (rs.NextResult())
+                    o.Add(new ConnectionValue<Channel>(getChannel(rs), rs.GetIntL(ConnectionValue<Channel>.IMPORTENCE),
+                            rs.GetStringL(ConnectionValue<Channel>.COMMENT)));
+                return o;
+            }
         }
 
         public List<ConnectionValue<Point>> getAllPointRelativeToSymptom(Symptom symptom)
         {
             getAllPointRelativeToSymptomSt.Parameters["@symptomId"].Value = symptom.Id;
-            SQLiteDataReader rs = getAllPointRelativeToSymptomSt.ExecuteReader();
-            List<ConnectionValue<Point>> o = new List<ConnectionValue<Point>>();
-            while (rs.NextResult())
-                o.Add(new ConnectionValue<Point>(getPoint(rs), rs.GetIntL(ConnectionValue<Point>.IMPORTENCE),
-                        rs.GetStringL(ConnectionValue<Point>.COMMENT)));
-            return o;
+            using (SQLiteDataReader rs = getAllPointRelativeToSymptomSt.ExecuteReader())
+            {
+                List<ConnectionValue<Point>> o = new List<ConnectionValue<Point>>();
+                while (rs.NextResult())
+                    o.Add(new ConnectionValue<Point>(getPoint(rs), rs.GetIntL(ConnectionValue<Point>.IMPORTENCE),
+                            rs.GetStringL(ConnectionValue<Point>.COMMENT)));
+                return o;
+            }
         }
 
         public List<Symptom> getAllSymptomRelativeToPoint(Point point)
         {
             getAllSymptomRelativeToPointSt.Parameters["@pointId"].Value = point.Id;
-            SQLiteDataReader rs = getAllSymptomRelativeToPointSt.ExecuteReader();
-            return getSymptoms(rs);
+            using (SQLiteDataReader rs = getAllSymptomRelativeToPointSt.ExecuteReader())
+            {
+                return getSymptoms(rs);
+            }
         }
 
         public List<Meeting> getAllMeetingsRelativeToSymptoms(List<Symptom> symptoms)
@@ -422,10 +438,13 @@ namespace AcupunctureProject.database
             }
             sql += " having count(MEETING.ID) > 0 order by count(MEETING.ID) DESC;";
             getAllMeetingsRelativeToSymptomsSt.CommandText = sql;
-            SQLiteDataReader rs = getAllMeetingsRelativeToSymptomsSt.ExecuteReader();
-            return getMeetings(rs);
+            using (SQLiteDataReader rs = getAllMeetingsRelativeToSymptomsSt.ExecuteReader())
+            {
+                return getMeetings(rs);
+            }
         }
-
+        #endregion
+        #region inserts
         public Channel insertChannel(Channel channel)
         {
             insertChannelSt.Parameters["@channelId"].Value = channel.Id;
@@ -552,6 +571,14 @@ namespace AcupunctureProject.database
             }
             throw new Exception("ERORR:insert point did't accure");
         }
+        #endregion
+        #region get from SQLiteDataReader the objects
+        private Channel getChannel(SQLiteDataReader rs)
+        {
+            return new Channel(rs.GetIntL(ID), rs.GetStringL(Channel.NAME), rs.GetStringL(Channel.RT),
+                    rs.GetIntL(Channel.MAIN_POINT), rs.GetIntL(Channel.EVEN_POINT), rs.GetStringL(Channel.PATH),
+                    rs.GetStringL(Channel.ROLE), rs.GetStringL(Channel.COMMENT));
+        }
 
         private Meeting getMeeting(SQLiteDataReader rs)
         {
@@ -613,5 +640,6 @@ namespace AcupunctureProject.database
                 o.Add(getSymptom(rs));
             return o;
         }
+        #endregion
     }
 }
