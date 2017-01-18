@@ -50,44 +50,38 @@ namespace AcupunctureProject.database
         public string Purpose { get; set; }
         public DateTime Date { get; set; }
         public string Description { get; set; }
+        public string SmallDescription
+        {
+            get
+            {
+                return "test";
+            }
+        }
+        public string DateString
+        {
+            get
+            {
+                return Date.ToShortDateString();
+            }
+        }
         public string Summery { get; set; }
         public string ResultDescription { get; set; }
         public ResultValue Result { get; set; }
 
         public Meeting(int id, int patiantId, string purpose, DateTime date, string description, string summery, string resultDescription, ResultValue resultValue)
         {
-            this.Id = id;
-            this.PatientId = patiantId;
-            this.Purpose = purpose;
-            this.Date = date;
-            this.Description = description;
-            this.Summery = summery;
-            this.ResultDescription = resultDescription;
-            this.Result = resultValue;
+            Id = id;
+            PatientId = patiantId;
+            Purpose = purpose;
+            Date = date;
+            Description = description;
+            Summery = summery;
+            ResultDescription = resultDescription;
+            Result = resultValue;
         }
 
-        public Meeting(int id, Meeting other)
-        {
-            this.Id = id;
-            this.PatientId = other.PatientId;
-            this.Purpose = other.Purpose;
-            this.Date = other.Date;
-            this.Description = other.Description;
-            this.Summery = other.Summery;
-            this.ResultDescription = other.ResultDescription;
-            this.Result = other.Result;
-        }
+        public Meeting(int id, Meeting other) : this(id, other.PatientId, other.Purpose, other.Date, other.Description, other.Summery, other.ResultDescription, other.Result) { }
 
-        public Meeting(int patiantId, string purpose, DateTime date, string description, string summery, string resultDescription, ResultValue resultValue)
-        {
-            this.Id = -1;
-            this.PatientId = patiantId;
-            this.Purpose = purpose;
-            this.Date = date;
-            this.Description = description;
-            this.Summery = summery;
-            this.ResultDescription = resultDescription;
-            this.Result = resultValue;
-        }
+        public Meeting(int patiantId, string purpose, DateTime date, string description, string summery, string resultDescription, ResultValue resultValue) : this(-1, patiantId, purpose, date, description, summery, resultDescription, resultValue) { }
     }
 }

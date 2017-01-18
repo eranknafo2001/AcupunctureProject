@@ -449,12 +449,12 @@ namespace AcupunctureProject.database
             }
         }
 
-        public List<Symptom> getAllSymptomRelativeToPoint(Point point)
+        public List<ConnectionValue<Symptom>> getAllSymptomRelativeToPoint(Point point)
         {
             getAllSymptomRelativeToPointSt.Parameters["@pointId"].Value = point.Id;
             using (SQLiteDataReader rs = getAllSymptomRelativeToPointSt.ExecuteReader())
             {
-                return getSymptoms(rs);
+                return getSymptomsConnection(rs);
             }
         }
 
@@ -669,6 +669,19 @@ namespace AcupunctureProject.database
             List<Symptom> o = new List<Symptom>();
             while (rs.NextResult())
                 o.Add(getSymptom(rs));
+            return o;
+        }
+
+        private ConnectionValue<Symptom> getSymptomConnection(SQLiteDataReader rs)
+        {
+            return new ConnectionValue<Symptom>(getSymptom(rs),rs.GetIntL(ConnectionValue<Symptom>.IMPORTENCE),rs.GetStringL(ConnectionValue<Symptom>.COMMENT));
+        }
+
+        private List<ConnectionValue<Symptom>> getSymptomsConnection(SQLiteDataReader rs)
+        {
+            List<ConnectionValue<Symptom>> o = new List<ConnectionValue<Symptom>>();
+            while (rs.NextResult())
+                o.Add(getSymptomConnection(rs));
             return o;
         }
         #endregion
