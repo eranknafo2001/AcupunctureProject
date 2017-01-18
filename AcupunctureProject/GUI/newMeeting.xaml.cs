@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AcupunctureProject.database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,7 @@ namespace AcupunctureProject.GUI
         private void symptomSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             symptomSearchList.Items.Clear();
-            symptomSearchList.Items.Add(new ListBoxItem() { Content = "te1st", ContentstringFormat = "" });
+            symptomSearchList.Items.Add(new ListBoxItem() { Content = "te1st" });
         }
 
         private void censel_Click(object sender, RoutedEventArgs e)
@@ -47,9 +48,9 @@ namespace AcupunctureProject.GUI
         private void reloadPatientList()
         {
             patientSearchList.Items.Clear();
-            patientSearchList.Items.Add(new ListViewItem() { Content = "te1st", ContentstringFormat = "" });
-            patientSearchList.Items.Add(new ListViewItem() { Content = "te1st", ContentstringFormat = "" });
-            patientSearchList.Items.Add(new ListViewItem() { Content = "te1st", ContentstringFormat = "" });
+            List<Patient> p = Database.Instance.findPatient(patientSearchTextBox.Text);
+            for (int i = 0; i < p.Count; i++)
+                patientSearchList.Items.Add(new ListViewItem() { Content = p[i].ToString(), DataContext = p[i] });
             patientSearchList.SelectedIndex = 0;
         }
 

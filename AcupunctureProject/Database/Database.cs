@@ -170,8 +170,8 @@ namespace AcupunctureProject.database
             getAllPointsSt = new SQLiteCommand("select * from POINTS;", connection);
             findSymptomSt = new SQLiteCommand("SELECT * FROM SYMPTOM where NAME like '%@name%';", connection);
             findSymptomSt.Parameters.Add(new SQLiteParameter("@name"));
-            findPatientSt = new SQLiteCommand("SELECT * FROM PATIENT where NAME like '%@name%';", connection);
-            findPatientSt.Parameters.Add(new SQLiteParameter("@name"));
+            findPatientSt = new SQLiteCommand( connection);
+            //findPatientSt.Parameters.Add(new SQLiteParameter("@name"));
 
             getAllMeetingsRelativeToSymptomsSt = new SQLiteCommand(connection);
         }
@@ -385,7 +385,8 @@ namespace AcupunctureProject.database
 
         public List<Patient> findPatient(string name)
         {
-            findPatientSt.Parameters["@name"].Value = name;
+            findPatientSt.CommandText = "SELECT* FROM PATIENT where NAME like '%" + name + "%'; ";
+            //findPatientSt.Parameters["@name"].Value = name;
             using (SQLiteDataReader rs = findPatientSt.ExecuteReader())
             {
                 return getPatients(rs);
@@ -418,12 +419,12 @@ namespace AcupunctureProject.database
             }
         }
 
-        public List<Symptom> getAllSymptomRelativeToPoint(Point point)
+        public List<ConnectionValue<Symptom>> getAllSymptomRelativeToPoint(Point point)
         {
             getAllSymptomRelativeToPointSt.Parameters["@pointId"].Value = point.Id;
             using (SQLiteDataReader rs = getAllSymptomRelativeToPointSt.ExecuteReader())
             {
-                return getSymptoms(rs);
+                return getSymptomsConnection(rs);
             }
         }
 
@@ -640,6 +641,19 @@ namespace AcupunctureProject.database
                 o.Add(getSymptom(rs));
             return o;
         }
-        #endregion
-    }
+
+        private ConnectionValue<Symptom> getSymptomConnection(SQLiteDataReader rs)
+        {
+            return new ConnectionValue<Symptom>( new Symptom(rs.GetIntL(ID), rs.GetStringL(Symptom.NAME), rs.GetStringL(Symptom.COMMENT)),rs.GetIntL(ConnectionValue<Symptom>.IMPORTENCE),rs.GetStringL(ConnectionValue<Symptom>.COMMENT));
+        }
+
+        private List<ConnectionValue<Symptom>> getSymptomsConnection(SQLiteDataReader rs)
+        {
+            List<ConnectionValue<Symptom>> o = new List<ConnectionValue<Symptom>>();
+            while (rs.NextResult())
+                o.Add(getSymptomConnection(rs));
+            return o;
+        }
+    #endregion
+}
 }

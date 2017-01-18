@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,14 +26,14 @@ namespace AcupunctureProject.GUI
             List<database.Point> pointList = Database.Instance.getAllPoints();
             for (int i = 0; i < pointList.Count; i++)
                 points.Items.Add(new ListViewItem() { Content = pointList[i] });
-            List<ConnectionValue<Symptom>> symptomList = Database.getAllSymptomsRelatedToPoint(point);
+            List<ConnectionValue<Symptom>> symptomList = Database.Instance.getAllSymptomRelativeToPoint(point);
             for (int i = 0; i < symptomList.Count; i++)
             {
                 TreeViewItem symptom = new TreeViewItem() { Name = symptomList[i].Value.ToString(), DataContext = symptomList[i].Value };
-                List<ConnectionValue<database.Point>> pointsRelatedToSymptom = Database.Instance.getAllPointsRelatedToSymptom(symptomList[i].Value);
+                List<ConnectionValue<database.Point>> pointsRelatedToSymptom = Database.Instance.getAllPointRelativeToSymptom(symptomList[i].Value);
                 for (int j = 0; j < pointsRelatedToSymptom.Count; j++)
                 {
-                    symptom.Items.Add(new TreeViewItem() { Name = pointsRelatedToSymptom[j].ToString(), DataContext = pointsRelatedToSymptom[j].ToString });
+                    symptom.Items.Add(new TreeViewItem() { Name = pointsRelatedToSymptom[j].Value.ToString(), DataContext = pointsRelatedToSymptom[j].Value });
                 }
                 syptomTreeView.Items.Add(symptom);
             }
@@ -45,7 +45,7 @@ namespace AcupunctureProject.GUI
             }
             BitmapImage backimagesource = new BitmapImage();
             backimagesource.BeginInit();
-            backimagesource.UriSource = new Uri(folder + "images\\" + point.Name + ".jpg");
+            backimagesource.UriSource = new System.Uri(folder + "images\\" + point.Name + ".jpg");
             backimagesource.EndInit();
             pointImage.Source = backimagesource;
             name.Text = point.Name;
