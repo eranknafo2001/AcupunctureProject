@@ -29,13 +29,13 @@ namespace AcupunctureProject.GUI
             List<ConnectionValue<Symptom>> symptomList = Database.Instance.getAllSymptomRelativeToPoint(point);
             for (int i = 0; i < symptomList.Count; i++)
             {
-                TreeViewItem symptom = new TreeViewItem() { Name = symptomList[i].Value.ToString(), DataContext = symptomList[i].Value };
+                //TreeViewItem symptom = new TreeViewItem() { Name = symptomList[i].Value.ToString(), DataContext = symptomList[i].Value };
                 List<ConnectionValue<database.Point>> pointsRelatedToSymptom = Database.Instance.getAllPointRelativeToSymptom(symptomList[i].Value);
                 for (int j = 0; j < pointsRelatedToSymptom.Count; j++)
                 {
-                    symptom.Items.Add(new TreeViewItem() { Name = pointsRelatedToSymptom[j].Value.ToString(), DataContext = pointsRelatedToSymptom[j].Value });
+                    //symptom.Items.Add(new TreeViewItem() { Name = pointsRelatedToSymptom[j].Value.ToString(), DataContext = pointsRelatedToSymptom[j].Value });
                 }
-                syptomTreeView.Items.Add(symptom);
+                //syptomTreeView.Items.Add(symptom);
             }
             string[] tempFolder = System.Reflection.Assembly.GetEntryAssembly().Location.Split('\\');
             var folder = "";

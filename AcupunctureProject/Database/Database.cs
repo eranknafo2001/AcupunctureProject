@@ -11,17 +11,17 @@ namespace AcupunctureProject.database
     {
         public static string GetStringL(this SQLiteDataReader reader, string str)
         {
-            return reader.GetString(reader.GetOrdinal(str));
+            return reader[str].ToString();
         }
 
         public static DateTime GetDateTimeL(this SQLiteDataReader reader, string str)
         {
-            return reader.GetDateTime(reader.GetOrdinal(str));
+            return (DateTime)reader[str];
         }
 
         public static int GetIntL(this SQLiteDataReader reader, string str)
         {
-            return reader.GetInt32(reader.GetOrdinal(str));
+            return (int)(Int64)reader[str];
         }
     }
 
@@ -94,7 +94,10 @@ namespace AcupunctureProject.database
             {
                 folder += tempFolder[i] + "\\";
             }
-            connection = new SQLiteConnection("Data Source=" + folder + "database.db;Version=3;");
+            SQLiteConnectionStringBuilder d = new SQLiteConnectionStringBuilder();
+            d.DataSource = folder + "database.db";
+            connection = new SQLiteConnection(d.ConnectionString);
+            //connection = new SQLiteConnection("Data Source=" + folder + "database.db;Version=3;");
             connection.Open();
 
             getAllPointRelativeToSymptomSt = new SQLiteCommand("select POINTS.* , SYMPTOM_POINTS.IMPORTENCE , SYMPTOM_POINTS.COMMENT from POINTS INNER JOIN SYMPTOM_POINTS ON POINTS.ID = SYMPTOM_POINTS.POINT_ID and SYMPTOM_POINTS.SYMPTOM_ID = @symptomId order by SYMPTOM_POINTS.IMPORTENCE DESC;", connection);
@@ -207,10 +210,6 @@ namespace AcupunctureProject.database
             getAllMeetingsRelativeToSymptomsSt = new SQLiteCommand(connection);
         }
 
-        ~Database()
-        {
-            connection.Close();
-        }
         #region updates
         public void updateSymptom(Symptom symptom)
         {
@@ -358,7 +357,7 @@ namespace AcupunctureProject.database
             getChannelByIdSt.Parameters["@id"].Value = id;
             using (SQLiteDataReader rs = getChannelByIdSt.ExecuteReader())
             {
-                if (rs.NextResult())
+                if (rs.Read())
                     return getChannel(rs);
                 return null;
             }
@@ -369,7 +368,7 @@ namespace AcupunctureProject.database
             getPointByIdSt.Parameters["@id"].Value = id;
             using (SQLiteDataReader rs = getPointByIdSt.ExecuteReader())
             {
-                if (rs.NextResult())
+                if (rs.Read())
                     return getPoint(rs);
                 return null;
             }
@@ -388,7 +387,7 @@ namespace AcupunctureProject.database
             getPointByNameSt.Parameters["@name"].Value = name;
             using (SQLiteDataReader rs = getPointByNameSt.ExecuteReader())
             {
-                if (rs.NextResult())
+                if (rs.Read())
                     return getPoint(rs);
                 return null;
             }
@@ -399,7 +398,7 @@ namespace AcupunctureProject.database
             getSymptomSt.Parameters["@name"].Value = name;
             using (SQLiteDataReader rs = getSymptomSt.ExecuteReader())
             {
-                if (rs.NextResult())
+                if (rs.Read())
                     return getSymptom(rs);
                 return null;
             }
@@ -429,7 +428,7 @@ namespace AcupunctureProject.database
             using (SQLiteDataReader rs = getAllChannelRelativeToSymptomSt.ExecuteReader())
             {
                 List<ConnectionValue<Channel>> o = new List<ConnectionValue<Channel>>();
-                while (rs.NextResult())
+                while (rs.Read())
                     o.Add(new ConnectionValue<Channel>(getChannel(rs), rs.GetIntL(ConnectionValue<Channel>.IMPORTENCE),
                             rs.GetStringL(ConnectionValue<Channel>.COMMENT)));
                 return o;
@@ -442,7 +441,7 @@ namespace AcupunctureProject.database
             using (SQLiteDataReader rs = getAllPointRelativeToSymptomSt.ExecuteReader())
             {
                 List<ConnectionValue<Point>> o = new List<ConnectionValue<Point>>();
-                while (rs.NextResult())
+                while (rs.Read())
                     o.Add(new ConnectionValue<Point>(getPoint(rs), rs.GetIntL(ConnectionValue<Point>.IMPORTENCE),
                             rs.GetStringL(ConnectionValue<Point>.COMMENT)));
                 return o;
@@ -622,7 +621,7 @@ namespace AcupunctureProject.database
         private List<Meeting> getMeetings(SQLiteDataReader rs)
         {
             List<Meeting> o = new List<Meeting>();
-            while (rs.NextResult())
+            while (rs.Read())
                 o.Add(getMeeting(rs));
             return o;
         }
@@ -638,7 +637,7 @@ namespace AcupunctureProject.database
         private List<Patient> getPatients(SQLiteDataReader rs)
         {
             List<Patient> o = new List<Patient>();
-            while (rs.NextResult())
+            while (rs.Read())
                 o.Add(getPatient(rs));
             return o;
         }
@@ -654,7 +653,7 @@ namespace AcupunctureProject.database
         private List<Point> getPoints(SQLiteDataReader rs)
         {
             List<Point> o = new List<Point>();
-            while (rs.NextResult())
+            while (rs.Read())
                 o.Add(getPoint(rs));
             return o;
         }
@@ -667,7 +666,7 @@ namespace AcupunctureProject.database
         private List<Symptom> getSymptoms(SQLiteDataReader rs)
         {
             List<Symptom> o = new List<Symptom>();
-            while (rs.NextResult())
+            while (rs.Read())
                 o.Add(getSymptom(rs));
             return o;
         }
@@ -680,7 +679,7 @@ namespace AcupunctureProject.database
         private List<ConnectionValue<Symptom>> getSymptomsConnection(SQLiteDataReader rs)
         {
             List<ConnectionValue<Symptom>> o = new List<ConnectionValue<Symptom>>();
-            while (rs.NextResult())
+            while (rs.Read())
                 o.Add(getSymptomConnection(rs));
             return o;
         }

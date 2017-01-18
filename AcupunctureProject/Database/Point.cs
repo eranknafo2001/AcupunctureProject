@@ -53,8 +53,11 @@ namespace AcupunctureProject.database
 
         public Point(int id, Point other) : this(id, other.Name, other.MinNeedleDepth, other.MaxNeedleDepth, other.NeedleDescription, other.Position,
                     other.Importance, other.Comment1, other.Comment2, other.Note, other.Image)
-        {
+        { }
 
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }
