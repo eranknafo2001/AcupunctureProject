@@ -35,5 +35,10 @@ namespace AcupunctureProject.database
             this.Name = other.Name;
             this.Comment = other.Comment;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }
