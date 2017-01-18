@@ -22,18 +22,12 @@ namespace AcupunctureProject.database
             this.Comment = Comment;
         }
 
-        public Symptom(string Name, string Comment)
+        public Symptom(string Name, string Comment) : this(-1,Name,Comment)
         {
-            this.Id = -1;
-            this.Name = Name;
-            this.Comment = Comment;
         }
 
-        public Symptom(int Id, Symptom other)
+        public Symptom(int Id, Symptom other) : this(Id,other.Name,other.Comment)
         {
-            this.Id = Id;
-            this.Name = other.Name;
-            this.Comment = other.Comment;
         }
     }
 }
