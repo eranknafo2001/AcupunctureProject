@@ -94,7 +94,7 @@ namespace AcupunctureProject.GUI
             point.Note = note.Text;
             point.Position = place.Text;
             Database.Instance.updatePoint(point);
-
+            points.Items.Clear();
             List<database.Point> pointList = Database.Instance.getAllPoints();
             for (int i = 0; i < pointList.Count; i++)
                 points.Items.Add(new ListViewItem() { Content = pointList[i].ToString(), DataContext = pointList[i] });
