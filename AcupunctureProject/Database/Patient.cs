@@ -60,31 +60,14 @@ namespace AcupunctureProject.database
             this.MedicalDescription = medicalDescription;
         }
 
-        public Patient(int id, Patient other)
+        public Patient(int id, Patient other):this(id,other.Name,other.Telephone,other.Cellphone,other.Birthday,other.Gend,other.Address,other.Email,other.MedicalDescription)
         {
-            this.Id = id;
-            this.Name = other.Name;
-            this.Telephone = other.Telephone;
-            this.Cellphone = other.Cellphone;
-            this.Birthday = other.Birthday;
-            this.Gend = other.Gend;
-            this.Address = other.Address;
-            this.Email = other.Email;
-            this.MedicalDescription = other.MedicalDescription;
         }
 
         public Patient(string name, string telephone, string cellphone, DateTime birthday, Gender gender, string address,
-                string email, string medicalDescription)
+                string email, string medicalDescription) : 
+            this(-1,name,telephone,cellphone,birthday,gender,address,email,medicalDescription)
         {
-            this.Id = -1;
-            this.Name = name;
-            this.Telephone = telephone;
-            this.Cellphone = cellphone;
-            this.Birthday = birthday;
-            this.Gend = gender;
-            this.Address = address;
-            this.Email = email;
-            this.MedicalDescription = medicalDescription;
         }
     }
 }
