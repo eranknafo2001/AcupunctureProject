@@ -148,7 +148,7 @@ namespace AcupunctureProject.database
             updatePatientSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@telephone"), new SQLiteParameter("@cellphone"), new SQLiteParameter("@birthday"), new SQLiteParameter("@gender"), new SQLiteParameter("@address"), new SQLiteParameter("@email"), new SQLiteParameter("@medicalDescription") });
 
             updatePointSt = new SQLiteCommand("update POINTS set NAME = @name ,MIN_NEEDLE_DEPTH = @minNeedleDepth ,MAX_NEEDLE_DEPTH = @maxNeedleDepth ,POSITION = @position ,IMPORTENCE = @importance ,COMMENT1 = @comment1 ,COMMENT2 = @comment2,NOTE = @note,IMAGE = @image where ID = @pointId;", connection);
-            updatePointSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@minNeedleDepth"), new SQLiteParameter("@maxNeedleDepth"), new SQLiteParameter("@position"), new SQLiteParameter("@importance"), new SQLiteParameter("@comment1"), new SQLiteParameter("@comment2"), new SQLiteParameter("@note"), new SQLiteParameter("@image"),new SQLiteParameter("@pointId") });
+            updatePointSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@minNeedleDepth"), new SQLiteParameter("@maxNeedleDepth"), new SQLiteParameter("@position"), new SQLiteParameter("@importance"), new SQLiteParameter("@comment1"), new SQLiteParameter("@comment2"), new SQLiteParameter("@note"), new SQLiteParameter("@image"), new SQLiteParameter("@pointId") });
 
             updateChannelSt = new SQLiteCommand("update CHANNEL set NAME = @name, RT = @rt ,MAIN_POINT = @mainPoint ,EVEN_POINT = @evenPoint ,PATH = @path ,ROLE = @role ,COMMENT = @comment where ID = @channelId;", connection);
             updateChannelSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@channelId"), new SQLiteParameter("@name"), new SQLiteParameter("@rt"), new SQLiteParameter("@mainPoint"), new SQLiteParameter("@evenPoint"), new SQLiteParameter("@path"), new SQLiteParameter("@role"), new SQLiteParameter("@comments") });
@@ -561,16 +561,23 @@ namespace AcupunctureProject.database
 
         public Patient insertPatient(Patient patient)
         {
-            insertPatientSt.Parameters["@name"].Value = patient.Name;
-            insertPatientSt.Parameters["@telephone"].Value = patient.Telephone;
-            insertPatientSt.Parameters["@cellphone"].Value = patient.Cellphone;
-            insertPatientSt.Parameters["@birthday"].Value = patient.Birthday;
-            insertPatientSt.Parameters["@gender"].Value = patient.Gend.Value;
-            insertPatientSt.Parameters["@address"].Value = patient.Address;
-            insertPatientSt.Parameters["@email"].Value = patient.Email;
-            insertPatientSt.Parameters["@medicalDescription"].Value = patient.MedicalDescription;
-            insertPatientSt.ExecuteNonQuery();
-
+            try
+            {
+                insertPatientSt.Parameters["@name"].Value = patient.Name;
+                insertPatientSt.Parameters["@telephone"].Value = patient.Telephone;
+                insertPatientSt.Parameters["@cellphone"].Value = patient.Cellphone;
+                insertPatientSt.Parameters["@birthday"].Value = patient.Birthday;
+                insertPatientSt.Parameters["@gender"].Value = patient.Gend.Value;
+                insertPatientSt.Parameters["@address"].Value = patient.Address;
+                insertPatientSt.Parameters["@email"].Value = patient.Email;
+                insertPatientSt.Parameters["@medicalDescription"].Value = patient.MedicalDescription;
+                insertPatientSt.ExecuteNonQuery();
+            }
+            catch (SQLiteException e)
+            {
+                if (e.ErrorCode == (int)SQLiteErrorCode.Constraint_Unique)
+                    throw new Exceptions.UniqueNameException();
+            }
             long rowId = connection.LastInsertRowId;
             if (rowId != 0)
             {
@@ -673,7 +680,7 @@ namespace AcupunctureProject.database
 
         private ConnectionValue<Symptom> getSymptomConnection(SQLiteDataReader rs)
         {
-            return new ConnectionValue<Symptom>(getSymptom(rs),rs.GetIntL(ConnectionValue<Symptom>.IMPORTENCE),rs.GetStringL(ConnectionValue<Symptom>.COMMENT));
+            return new ConnectionValue<Symptom>(getSymptom(rs), rs.GetIntL(ConnectionValue<Symptom>.IMPORTENCE), rs.GetStringL(ConnectionValue<Symptom>.COMMENT));
         }
 
         private List<ConnectionValue<Symptom>> getSymptomsConnection(SQLiteDataReader rs)

@@ -93,6 +93,7 @@
     <Compile Include="Database\Channel.cs" />
     <Compile Include="Database\ConnectionValue.cs" />
     <Compile Include="Database\Database.cs" />
+    <Compile Include="Database\Exceptions\UniqueNameException.cs" />
     <Compile Include="Database\Meeting.cs" />
     <Compile Include="Database\Patient.cs" />
     <Compile Include="Database\Point.cs" />
@@ -176,7 +177,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Database\" />
     <Folder Include="images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -44,11 +44,7 @@
         <Label Content='דא"ל' Grid.Row="10" Grid.Column="0" />
         <TextBox x:Name="email" Grid.Row="10" Grid.Column="2" />
         <Label Content="מין" Grid.Row="12" Grid.Column="0"/>
-        <ComboBox x:Name="gender" Grid.Row="12" Grid.Column="2" Width="100" HorizontalAlignment="Left">
-            <ComboBoxItem Content="זכר"/>
-            <ComboBoxItem Content="נקבה"/>
-            <ComboBoxItem Content="אחר"/>
-        </ComboBox>
+        <ComboBox x:Name="gender" Grid.Row="12" Grid.Column="2" Width="100" HorizontalAlignment="Left"/>
         <Label Content="תיאור רפואי" Grid.Row="14" Grid.Column="0"/>
         <TextBox x:Name="hestory" Grid.Row="14" Grid.Column="2" Height="200"/>
         <Grid Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="3">
@@ -62,9 +58,9 @@
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="censel" Content="ביטול" Grid.Column="0" Grid.Row="0"/>
-            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="2" Grid.Row="0"/>
-            <Button x:Name="save" Content="שמור" Grid.Column="4" Grid.Row="0"/>
+            <Button x:Name="censel" Content="ביטול" Grid.Column="0" Grid.Row="0" Click="censel_Click"/>
+            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="2" Grid.Row="0" Click="saveAndExit_Click"/>
+            <Button x:Name="save" Content="שמור" Grid.Column="4" Grid.Row="0" Click="save_Click"/>
         </Grid>
     </Grid>
 </Window>

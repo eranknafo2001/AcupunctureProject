@@ -24,8 +24,6 @@ namespace AcupunctureProject.GUI
         {
             InitializeComponent();
             Content = new Main(this);
-            PointInfo p = new PointInfo(database.Database.Instance.getAllPoints()[0]);
-            p.Show();
         }
     }
 }

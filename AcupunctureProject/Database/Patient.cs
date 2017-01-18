@@ -25,14 +25,38 @@ namespace AcupunctureProject.database
 
             private Gender(int value)
             {
-                this.Value = value;
+                Value = value;
             }
 
             public static Gender FromValue(int value)
             {
-                if (value < 0 || value > 2)
-                    throw new Exception("ERROR::Gender is not exist");
-                return new Gender(value);
+                switch (value)
+                {
+                    case 0:
+                        return MALE;
+                    case 1:
+                        return FEMALE;
+                    case 2:
+                        return OTHER;
+                    default:
+                        throw new Exception("ERROR::Gender is not exist");
+                }
+            }
+
+            public override string ToString()
+            {
+                switch (Value)
+                {
+                    case 0:
+                        return "זכר";
+                    case 1:
+                        return "נקבה";
+                    case 2:
+                        return "אחר";
+                    default:
+                        return null;
+
+                }
             }
         };
 
@@ -60,13 +84,13 @@ namespace AcupunctureProject.database
             this.MedicalDescription = medicalDescription;
         }
 
-        public Patient(int id, Patient other):this(id,other.Name,other.Telephone,other.Cellphone,other.Birthday,other.Gend,other.Address,other.Email,other.MedicalDescription)
+        public Patient(int id, Patient other) : this(id, other.Name, other.Telephone, other.Cellphone, other.Birthday, other.Gend, other.Address, other.Email, other.MedicalDescription)
         {
         }
 
         public Patient(string name, string telephone, string cellphone, DateTime birthday, Gender gender, string address,
-                string email, string medicalDescription) : 
-            this(-1,name,telephone,cellphone,birthday,gender,address,email,medicalDescription)
+                string email, string medicalDescription) :
+            this(-1, name, telephone, cellphone, birthday, gender, address, email, medicalDescription)
         {
         }
     }
