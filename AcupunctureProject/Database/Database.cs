@@ -575,8 +575,10 @@ namespace AcupunctureProject.database
             }
             catch (SQLiteException e)
             {
-                if (e.ErrorCode == (int)SQLiteErrorCode.Constraint_Unique)
+                if (e.ErrorCode == (int)SQLiteErrorCode.Constraint)
                     throw new Exceptions.UniqueNameException();
+                else
+                    throw e;
             }
             long rowId = connection.LastInsertRowId;
             if (rowId != 0)

@@ -20,17 +20,60 @@ namespace AcupunctureProject.GUI
     /// </summary>
     public partial class NewPatient : Window
     {
+
         public NewPatient()
         {
             InitializeComponent();
             gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.MALE.ToString(), DataContext = Patient.Gender.MALE });
             gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.FEMALE.ToString(), DataContext = Patient.Gender.FEMALE });
             gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.OTHER.ToString(), DataContext = Patient.Gender.OTHER });
+            //name.BorderBrush = Brushes.Gray;
+            //address.BorderBrush = Brushes.Gray;
+            //email.BorderBrush = Brushes.Gray;
+            //hestory.BorderBrush = Brushes.Gray;
+            //cellphone.BorderBrush = Brushes.Gray;
+            //telphone.BorderBrush = Brushes.Gray;
+            //berthday.BorderBrush = Brushes.Gray;
+            //gender.BorderBrush = Brushes.Gray;
         }
 
-        private void saveData()
+        private bool saveData()
         {
-            Database.Instance.insertPatient(new Patient(name.Text, telphone.Text, cellphone.Text, (DateTime)berthday.SelectedDate, Patient.Gender.FromValue(gender.SelectedIndex), address.Text, email.Text, hestory.Text));
+            bool secses = true;
+
+            if (name.Text == null || name.Text == "")
+            {
+                MessageBox.Show(this, "חייב שם", "בעיה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
+                secses = false;
+            }
+
+            if (gender.SelectedIndex == -1)
+            {
+                MessageBox.Show(this, "חייב מין", "בעיה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
+                secses = false;
+            }
+
+            if ((cellphone.Text == null || cellphone.Text == "") && (telphone.Text == null || telphone.Text == ""))
+            {
+                MessageBox.Show(this, "חייב טלפון או פלפון", "בעיה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
+                secses = false;
+            }
+            
+            if (!secses)
+            {
+                return false;
+            }
+
+            try
+            {
+                Database.Instance.insertPatient(new Patient(name.Text, telphone.Text, cellphone.Text, (DateTime)berthday.SelectedDate, Patient.Gender.FromValue(gender.SelectedIndex), address.Text, email.Text, hestory.Text));
+            }
+            catch (database.Exceptions.UniqueNameException e)
+            {
+                MessageBox.Show(this, "המטופל קיים", "אזרה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
+                throw e;
+            }
+            return true;
         }
 
         private void censel_Click(object sender, RoutedEventArgs e)
@@ -40,14 +83,22 @@ namespace AcupunctureProject.GUI
 
         private void saveAndExit_Click(object sender, RoutedEventArgs e)
         {
-            saveData();
-            Close();
+            try
+            {
+                if (saveData())
+                    Close();
+            }
+            catch (database.Exceptions.UniqueNameException) { }
         }
 
         private void save_Click(object sender, RoutedEventArgs e)
         {
-            saveData();
-            clearAll();
+            try
+            {
+                if (saveData())
+                    clearAll();
+            }
+            catch (database.Exceptions.UniqueNameException) { }
         }
 
         private void clearAll()
