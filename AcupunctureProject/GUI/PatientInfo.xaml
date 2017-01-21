@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcupunctureProject"
         mc:Ignorable="d"
-        Title="יצירת מטופל" WindowStartupLocation="CenterOwner" FlowDirection="RightToLeft" ResizeMode="NoResize" Width="400" Height="544">
+        Title="עריכת מטופל" WindowStartupLocation="CenterOwner" FlowDirection="RightToLeft" ResizeMode="NoResize" Width="400" Height="544">
     <Grid FlowDirection="RightToLeft" Margin="10,10,20,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -64,10 +64,10 @@
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="censel" Content="ביטול" Grid.Column="0" Grid.Row="0"/>
-            <Button x:Name="openMeetings" Content="פתח פגישות החרונות" Grid.Column="2" Grid.Row="0"/>
-            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="4" Grid.Row="0"/>
-            <Button x:Name="save" Content="שמור" Grid.Column="6" Grid.Row="0"/>
+            <Button x:Name="censel" Content="ביטול" Grid.Column="0" Grid.Row="0" Click="censel_Click"/>
+            <Button x:Name="openMeetings" Content="פתח פגישות החרונות" Grid.Column="2" Grid.Row="0" Click="openMeetings_Click"/>
+            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="4" Grid.Row="0" Click="saveAndExit_Click"/>
+            <Button x:Name="save" Content="שמור" Grid.Column="6" Grid.Row="0" Click="save_Click"/>
         </Grid>
     </Grid>
 </Window>

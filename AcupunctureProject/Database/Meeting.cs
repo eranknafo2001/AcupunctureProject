@@ -54,7 +54,14 @@ namespace AcupunctureProject.database
         {
             get
             {
-                return "test";
+                string[] s = Description.Split(' ');
+                string o = "";
+                for (int i = 0; i < s.Length && i < 20; i++)
+                {
+                    o += s[i] + " ";
+                }
+                o += "...";
+                return o;
             }
         }
         public string DateString

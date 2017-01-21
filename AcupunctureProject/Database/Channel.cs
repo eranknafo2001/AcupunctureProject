@@ -37,5 +37,10 @@ namespace AcupunctureProject.database
             this.Role = role;
             this.Comments = comments;
         }
+
+        public override string ToString()
+        {
+            return Id + " - " + Rt + " (" + Name + ")";
+        }
     }
 }

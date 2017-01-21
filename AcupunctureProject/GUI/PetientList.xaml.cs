@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AcupunctureProject.database;
 
 namespace AcupunctureProject.GUI
 {
@@ -22,6 +23,19 @@ namespace AcupunctureProject.GUI
         public PatientList()
         {
             InitializeComponent();
+            patientDataGrid.ItemsSource = Database.Instance.findPatient(searchTextBox.Text);
+        }
+
+        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            patientDataGrid.ItemsSource = Database.Instance.findPatient(searchTextBox.Text);
+        }
+
+        private void patientDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Patient p = (Patient)patientDataGrid.SelectedItem;
+            PatientInfo pwin = new PatientInfo(p);
+            pwin.Show();
         }
     }
 }

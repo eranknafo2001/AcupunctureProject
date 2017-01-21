@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcupunctureProject.GUI"
         mc:Ignorable="d"
-        Title="PetientList" Height="300" Width="300">
+        Title="PetientList" Height="300" Width="300" FlowDirection="RightToLeft">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -15,12 +15,12 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Row="0" Grid.Column="0"/>
-        <DataGrid Grid.Row="2" Grid.Column="0" FlowDirection="RightToLeft">
+        <TextBox x:Name="searchTextBox" Grid.Row="0" Grid.Column="0" TextChanged="searchTextBox_TextChanged"/>
+        <DataGrid x:Name="patientDataGrid" Grid.Row="2" Grid.Column="0" FlowDirection="RightToLeft" AutoGenerateColumns="False" MouseDoubleClick="patientDataGrid_MouseDoubleClick">
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="dataGridTextColumn" Binding="{Binding Header, ElementName=dataGridTextColumn}" CanUserSort="False" ClipboardContentBinding="{x:Null}" Header="שם"/>
-                <DataGridTextColumn Binding="{x:Null}" CanUserSort="False" ClipboardContentBinding="{x:Null}" Header="תאריך לידה"/>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="מין"/>
+                <DataGridTextColumn Binding="{Binding Name}" Header="שם" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding BirthdaySort}" Header="תאריך לידה" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Gend}" Header="מין" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

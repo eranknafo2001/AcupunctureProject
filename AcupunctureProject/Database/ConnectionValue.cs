@@ -21,5 +21,10 @@ namespace AcupunctureProject.database
             Importance = importance;
             Comment = comment;
         }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }

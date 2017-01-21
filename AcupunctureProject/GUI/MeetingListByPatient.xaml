@@ -5,11 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcupunctureProject.GUI"
         mc:Ignorable="d"
-        Title="פגישות לפי מטופל" Height="300" Width="300" FlowDirection="RightToLeft">
+        Title="פגישות של " Height="300" Width="300" FlowDirection="RightToLeft">
     <Grid Margin="10">
-        <DataGrid x:Name="meetings" FlowDirection="RightToLeft">
+        <DataGrid x:Name="meetingsDataGrid" FlowDirection="RightToLeft" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name}" Header="מטופל" IsReadOnly="True"/>
                 <DataGridTextColumn Binding="{Binding DateString}" Header="תאריך" SortDirection="Ascending" IsReadOnly="True"/>
                 <DataGridTextColumn Binding="{Binding SmallDescription}" Header="הערות" IsReadOnly="True"/>
             </DataGrid.Columns>

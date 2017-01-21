@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,8 @@ namespace AcupunctureProject.database
 
         public static DateTime GetDateTimeL(this SQLiteDataReader reader, string str)
         {
-            return (DateTime)reader[str];
+            string o = reader[str].ToString();
+            return DateTime.Parse(o);
         }
 
         public static int GetIntL(this SQLiteDataReader reader, string str)
@@ -201,11 +203,9 @@ namespace AcupunctureProject.database
 
             getAllPointsSt = new SQLiteCommand("select * from POINTS;", connection);
 
-            findSymptomSt = new SQLiteCommand("SELECT * FROM SYMPTOM where NAME like '%@name%';", connection);
-            findSymptomSt.Parameters.Add(new SQLiteParameter("@name"));
+            findSymptomSt = new SQLiteCommand(connection);
 
-            findPatientSt = new SQLiteCommand("SELECT * FROM PATIENT where NAME like '%@name%';", connection);
-            findPatientSt.Parameters.Add(new SQLiteParameter("@name"));
+            findPatientSt = new SQLiteCommand(connection);
 
             getAllMeetingsRelativeToSymptomsSt = new SQLiteCommand(connection);
         }
@@ -406,7 +406,7 @@ namespace AcupunctureProject.database
 
         public List<Symptom> findSymptom(string name)
         {
-            findSymptomSt.Parameters["@name"].Value = name;
+            findSymptomSt.CommandText = "SELECT * FROM SYMPTOM where NAME like '%" + name + "%';";
             using (SQLiteDataReader rs = findSymptomSt.ExecuteReader())
             {
                 return getSymptoms(rs);
@@ -415,7 +415,7 @@ namespace AcupunctureProject.database
 
         public List<Patient> findPatient(string name)
         {
-            findPatientSt.Parameters["@name"].Value = name;
+            findPatientSt.CommandText = "SELECT * FROM PATIENT where NAME like '%" + name + "%';";
             using (SQLiteDataReader rs = findPatientSt.ExecuteReader())
             {
                 return getPatients(rs);
@@ -583,7 +583,7 @@ namespace AcupunctureProject.database
             long rowId = connection.LastInsertRowId;
             if (rowId != 0)
             {
-                int id = (int)new SQLiteCommand("select PATIENT_ID from PATIENT where rowId = " + rowId, connection).ExecuteScalar();
+                int id = (int)(long)new SQLiteCommand("select ID from PATIENT where rowId = " + rowId + ";", connection).ExecuteScalar();
                 return new Patient(id, patient);
             }
             throw new Exception("ERORR:insert patient didn't accure");
@@ -693,5 +693,30 @@ namespace AcupunctureProject.database
             return o;
         }
         #endregion
+        //TODO imploment this function
+        public Color GetLevel(int level)
+        {
+            switch (level)
+            {
+                case 0:
+                    return new Color() { A = 255, R = 255, G = 255, B = 0 };
+                case 1:
+                    return new Color() { A = 255, R = 255, G = 0, B = 255 };
+                case 2:
+                    return new Color() { A = 255, R = 0, G = 255, B = 255 };
+                case 3:
+                    return new Color() { A = 255, R = 255, G = 0, B = 0 };
+                case 4:
+                    return new Color() { A = 255, R = 0, G = 255, B = 0 };
+                case 5:
+                    return new Color() { A = 255, R = 0, G = 0, B = 255 };
+                default:
+                    return new Color() { A = 255, R = 255, G = 255, B = 255 };
+            }
+        }
+        //TODO imploment this functionS
+        public void SetLevel(int level,Color color)
+        {
+        }
     }
 }

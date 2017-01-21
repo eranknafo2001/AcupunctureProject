@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AcupunctureProject.database;
 
 namespace AcupunctureProject.GUI
 {
@@ -19,11 +20,11 @@ namespace AcupunctureProject.GUI
     /// </summary>
     public partial class MeetingListByPatient : Window
     {
-        public MeetingListByPatient()
+        public MeetingListByPatient(Patient patient)
         {
             InitializeComponent();
-            //List<Meeting>
-            //meetings.Items.Add
+            Title += patient.Name;
+            meetingsDataGrid.ItemsSource = Database.Instance.GetAllMeetingsRelativeToPatient(patient);
         }
     }
 }

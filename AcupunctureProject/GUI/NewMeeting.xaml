@@ -43,16 +43,16 @@
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="patientSearchTextBox" Grid.Column="0" TextChanged="patientSearchTextBox_TextChanged" LostKeyboardFocus="patientSearchTextBox_LostKeyboardFocus" GotKeyboardFocus="patientSearchTextBox_GotKeyboardFocus"/>
-            <Button x:Name="openPatientButton" Content="לפתוח" IsEnabled="False" Grid.Column="2" KeyDown="openPatientButton_KeyDown"/>
+            <TextBox x:Name="patientSearchTextBox" Grid.Column="0" TextChanged="patientSearchTextBox_TextChanged" KeyDown="patientSearchTextBox_KeyDown" GotFocus="patientSearchTextBox_GotFocus" LostFocus="patientSearchTextBox_LostFocus"/>
+            <Button x:Name="openPatientButton" Content="לפתוח" IsEnabled="False" Grid.Column="2" Click="openPatientButton_Click"/>
         </Grid>
-        <ListView x:Name="patientSearchList" SelectionMode="Single" Visibility="Hidden" Grid.Column="2" Grid.Row="0" VerticalAlignment="Top" Panel.ZIndex="0" HorizontalAlignment="Left" MouseDoubleClick="patientSearchList_MouseDoubleClick"/>
+        <ListView x:Name="patientSearchList" SelectionMode="Single" MaxHeight="100" Visibility="Hidden" Grid.Column="2" Grid.Row="0" VerticalAlignment="Top" Panel.ZIndex="0" HorizontalAlignment="Left" MouseDoubleClick="patientSearchList_MouseDoubleClick" GotFocus="patientSearchList_GotFocus" LostFocus="patientSearchList_LostFocus" KeyDown="patientSearchList_KeyDown"/>
         <Label  Content="תאריך" Grid.Row="2" Grid.Column="0"/>
         <DatePicker x:Name="date" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" Height="25" HorizontalAlignment="Left" Width="110" IsEnabled="False"/>
         <Label Content="סימפטומים" Grid.Row="4" Grid.Column="0"/>
-        <TextBox x:Name="symptomSearch" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Height="25" TextChanged="symptomSearch_TextChanged" IsEnabled="False" GotKeyboardFocus="symptomSearch_GotKeyboardFocus" LostKeyboardFocus="symptomSearch_LostKeyboardFocus"/>
-        <ListView x:Name="symptomSearchList" SelectionMode="Single" Visibility="Hidden" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TreeView x:Name="symptomTreeView" Grid.Row="6" Grid.Column="2" Margin="0,0,0,0" IsEnabled="False"/>
+        <TextBox x:Name="symptomSearch" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Height="25" TextChanged="symptomSearch_TextChanged" IsEnabled="False" LostFocus="symptomSearch_LostFocus" GotFocus="symptomSearch_GotFocus" KeyDown="symptomSearch_KeyDown"/>
+        <ListView x:Name="symptomSearchList" MaxHeight="100" SelectionMode="Single" Visibility="Hidden" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" LostFocus="symptomSearchList_LostFocus" GotFocus="symptomSearchList_GotFocus" KeyDown="symptomSearchList_KeyDown" MouseDoubleClick="symptomSearchList_MouseDoubleClick"/>
+        <TreeView x:Name="symptomTreeView" Grid.Row="6" Grid.Column="2" Margin="0,0,0,0" IsEnabled="False" MouseDoubleClick="symptomTreeView_MouseDoubleClick"/>
         <!-- levels and delete for tree -->
         <Grid Grid.Row="8" Grid.Column="2">
             <Grid.ColumnDefinitions>
@@ -64,12 +64,12 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Label Content="0" Grid.Column="0"/>
-            <Label Content="1" Grid.Column="1"/>
-            <Label Content="2" Grid.Column="2"/>
-            <Label Content="3" Grid.Column="3"/>
-            <Label Content="4" Grid.Column="4"/>
-            <Label Content="5" Grid.Column="5"/>
+            <Label x:Name="level0" Content="0" Grid.Column="0"/>
+            <Label x:Name="level1" Content="1" Grid.Column="1"/>
+            <Label x:Name="level2" Content="2" Grid.Column="2"/>
+            <Label x:Name="level3" Content="3" Grid.Column="3"/>
+            <Label x:Name="level4" Content="4" Grid.Column="4"/>
+            <Label x:Name="level5" Content="5" Grid.Column="5"/>
             <Button x:Name="symptomTreeDelete" Content="מחק" Grid.Column="6" IsEnabled="False"/>
         </Grid>
         <Label Content="נקודות שטופלו" Grid.Column="4" Grid.Row="4"/>
@@ -102,8 +102,8 @@
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="save" Content="שמור" Grid.Column="1" IsEnabled="False"/>
-            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="3" IsEnabled="False"/>
+            <Button x:Name="save" Content="שמור" Grid.Column="1" IsEnabled="False" Click="save_Click"/>
+            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="3" IsEnabled="False" Click="saveAndExit_Click"/>
         </Grid>
     </Grid>
 </Page>

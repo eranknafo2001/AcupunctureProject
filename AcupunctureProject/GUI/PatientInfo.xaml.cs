@@ -46,5 +46,41 @@ namespace AcupunctureProject.GUI
             gender.SelectedIndex = patient.Gend.Value;
             hestory.Text = patient.MedicalDescription;
         }
+
+        private void saveData()
+        {
+            patient.Name = name.Text;
+            patient.Birthday = (DateTime)berthday.SelectedDate;
+            patient.Address = address.Text;
+            patient.Cellphone = cellphone.Text;
+            patient.Telephone = telphone.Text;
+            patient.MedicalDescription = hestory.Text;
+            ComboBoxItem gendItem = (ComboBoxItem)gender.SelectedItem;
+            patient.Gend = (Patient.Gender)gendItem.DataContext;
+            patient.Email = email.Text;
+            Database.Instance.updatePatient(patient);
+        }
+
+        private void censel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void saveAndExit_Click(object sender, RoutedEventArgs e)
+        {
+            saveData();
+            Close();
+        }
+
+        private void save_Click(object sender, RoutedEventArgs e)
+        {
+            saveData();
+        }
+
+        private void openMeetings_Click(object sender, RoutedEventArgs e)
+        {
+            MeetingListByPatient m = new MeetingListByPatient(patient);
+            m.Show();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,7 +49,29 @@ namespace AcupunctureProject.GUI
                 List<ConnectionValue<database.Point>> pointsRelatedToSymptom = Database.Instance.getAllPointRelativeToSymptom(symptomList[i].Value);
                 for (int j = 0; j < pointsRelatedToSymptom.Count; j++)
                 {
-                    symptom.Items.Add(new TreeViewItem() { Header = pointsRelatedToSymptom[j].Value.ToString(), DataContext = pointsRelatedToSymptom[j].Value });
+                    symptom.Items.Add(new TreeViewItem()
+                    {
+                        Header = pointsRelatedToSymptom[j].ToString(),
+                        DataContext = pointsRelatedToSymptom[j],
+                        Foreground = new SolidColorBrush()
+                        {
+                            Color = Database.Instance.GetLevel(pointsRelatedToSymptom[j].Importance)
+                        }
+                    });
+                }
+
+                List<ConnectionValue<Channel>> channels = Database.Instance.getAllChannelRelativeToSymptom(symptomList[i].Value);
+                for (int j = 0; j < channels.Count; j++)
+                {
+                    symptom.Items.Add(new TreeViewItem()
+                    {
+                        Header = channels[j].ToString(),
+                        DataContext = channels[j],
+                        Foreground = new SolidColorBrush()
+                        {
+                            Color = Database.Instance.GetLevel(channels[j].Importance)
+                        }
+                    });
                 }
                 syptomTreeView.Items.Add(symptom);
             }
@@ -59,11 +81,17 @@ namespace AcupunctureProject.GUI
             {
                 folder += tempFolder[i] + "\\";
             }
-            BitmapImage backimagesource = new BitmapImage();
-            backimagesource.BeginInit();
-            backimagesource.UriSource = new System.Uri(folder + "images\\" + point.Name + ".jpg");
-            backimagesource.EndInit();
-            pointImage.Source = backimagesource;
+            try
+            {
+                BitmapImage backimagesource = new BitmapImage();
+                backimagesource.BeginInit();
+                backimagesource.UriSource = new System.Uri(folder + "images\\" + point.Name + ".jpg");
+                backimagesource.EndInit();
+                pointImage.Source = backimagesource;
+            }
+            catch (Exception e)
+            {
+            }
             name.Text = point.Name;
             minDepth.Text = point.MinNeedleDepth.ToString();
             maxDepth.Text = point.MaxNeedleDepth.ToString();
@@ -78,12 +106,13 @@ namespace AcupunctureProject.GUI
             TreeViewItem item = (TreeViewItem)syptomTreeView.SelectedItem;
             if (item == null)
                 return;
-            if (item.DataContext.GetType() == typeof(database.Point))
+            if (item.DataContext.GetType() == typeof(ConnectionValue<database.Point>))
             {
-                setAll((database.Point)item.DataContext);
+                ConnectionValue<database.Point> con = (ConnectionValue<database.Point>)(item.DataContext);
+                setAll(con.Value);
             }
         }
-        
+
         private void saveData()
         {
             point.Comment1 = comment1.Text;

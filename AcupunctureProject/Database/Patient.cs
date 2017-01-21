@@ -65,6 +65,13 @@ namespace AcupunctureProject.database
         public string Telephone { get; set; }
         public string Cellphone { get; set; }
         public DateTime Birthday { get; set; }
+        public string BirthdaySort
+        {
+            get
+            {
+                return Birthday.ToShortDateString();
+            }
+        }
         public Gender Gend { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
@@ -92,6 +99,11 @@ namespace AcupunctureProject.database
                 string email, string medicalDescription) :
             this(-1, name, telephone, cellphone, birthday, gender, address, email, medicalDescription)
         {
+        }
+
+        public string ToStringInSearch()
+        {
+            return Name + " - " + Birthday.ToShortDateString();
         }
     }
 }
