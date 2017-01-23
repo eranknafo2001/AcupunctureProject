@@ -46,6 +46,8 @@ namespace AcupunctureProject.database
         private SQLiteCommand getAllChannelRelativeToSymptomSt;
         private SQLiteCommand getAllPointRelativeToSymptomSt;
         private SQLiteCommand getAllSymptomRelativeToPointSt;
+        private SQLiteCommand getAllMeetingsRelativeToPatientSt;
+        private SQLiteCommand getAllSymptomRelativeToMeetingSt;
 
         private SQLiteCommand insertSymptomSt;
         private SQLiteCommand insertMeetingSt;
@@ -79,10 +81,12 @@ namespace AcupunctureProject.database
         private SQLiteCommand getSymptomSt;
         private SQLiteCommand getPointByNameSt;
         private SQLiteCommand getPointByIdSt;
+
         private SQLiteCommand getChannelByIdSt;
 
         private SQLiteCommand findSymptomSt;
         private SQLiteCommand findPatientSt;
+        private SQLiteCommand findPointSt;
 
         private SQLiteCommand getAllMeetingsRelativeToSymptomsSt;
 
@@ -111,11 +115,13 @@ namespace AcupunctureProject.database
             getAllChannelRelativeToSymptomSt = new SQLiteCommand("SELECT CHANNEL.* , SYMPTOM_CHANNEL.IMPORTENCE , SYMPTOM_CHANNEL.COMMENT from CHANNEL INNER JOIN SYMPTOM_CHANNEL ON CHANNEL.ID = SYMPTOM_CHANNEL.CHANNEL_ID where SYMPTOM_CHANNEL.SYMPTOM_ID = @symptomId order by SYMPTOM_CHANNEL.IMPORTENCE DESC;", connection);
             getAllChannelRelativeToSymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
 
+            getAllSymptomRelativeToMeetingSt = new SQLiteCommand("SELECT SYMPTOM.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID=MEETING.ID INNER JOIN ON SYMPTOM.ID=MEETING_POINTS.POINT_ID WHERE MEETING.ID=@meetingId", connection);
+            getAllSymptomRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
 
             insertSymptomSt = new SQLiteCommand("insert into SYMPTOM(NAME,COMMENT) values(@name,@comment);", connection);
             insertSymptomSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@comment") });
 
-            insertMeetingSt = new SQLiteCommand("insert into MEETING(PATIENT_ID,PURPOSE,DATE,DESCRIPTION,SUMMERY,RESULT_DESCRIPTION,RESULT_VALUE) values(@patintId,@purpose,@date,@description,@summery,@resultDescription,@resultValue);", connection);
+            insertMeetingSt = new SQLiteCommand("insert into MEETING(PATIENT_ID,PURPOSE,DATE,DESCRIPTION,SUMMERY,RESULT_DESCRIPTION,RESULT_VALUE) values(@patientId,@purpose,@date,@description,@summery,@resultDescription,@resultValue);", connection);
             insertMeetingSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@patientId"), new SQLiteParameter("@purpose"), new SQLiteParameter("@date"), new SQLiteParameter("@description"), new SQLiteParameter("@summery"), new SQLiteParameter("@resultDescription"), new SQLiteParameter("@resultValue") });
 
             insertPatientSt = new SQLiteCommand("insert into PATIENT(NAME,TELEPHONE,CELLPHONE,BIRTHDAY,GENDER,ADDRESS,EMAIL,MEDICAL_DESCRIPTION) values(@name,@telephone,@cellphone,@birthday,@gender,@address,@email,@medicalDescription);", connection);
@@ -128,7 +134,7 @@ namespace AcupunctureProject.database
             insertSymptomPointRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@symptomId"), new SQLiteParameter("@pointId"), new SQLiteParameter("@importance"), new SQLiteParameter("@comment") });
 
             insertSymptomMeetingRelationSt = new SQLiteCommand("insert into MEETING_SYMPTOM(MEETING_ID,SYMPTOM_ID) values(@meetingId,@symptomId);", connection);
-            insertSymptomMeetingRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@meeting"), new SQLiteParameter("@symptomId") });
+            insertSymptomMeetingRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@meetingId"), new SQLiteParameter("@symptomId") });
 
             insertMeetingPointRelationSt = new SQLiteCommand("insert into MEETING_POINTS(MEETING_ID,POINT_ID) values(@meetingId,@pointId);", connection);
             insertMeetingPointRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@meetingId"), new SQLiteParameter("@pointId") });
@@ -201,11 +207,16 @@ namespace AcupunctureProject.database
             getChannelByIdSt = new SQLiteCommand("select * from CHANNEL where ID = @id;", connection);
             getChannelByIdSt.Parameters.Add(new SQLiteParameter("@id"));
 
+            getAllMeetingsRelativeToPatientSt = new SQLiteCommand("SELECT * FROM MEETING WHERE PATIENT_ID=@patientId", connection);
+            getAllMeetingsRelativeToPatientSt.Parameters.Add(new SQLiteParameter("@patientId"));
+
             getAllPointsSt = new SQLiteCommand("select * from POINTS;", connection);
 
             findSymptomSt = new SQLiteCommand(connection);
 
             findPatientSt = new SQLiteCommand(connection);
+
+            findPointSt = new SQLiteCommand(connection);
 
             getAllMeetingsRelativeToSymptomsSt = new SQLiteCommand(connection);
         }
@@ -352,6 +363,15 @@ namespace AcupunctureProject.database
         }
         #endregion
         #region finds objects
+
+        public List<Meeting> GetAllMeetingsRelativeToPatient(Patient patient)
+        {
+            getAllMeetingsRelativeToPatientSt.Parameters["@patientId"].Value = patient.Id;
+            using (SQLiteDataReader rs = getAllMeetingsRelativeToPatientSt.ExecuteReader())
+            {
+                return getMeetings(rs);
+            }
+        }
         public Channel getChannel(int id)
         {
             getChannelByIdSt.Parameters["@id"].Value = id;
@@ -412,6 +432,16 @@ namespace AcupunctureProject.database
                 return getSymptoms(rs);
             }
         }
+
+        public List<Point> findPoint(string name)
+        {
+            findPointSt.CommandText = "SELECT * FROM POINTS where NAME like '%" + name + "%';";
+            using (SQLiteDataReader rs = findPointSt.ExecuteReader())
+            {
+                return getPoints(rs);
+            }
+        }
+
 
         public List<Patient> findPatient(string name)
         {
@@ -516,7 +546,7 @@ namespace AcupunctureProject.database
 
         public void insertSymptomMeetingRelation(Symptom symptom, Meeting meeting)
         {
-            insertSymptomMeetingRelationSt.Parameters["@meentigId"].Value = meeting.Id;
+            insertSymptomMeetingRelationSt.Parameters["@meetingId"].Value = meeting.Id;
             insertSymptomMeetingRelationSt.Parameters["@symptomId"].Value = symptom.Id;
             insertSymptomMeetingRelationSt.ExecuteNonQuery();
         }
@@ -540,7 +570,7 @@ namespace AcupunctureProject.database
 
         public Meeting insertMeeting(Meeting meeting)
         {
-            insertMeetingSt.Parameters["@meetingId"].Value = meeting.PatientId;
+            insertMeetingSt.Parameters["@patientId"].Value = meeting.PatientId;
             insertMeetingSt.Parameters["@purpose"].Value = meeting.Purpose;
             insertMeetingSt.Parameters["@date"].Value = meeting.Date;
             insertMeetingSt.Parameters["@description"].Value = meeting.Description;
@@ -553,7 +583,7 @@ namespace AcupunctureProject.database
 
             if (rowId != 0)
             {
-                int id = (int)new SQLiteCommand("select MEETING_ID from MEETING where rowId = " + rowId, connection).ExecuteScalar();
+                int id = (int)(long)new SQLiteCommand("select ID from MEETING where rowId = " + rowId, connection).ExecuteScalar();
                 return new Meeting(id, meeting);
             }
             throw new Exception("ERORR:insert meeting didn't accure");
@@ -714,9 +744,17 @@ namespace AcupunctureProject.database
                     return new Color() { A = 255, R = 255, G = 255, B = 255 };
             }
         }
-        //TODO imploment this functionS
-        public void SetLevel(int level,Color color)
+        //TODO imploment this function
+        public void SetLevel(int level, Color color)
         {
+        }
+
+        //TODO cheack on this function
+        public List<Symptom> getAllSymptomRelativeToMeeting(Meeting meeting)
+        {
+            getAllSymptomRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
+            using (SQLiteDataReader rs = getAllSymptomRelativeToMeetingSt.ExecuteReader())
+                return getSymptoms(rs);
         }
     }
 }

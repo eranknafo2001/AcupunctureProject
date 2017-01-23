@@ -33,9 +33,12 @@ namespace AcupunctureProject.GUI
 
         private void patientDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Patient p = (Patient)patientDataGrid.SelectedItem;
-            PatientInfo pwin = new PatientInfo(p);
-            pwin.Show();
+            if (patientDataGrid.SelectedIndex != -1)
+            {
+                Patient p = (Patient)patientDataGrid.SelectedItem;
+                PatientInfo pwin = new PatientInfo(p);
+                pwin.Show();
+            }
         }
     }
 }

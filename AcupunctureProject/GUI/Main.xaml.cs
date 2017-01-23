@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AcupunctureProject.database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -56,6 +57,12 @@ namespace AcupunctureProject.GUI
         {
             PatientList p = new PatientList();
             p.Show();
+        }
+
+        private void pointsListMI_Click(object sender, RoutedEventArgs e)
+        {
+            List<database.Point> points = Database.Instance.getAllPoints();
+            new PointInfo(points[new Random().Next(0, points.Count - 1)]).Show();
         }
     }
 }

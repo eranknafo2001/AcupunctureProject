@@ -15,29 +15,14 @@ using System.Windows.Shapes;
 namespace AcupunctureProject.GUI
 {
     /// <summary>
-    /// Interaction logic for YasNoWindow.xaml
+    /// Interaction logic for FullWindowPic.xaml
     /// </summary>
-    public partial class WorningWindow : Window
+    public partial class FullWindowPic : Window
     {
-        private bool finished;
-
-        public WorningWindow(string title, string text)
+        public FullWindowPic(ImageSource source)
         {
             InitializeComponent();
-            Title = title;
-            myText.Text = text;
-            finished = false;
-        }
-
-        public void ShowAndWait()
-        {
-            Show();
-            while (!finished) ;
-        }
-
-        private void Ok_Click(object sender, RoutedEventArgs e)
-        {
-            finished = true;
+            image.Source = source;
         }
     }
 }

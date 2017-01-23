@@ -20,14 +20,6 @@ namespace AcupunctureProject.GUI
     /// </summary>
     public partial class PatientInfo : Window
     {
-
-        private class GenderItems
-        {
-            public static ComboBoxItem MALE = new ComboBoxItem() { Content = Patient.Gender.MALE };
-            public static ComboBoxItem FEMALE = new ComboBoxItem() { Content = Patient.Gender.FEMALE };
-            public static ComboBoxItem OTHER = new ComboBoxItem() { Content = Patient.Gender.OTHER };
-        }
-
         private Patient patient;
 
         public PatientInfo(Patient patient)
@@ -40,9 +32,10 @@ namespace AcupunctureProject.GUI
             cellphone.Text = patient.Cellphone;
             telphone.Text = patient.Telephone;
             email.Text = patient.Email;
-            gender.Items.Add(GenderItems.MALE);
-            gender.Items.Add(GenderItems.FEMALE);
-            gender.Items.Add(GenderItems.OTHER);
+            gender.Items.Clear();
+            gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.MALE });
+            gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.FEMALE });
+            gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.OTHER });
             gender.SelectedIndex = patient.Gend.Value;
             hestory.Text = patient.MedicalDescription;
         }

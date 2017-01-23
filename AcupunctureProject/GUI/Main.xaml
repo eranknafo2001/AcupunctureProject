@@ -6,19 +6,21 @@
       xmlns:local="clr-namespace:AcupunctureProject.GUI"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="Main">
+      Title="Main" FlowDirection="RightToLeft">
 
-    <Grid FlowDirection="RightToLeft">
-        <Menu Height="17" VerticalAlignment="Top">
-            <MenuItem Header="מטופל">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="מטופל" Padding="5">
                 <MenuItem x:Name="newPatientMI" Header="הוסף מטופל" Click="newPatientMI_Click"/>
                 <MenuItem x:Name="PatientListMI" Header="רשימת מטופלים" Click="PatientListMI_Click"/>
             </MenuItem>
-            <MenuItem Header="טיפולים">
-                <MenuItem x:Name="newMeetingMI" Header="הוספת טפול" Click="newMeetingMI_Click"/>
-                <MenuItem x:Name="meetingListMI" Header="רשימת טיפולים"/>
-            </MenuItem>
+            <MenuItem x:Name="newMeetingMI" Header="הוספת טפול" Click="newMeetingMI_Click" Padding="5"/>
+            <MenuItem x:Name="pointsListMI" Header="רשימת נקודות" Click="pointsListMI_Click" Padding="5"/>
         </Menu>
-        <Image x:Name="backImage" Source="C:\Users\magshimim\Desktop\AcupunctureProject\images\backpic.jpg" Stretch="UniformToFill" Margin="0,17,0,0"/>
+        <Image x:Name="backImage" Source="C:\Users\magshimim\Desktop\AcupunctureProject\images\backpic.jpg" Stretch="UniformToFill" Grid.Row="1"/>
     </Grid>
 </Page>

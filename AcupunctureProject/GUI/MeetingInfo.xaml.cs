@@ -1,5 +1,4 @@
-﻿using AcupunctureProject.database;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,25 +9,27 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using Xceed.Wpf.Toolkit;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AcupunctureProject.database;
 
 namespace AcupunctureProject.GUI
 {
     /// <summary>
-    /// Interaction logic for newMeeting.xaml
+    /// Interaction logic for MeetingInfo.xaml
     /// </summary>
-    public partial class NewMeeting : Page
+    public partial class MeetingInfo : Window
     {
-        private Window perent;
         private Patient selectedPatient;
+        private Meeting meeting;
 
-        public NewMeeting(Window perent)
+        public MeetingInfo(Meeting meeting)
         {
             InitializeComponent();
-            this.perent = perent;
-            date.SelectedDate = DateTime.Today;
+            this.meeting = meeting;
+            selectedPatient = Database.Instance.getPatientRelativeToMeeting(meeting);
+            patientSearchTextBox.Text = selectedPatient.Name;
+            date.SelectedDate = meeting.Date;
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.NOT_SET.ToString(), DataContext = Meeting.ResultValue.NOT_SET });
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.BETTER.ToString(), DataContext = Meeting.ResultValue.BETTER });
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.WORSE.ToString(), DataContext = Meeting.ResultValue.WORSE });
@@ -40,42 +41,6 @@ namespace AcupunctureProject.GUI
             level3.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(3) };
             level4.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(4) };
             level5.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(5) };
-        }
-
-        private void SymptomSearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            RelaodSymptomList();
-        }
-
-        private void Censel_Click(object sender, RoutedEventArgs e)
-        {
-            perent.Content = new Main(perent);
-        }
-
-        private void PatientSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ReloadPatientList();
-        }
-
-        private void ReloadPatientList()
-        {
-            patientSearchList.Items.Clear();
-            List<Patient> p = Database.Instance.findPatient(patientSearchTextBox.Text);
-            for (int i = 0; i < p.Count; i++)
-                patientSearchList.Items.Add(new ListViewItem() { Content = p[i].ToStringInSearch(), DataContext = p[i] });
-            patientSearchList.SelectedIndex = 0;
-        }
-
-        private void PatientSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            SelectPatient();
-        }
-
-        private void SelectPatient()
-        {
-            ListViewItem item = (ListViewItem)patientSearchList.SelectedItem;
-            selectedPatient = (Patient)item.DataContext;
-            patientSearchTextBox.Text = selectedPatient.Name;
             patientSearchTextBox.IsEnabled = false;
             openPatientButton.IsEnabled = true;
             date.IsEnabled = true;
@@ -91,12 +56,28 @@ namespace AcupunctureProject.GUI
             resolt.IsEnabled = true;
             save.IsEnabled = true;
             saveAndExit.IsEnabled = true;
-            setPatientListVisibility(false);
+            List<Symptom> symptoms = Database.Instance.getAllSymptomRelativeToMeeting(meeting);
+            for (int i = 0; i < symptoms.Count; i++)
+                addItemToSymptomTree(symptoms[i]);
+            refindConnectedPoint();
+            List<database.Point> pointsThatUsed = Database.Instance.getAllPointRelativeToMeeting(meeting);
+            for (int i = 0; i < pointsThatUsed.Count; i++)
+                pointThatUsed.Items.Add(new ListBoxItem() { Content = pointsThatUsed[i].ToString(), DataContext = pointsThatUsed[i] });
+            notes.Text = meeting.Description;
+            resoltSummeryTextBox.Text = meeting.ResultDescription;
+            resolt.SelectedItem = meeting.Result;
+            summeryTextBox.Text = meeting.Summery;
+
         }
 
-        private void PatientSearchList_GotFocus(object sender, RoutedEventArgs e)
+        private void SymptomSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            setPatientListVisibility(true);
+            RelaodSymptomList();
+        }
+
+        private void Censel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
 
         private void RelaodSymptomList()
@@ -135,54 +116,6 @@ namespace AcupunctureProject.GUI
                 symptomSearchList.Visibility = Visibility.Hidden;
                 symptomSearchList.MaxHeight = 0;
             }
-        }
-
-        private void setPatientListVisibility(bool val)
-        {
-            if (val)
-            {
-                patientSearchList.Margin = new Thickness(symptomSearch.Margin.Left, symptomSearch.Margin.Top + symptomSearch.ExtentHeight, 0, 0);
-                patientSearchList.Visibility = Visibility.Visible;
-                patientSearchList.MaxHeight = 100;
-            }
-            else
-            {
-                patientSearchList.Visibility = Visibility.Hidden;
-                patientSearchList.MaxHeight = 0;
-            }
-        }
-
-        private void patientSearchTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key.Equals(Key.Down))
-            {
-                if (patientSearchList.SelectedIndex == patientSearchList.Items.Count - 1)
-                    patientSearchList.SelectedIndex = 0;
-                else
-                    patientSearchList.SelectedIndex = patientSearchList.SelectedIndex + 1;
-            }
-            else if (e.Key.Equals(Key.Up))
-            {
-                if (patientSearchList.SelectedIndex == 0)
-                    patientSearchList.SelectedIndex = patientSearchList.Items.Count - 1;
-                else
-                    patientSearchList.SelectedIndex = patientSearchList.SelectedIndex - 1;
-            }
-            else if (e.Key.Equals(Key.Enter))
-            {
-                SelectPatient();
-            }
-        }
-
-        private void patientSearchList_LostFocus(object sender, RoutedEventArgs e)
-        {
-            setPatientListVisibility(false);
-        }
-
-        private void patientSearchList_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key.Equals(Key.Enter))
-                SelectPatient();
         }
 
         private void selectSymptom()
@@ -283,6 +216,7 @@ namespace AcupunctureProject.GUI
                 });
             }
             symptomTreeView.Items.Add(sym);
+            Database.Instance.insertSymptomMeetingRelation(symptom, meeting);
         }
 
         private void symptomSearchList_LostFocus(object sender, RoutedEventArgs e)
@@ -304,17 +238,6 @@ namespace AcupunctureProject.GUI
         {
             setSymptomListVisibility(true);
             RelaodSymptomList();
-        }
-
-        private void patientSearchTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            setPatientListVisibility(true);
-            ReloadPatientList();
-        }
-
-        private void patientSearchTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            setPatientListVisibility(false);
         }
 
         private void symptomSearch_KeyDown(object sender, KeyEventArgs e)
@@ -354,25 +277,19 @@ namespace AcupunctureProject.GUI
 
         private void saveData()
         {
-            ComboBoxItem resoltitem = (ComboBoxItem)resolt.SelectedItem;
-            Meeting meeting = Database.Instance.insertMeeting(new Meeting(selectedPatient.Id, "", (DateTime)date.SelectedDate, notes.Text, summeryTextBox.Text, resoltSummeryTextBox.Text, (Meeting.ResultValue)resoltitem.DataContext));
-            for (int i = 0; i < symptomTreeView.Items.Count; i++)
-            {
-                TreeViewItem item = (TreeViewItem)symptomTreeView.Items[i];
-                Database.Instance.insertSymptomMeetingRelation((Symptom)item.DataContext, meeting);
-            }
-
-            for (int i = 0; i < pointThatUsed.Items.Count; i++)
-            {
-                ListBoxItem item = (ListBoxItem)pointThatUsed.Items[i];
-                Database.Instance.insertMeetingPointRelation(meeting, (database.Point)item.DataContext);
-            }
+            meeting.Date = (DateTime)date.SelectedDate;
+            meeting.Description = notes.Text;
+            meeting.Summery = summeryTextBox.Text;
+            meeting.ResultDescription = resoltSummeryTextBox.Text;
+            ComboBoxItem resoltItem = (ComboBoxItem)resolt.SelectedItem;
+            meeting.Result = (Meeting.ResultValue)resoltItem.DataContext;
+            Database.Instance.updateMeeting(meeting);
         }
 
         private void saveAndExit_Click(object sender, RoutedEventArgs e)
         {
             saveData();
-            perent.Content = new Main(perent);
+            Close();
         }
 
         private void openPatientButton_Click(object sender, RoutedEventArgs e)
@@ -434,8 +351,10 @@ namespace AcupunctureProject.GUI
                 isThereACopy = tempItem.Content == item.Content;
             }
 
-            if (!isThereACopy)
-                pointThatUsed.Items.Add(new ListBoxItem() { Content = item.Content, DataContext = item.DataContext });
+            if (isThereACopy)
+                return;
+            pointThatUsed.Items.Add(new ListBoxItem() { Content = item.Content, DataContext = item.DataContext });
+            Database.Instance.insertMeetingPointRelation(meeting, (database.Point)item.DataContext);
         }
 
         private void pointThatUsed_KeyDown(object sender, KeyEventArgs e)
@@ -451,8 +370,11 @@ namespace AcupunctureProject.GUI
 
         private void pointThatUsedDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (pointThatUsed.SelectedIndex != -1)
-                pointThatUsed.Items.RemoveAt(pointThatUsed.SelectedIndex);
+            if (pointThatUsed.SelectedIndex == -1)
+                return;
+            pointThatUsed.Items.RemoveAt(pointThatUsed.SelectedIndex);
+            ListBoxItem item = (ListBoxItem)pointThatUsed.SelectedItem;
+            Database.Instance.deleteMeetingPoint(meeting, (database.Point)item.DataContext);
         }
 
         private void symptomTreeDelete_Click(object sender, RoutedEventArgs e)
@@ -464,6 +386,7 @@ namespace AcupunctureProject.GUI
                 item = (TreeViewItem)item.Parent;
             if (symptomTreeView.Items.Contains(item))
                 symptomTreeView.Items.Remove(item);
+            Database.Instance.deleteSymptomMeetingRelation((Symptom)item.DataContext, meeting);
         }
     }
 }

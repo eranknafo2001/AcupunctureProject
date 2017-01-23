@@ -19,14 +19,29 @@ namespace AcupunctureProject.database
 
         public class ResultValue
         {
-            public static readonly ResultValue BETTER = new ResultValue(0), WORSE = new ResultValue(1), NO_CHANGE = new ResultValue(2);
+            public static readonly ResultValue NOT_SET = new ResultValue(0);
+            public static readonly ResultValue BETTER = new ResultValue(1);
+            public static readonly ResultValue WORSE = new ResultValue(2);
+            public static readonly ResultValue NO_CHANGE = new ResultValue(3);
 
             public int Value { get; private set; }
             public static ResultValue FromValue(int value)
             {
-                if (value < 0 || value > 2)
+                if (value <= 0 && value >= 3)
                     throw new Exception("ERROR::ResultValue is not exist");
-                return new ResultValue(value);
+                switch (value)
+                {
+                    case 0:
+                        return NOT_SET;
+                    case 1:
+                        return BETTER;
+                    case 2:
+                        return WORSE;
+                    case 3:
+                        return NO_CHANGE;
+                    default:
+                        return null;
+                }
             }
 
             private ResultValue(int value)
@@ -37,8 +52,10 @@ namespace AcupunctureProject.database
             public override string ToString()
             {
                 if (Value == 0)
-                    return "יותר טוב";
+                    return "לא מוגדר";
                 else if (Value == 1)
+                    return "יותר טוב";
+                else if (Value == 2)
                     return "החמיר";
                 else
                     return "אין שינוי";
@@ -55,13 +72,14 @@ namespace AcupunctureProject.database
             get
             {
                 string[] s = Description.Split(' ');
+                if (s.Length <= 20)
+                    return Description;
                 string o = "";
                 for (int i = 0; i < s.Length && i < 20; i++)
                 {
                     o += s[i] + " ";
                 }
-                o += "...";
-                return o;
+                return o + "...";
             }
         }
         public string DateString

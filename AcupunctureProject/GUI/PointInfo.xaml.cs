@@ -25,22 +25,11 @@ namespace AcupunctureProject.GUI
         public PointInfo(database.Point point)
         {
             InitializeComponent();
+            Title += point.Name;
             this.point = point;
             List<database.Point> pointList = Database.Instance.getAllPoints();
             for (int i = 0; i < pointList.Count; i++)
                 points.Items.Add(new ListViewItem() { Content = pointList[i].ToString(), DataContext = pointList[i] });
-            setAll(point);
-        }
-
-        private void points_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            ListViewItem item = (ListViewItem)points.SelectedItem;
-            setAll((database.Point)item.DataContext);
-        }
-
-        private void setAll(database.Point point)
-        {
-            this.point = point;
             syptomTreeView.Items.Clear();
             List<ConnectionValue<Symptom>> symptomList = Database.Instance.getAllSymptomRelativeToPoint(point);
             for (int i = 0; i < symptomList.Count; i++)
@@ -89,7 +78,7 @@ namespace AcupunctureProject.GUI
                 backimagesource.EndInit();
                 pointImage.Source = backimagesource;
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
             name.Text = point.Name;
@@ -99,6 +88,17 @@ namespace AcupunctureProject.GUI
             note.Text = point.Note;
             comment1.Text = point.Comment1;
             comment2.Text = point.Comment2;
+        }
+
+        private void points_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ListViewItem item = (ListViewItem)points.SelectedItem;
+            setAll((database.Point)item.DataContext);
+        }
+
+        private void setAll(database.Point point)
+        {
+            new PointInfo(point).Show();
         }
 
         private void syptomTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -143,6 +143,11 @@ namespace AcupunctureProject.GUI
         private void save_Click(object sender, RoutedEventArgs e)
         {
             saveData();
+        }
+
+        private void pointImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            new FullWindowPic(pointImage.Source).Show();
         }
     }
 }
