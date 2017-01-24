@@ -73,7 +73,7 @@ namespace AcupunctureProject.GUI
             for (int i = 0; i < symptoms.Count; i++)
                 SddItemToSymptomTree(symptoms[i]);
             SefindConnectedPoint();
-            List<database.Point> pointsThatUsed = Database.Instance.GetAllPointRelativeToMeeting(meeting);
+            List<database.Point> pointsThatUsed = Database.Instance.GetAllPointsRelativeToMeeting(meeting);
             for (int i = 0; i < pointsThatUsed.Count; i++)
                 pointThatUsed.Items.Add(new ListBoxItem() { Content = pointsThatUsed[i].ToString(), DataContext = pointsThatUsed[i] });
             notes.Text = meeting.Description;

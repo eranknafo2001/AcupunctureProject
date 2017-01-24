@@ -782,7 +782,7 @@ namespace AcupunctureProject.database
             }
         }
 
-        public List<Point> GetAllPointRelativeToMeeting(Meeting meeting)
+        public List<Point> GetAllPointsRelativeToMeeting(Meeting meeting)
         {
             getAllPointRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
             using (SQLiteDataReader rs = getAllPointRelativeToMeetingSt.ExecuteReader())

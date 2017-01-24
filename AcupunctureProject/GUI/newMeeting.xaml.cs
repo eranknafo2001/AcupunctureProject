@@ -211,11 +211,11 @@ namespace AcupunctureProject.GUI
                 for (int j = 0; j < symItem.Items.Count; j++)
                 {
                     TreeViewItem chItem = (TreeViewItem)symItem.Items[j];
+                    if (!count.ContainsKey(chItem.DataContext.GetType()))
+                        count.Add(chItem.DataContext.GetType(), new Dictionary<int, List<TreeViewItem>>());
                     if (chItem.DataContext.GetType() == typeof(ConnectionValue<database.Point>))
                     {
                         ConnectionValue<database.Point> point = (ConnectionValue<database.Point>)chItem.DataContext;
-                        if (!count.ContainsKey(chItem.DataContext.GetType()))
-                            count.Add(chItem.DataContext.GetType(), new Dictionary<int, List<TreeViewItem>>());
                         if (!count[chItem.DataContext.GetType()].ContainsKey(point.Value.Id))
                             count[chItem.DataContext.GetType()].Add(point.Value.Id, new List<TreeViewItem>());
                         count[chItem.DataContext.GetType()][point.Value.Id].Add(chItem);
@@ -223,8 +223,6 @@ namespace AcupunctureProject.GUI
                     else if (chItem.DataContext.GetType() == typeof(ConnectionValue<Channel>))
                     {
                         ConnectionValue<Channel> point = (ConnectionValue<Channel>)chItem.DataContext;
-                        if (!count.ContainsKey(chItem.DataContext.GetType()))
-                            count.Add(chItem.DataContext.GetType(), new Dictionary<int, List<TreeViewItem>>());
                         if (!count[chItem.DataContext.GetType()].ContainsKey(point.Value.Id))
                             count[chItem.DataContext.GetType()].Add(point.Value.Id, new List<TreeViewItem>());
                         count[chItem.DataContext.GetType()][point.Value.Id].Add(chItem);
