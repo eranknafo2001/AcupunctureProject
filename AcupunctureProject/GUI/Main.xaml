@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:AcupunctureProject.GUI"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="Main" FlowDirection="RightToLeft">
+      Title="Main" FlowDirection="RightToLeft" Background="GhostWhite">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -20,6 +20,7 @@
             </MenuItem>
             <MenuItem x:Name="newMeetingMI" Header="הוספת טפול" Click="newMeetingMI_Click" Padding="5"/>
             <MenuItem x:Name="pointsListMI" Header="רשימת נקודות" Click="pointsListMI_Click" Padding="5"/>
+            <MenuItem x:Name="settingMI" Header="הגדרות" Padding="5" Click="settingMI_Click"/>
         </Menu>
         <Image x:Name="backImage" Source="C:\Users\magshimim\Desktop\AcupunctureProject\images\backpic.jpg" Stretch="UniformToFill" Grid.Row="1"/>
     </Grid>

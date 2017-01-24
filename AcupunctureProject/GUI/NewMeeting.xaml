@@ -6,9 +6,10 @@
       xmlns:local="clr-namespace:AcupunctureProject.GUI"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="1000"
-      Title="Main" FlowDirection="RightToLeft">
+      Title="Main" FlowDirection="RightToLeft" Background="GhostWhite">
 
     <Grid Margin="10">
+        <!--#region row and col definitions -->
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="10"/>
@@ -35,25 +36,29 @@
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
+        <!--#endregion-->
+        <!--#region patient -->
         <Label Content="שם" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center"/>
-        <!-- patient -->
         <Grid Grid.Row="0" Grid.Column="2" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="patientSearchTextBox" Grid.Column="0" TextChanged="PatientSearchTextBox_TextChanged" KeyDown="patientSearchTextBox_KeyDown" GotFocus="patientSearchTextBox_GotFocus" LostFocus="patientSearchTextBox_LostFocus"/>
+            <TextBox x:Name="patientSearchTextBox" Grid.Column="0"/>
             <Button x:Name="openPatientButton" Content="לפתוח" IsEnabled="False" Grid.Column="2" Click="openPatientButton_Click"/>
         </Grid>
-        <ListView x:Name="patientSearchList" SelectionMode="Single" MaxHeight="100" Visibility="Hidden" Grid.Column="2" Grid.Row="0" VerticalAlignment="Top" Panel.ZIndex="20" HorizontalAlignment="Left" MouseDoubleClick="PatientSearchList_MouseDoubleClick" GotFocus="PatientSearchList_GotFocus" LostFocus="patientSearchList_LostFocus" KeyDown="patientSearchList_KeyDown" Grid.RowSpan="6" />
+        <!--#endregion-->
+        <!--#region date -->
         <Label  Content="תאריך" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center"/>
         <DatePicker x:Name="date" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" Height="25" HorizontalAlignment="Left" Width="110" IsEnabled="False"/>
+        <!--#endregion-->
+        <!--#region symptoms -->
         <Label Content="סימפטומים" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center"/>
         <TextBox x:Name="symptomSearch" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Height="25" TextChanged="SymptomSearch_TextChanged" IsEnabled="False" LostFocus="symptomSearch_LostFocus" GotFocus="symptomSearch_GotFocus" KeyDown="symptomSearch_KeyDown"/>
         <ListView x:Name="symptomSearchList" MaxHeight="100" SelectionMode="Single" Visibility="Hidden" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" LostFocus="symptomSearchList_LostFocus" GotFocus="symptomSearchList_GotFocus" KeyDown="symptomSearchList_KeyDown" MouseDoubleClick="symptomSearchList_MouseDoubleClick" Grid.RowSpan="3" Panel.ZIndex="20"/>
         <TreeView x:Name="symptomTreeView" Grid.Row="6" Grid.Column="2" Margin="0,0,0,0" IsEnabled="False" MouseDoubleClick="symptomTreeView_MouseDoubleClick"/>
-        <!-- levels and delete for tree -->
+        <!--#region levels and delete for symptom tree -->
         <Grid Grid.Row="8" Grid.Column="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
@@ -64,6 +69,7 @@
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
+            <!--#region levels -->
             <Border x:Name="level0"  Grid.Column="0">
                 <Label Content="0" HorizontalAlignment="Center"/>
             </Border>
@@ -82,12 +88,17 @@
             <Border x:Name="level5" Grid.Column="5">
                 <Label Content="5" HorizontalAlignment="Center"/>
             </Border>
+            <!--#endregion-->
             <Button x:Name="symptomTreeDelete" Content="מחק" Grid.Column="6" IsEnabled="False" Width="45" Click="symptomTreeDelete_Click"/>
         </Grid>
+        <!--#endregion-->
+        <!--#endregion-->
+        <!--#region points that used -->
         <Label Content="נקודות שטופלו" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center"/>
         <TextBox x:Name="pointThatUsedSearch" Grid.Column="4" Grid.Row="4" IsEnabled="False" GotFocus="pointThatUsedSearch_GotFocus" LostFocus="pointThatUsedSearch_LostFocus" FlowDirection="LeftToRight" TextChanged="pointThatUsedSearch_TextChanged"/>
         <ListView x:Name="pointThatUsedSearchList" MaxHeight="100" SelectionMode="Single" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="20" Visibility="Hidden" Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" LostFocus="pointThatUsedSearchList_LostFocus" GotFocus="pointThatUsedSearchList_GotFocus" FlowDirection="LeftToRight" KeyDown="pointThatUsedSearchList_KeyDown" MouseDoubleClick="pointThatUsedSearchList_MouseDoubleClick"/>
         <ListBox x:Name="pointThatUsed" Grid.Row="6" Grid.Column="4" IsEnabled="False" KeyDown="pointThatUsed_KeyDown" FlowDirection="LeftToRight"/>
+        <!--#region points that used delete button -->
         <Grid Grid.Column="4" Grid.Row="8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
@@ -95,27 +106,36 @@
             </Grid.ColumnDefinitions>
             <Button x:Name="pointThatUsedDelete" Content="מחק" Grid.Column="2" IsEnabled="False" Click="pointThatUsedDelete_Click" Width="45"/>
         </Grid>
+        <!--#endregion-->
+        <!--#endregion-->
+        <!--#region notes -->
         <Label Content="הערות" Grid.Row="4" Grid.Column="6" HorizontalAlignment="Center"/>
         <TextBox x:Name="notes" Grid.Row="6" Grid.Column="6" IsEnabled="False"/>
+        <!--#endregion-->
+        <!--#region summery block -->
         <Label Content="סיכום" Grid.Row="4" Grid.Column="8" HorizontalAlignment="Center"/>
-        <!-- summery block -->
         <Grid Grid.Row="6" Grid.Column="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"/>
+                <RowDefinition Height="10"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="10"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="10"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <TextBox x:Name="summeryTextBox" Grid.Row="0" IsEnabled="False"/>
-            <Label Content="פרוט התוצאה" Grid.Row="1" HorizontalAlignment="Center"/>
-            <TextBox x:Name="resoltSummeryTextBox" Grid.Row="2" IsEnabled="False"/>
-            <StackPanel Orientation="Horizontal" Grid.Row="3">
-                <Label Content="תוצאה" Margin="10,0,0,0"/>
+            <Label Content="פרוט התוצאה" Grid.Row="2" HorizontalAlignment="Center"/>
+            <TextBox x:Name="resoltSummeryTextBox" Grid.Row="4" IsEnabled="False"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="6">
+                <Label Content="תוצאה"/>
+                <Border Width="5"/>
                 <ComboBox x:Name="resolt" IsEnabled="False"/>
             </StackPanel>
         </Grid>
+        <!--#endregion-->
+        <!--#region buttons -->
         <Button x:Name="censel" Content="ביטול" Grid.Row="8" Grid.Column="0" Click="Censel_Click"/>
-        <!-- buttons grid -->
         <Grid Grid.Row="8" Grid.Column="8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
@@ -126,5 +146,6 @@
             <Button x:Name="save" Content="שמור" Grid.Column="1" IsEnabled="False" Click="save_Click" Width="50" Height="29"/>
             <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="3" IsEnabled="False" Click="saveAndExit_Click" Width="80" Height="29"/>
         </Grid>
+        <!--#endregion-->
     </Grid>
 </Page>

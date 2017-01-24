@@ -43,8 +43,7 @@ namespace AcupunctureProject.GUI
 
         private void newPatientMI_Click(object sender, RoutedEventArgs e)
         {
-            NewPatient p = new NewPatient();
-            p.Show();
+            new NewPatient().Show();
         }
 
         private void newMeetingMI_Click(object sender, RoutedEventArgs e)
@@ -55,14 +54,18 @@ namespace AcupunctureProject.GUI
 
         private void PatientListMI_Click(object sender, RoutedEventArgs e)
         {
-            PatientList p = new PatientList();
-            p.Show();
+            new PatientList().Show();
         }
 
         private void pointsListMI_Click(object sender, RoutedEventArgs e)
         {
             List<database.Point> points = Database.Instance.getAllPoints();
             new PointInfo(points[new Random().Next(0, points.Count - 1)]).Show();
+        }
+
+        private void settingMI_Click(object sender, RoutedEventArgs e)
+        {
+            new SettingWindow().Show();
         }
     }
 }

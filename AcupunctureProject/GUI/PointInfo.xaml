@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcupunctureProject.GUI"
         mc:Ignorable="d"
-        Title="מידע על " Height="600" Width="1000" FlowDirection="RightToLeft" WindowStartupLocation="CenterOwner">
+        Title="מידע על " Height="600" Width="1000" FlowDirection="RightToLeft" WindowStartupLocation="CenterOwner" Background="GhostWhite">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>

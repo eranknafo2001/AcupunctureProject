@@ -349,10 +349,11 @@ namespace AcupunctureProject.GUI
 
         private void save_Click(object sender, RoutedEventArgs e)
         {
-            saveData();
+            Meeting meeting = saveData();
+            perent.Content = new MeetingInfoPage(perent, meeting, new Main(perent));
         }
 
-        private void saveData()
+        private Meeting saveData()
         {
             ComboBoxItem resoltitem = (ComboBoxItem)resolt.SelectedItem;
             Meeting meeting = Database.Instance.insertMeeting(new Meeting(selectedPatient.Id, "", (DateTime)date.SelectedDate, notes.Text, summeryTextBox.Text, resoltSummeryTextBox.Text, (Meeting.ResultValue)resoltitem.DataContext));
@@ -367,6 +368,8 @@ namespace AcupunctureProject.GUI
                 ListBoxItem item = (ListBoxItem)pointThatUsed.Items[i];
                 Database.Instance.insertMeetingPointRelation(meeting, (database.Point)item.DataContext);
             }
+
+            return meeting;
         }
 
         private void saveAndExit_Click(object sender, RoutedEventArgs e)

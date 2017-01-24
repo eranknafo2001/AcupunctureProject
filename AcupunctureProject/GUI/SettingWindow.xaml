@@ -1,0 +1,24 @@
+﻿<Window x:Class="AcupunctureProject.GUI.SettingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AcupunctureProject"
+        mc:Ignorable="d"
+        Title="SettingWindow" Height="300" Width="300" FlowDirection="RightToLeft" Background="GhostWhite">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <TreeView Grid.Column="0" >
+            <TreeViewItem Header="עיצוב" IsExpanded="True">
+                <TreeViewItem Header="רמות חשיבות" IsSelected="True"/>
+            </TreeViewItem>
+        </TreeView>
+
+
+        <Frame x:Name="Settings" Grid.Column="2" BorderBrush="Black" BorderThickness="0.5"/>
+    </Grid>
+</Window>

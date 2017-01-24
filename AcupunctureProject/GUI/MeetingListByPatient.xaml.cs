@@ -26,5 +26,13 @@ namespace AcupunctureProject.GUI
             Title += patient.Name;
             meetingsDataGrid.ItemsSource = Database.Instance.GetAllMeetingsRelativeToPatient(patient);
         }
+
+        private void meetingsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Meeting item= (Meeting) meetingsDataGrid.SelectedItem;
+            if (item == null)
+                return;
+            new MeetingInfoWindow(item).Show();
+        }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcupunctureProject"
         mc:Ignorable="d"
-        Title="יצירת מטופל" WindowStartupLocation="CenterOwner" FlowDirection="RightToLeft" ResizeMode="NoResize" Width="400" Height="544">
+        Title="יצירת מטופל" WindowStartupLocation="CenterOwner" FlowDirection="RightToLeft" ResizeMode="NoResize" Width="400" Height="544" Background="GhostWhite">
     <Grid FlowDirection="RightToLeft" Margin="10,10,20,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>

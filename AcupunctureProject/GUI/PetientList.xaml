@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcupunctureProject.GUI"
         mc:Ignorable="d"
-        Title="PetientList" Height="300" Width="300" FlowDirection="RightToLeft">
+        Title="PetientList" Height="300" Width="300" FlowDirection="RightToLeft" Background="GhostWhite">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

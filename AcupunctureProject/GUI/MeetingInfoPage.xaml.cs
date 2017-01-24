@@ -10,23 +10,36 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AcupunctureProject.database;
 
 namespace AcupunctureProject.GUI
 {
     /// <summary>
-    /// Interaction logic for MeetingInfo.xaml
+    /// Interaction logic for MeetingInfoPage.xaml
     /// </summary>
-    public partial class MeetingInfo : Window
+    public partial class MeetingInfoPage : Page
     {
+        private Window perent;
         private Patient selectedPatient;
         private Meeting meeting;
+        private List<database.Point> pointsToAdd;
+        private List<database.Point> pointsToRemove;
+        private List<Symptom> symptomsToAdd;
+        private List<Symptom> symptomsToRemove;
+        private Page goBack;
 
-        public MeetingInfo(Meeting meeting)
+        public MeetingInfoPage(Window perent, Meeting meeting, Page goBack = null)
         {
             InitializeComponent();
+            this.perent = perent;
             this.meeting = meeting;
+            this.goBack = goBack;
+            pointsToAdd = new List<database.Point>();
+            pointsToRemove = new List<database.Point>();
+            symptomsToAdd = new List<Symptom>();
+            symptomsToRemove = new List<Symptom>();
             selectedPatient = Database.Instance.getPatientRelativeToMeeting(meeting);
             patientSearchTextBox.Text = selectedPatient.Name;
             date.SelectedDate = meeting.Date;
@@ -77,7 +90,10 @@ namespace AcupunctureProject.GUI
 
         private void Censel_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            if (goBack == null)
+                perent.Close();
+            else
+                perent.Content = goBack;
         }
 
         private void RelaodSymptomList()
@@ -130,6 +146,7 @@ namespace AcupunctureProject.GUI
                     return;
             }
             addItemToSymptomTree((Symptom)item.DataContext);
+            symptomsToAdd.Add((Symptom)item.DataContext);
             refindConnectedPoint();
             symptomSearch.Clear();
             RelaodSymptomList();
@@ -216,7 +233,6 @@ namespace AcupunctureProject.GUI
                 });
             }
             symptomTreeView.Items.Add(sym);
-            Database.Instance.insertSymptomMeetingRelation(symptom, meeting);
         }
 
         private void symptomSearchList_LostFocus(object sender, RoutedEventArgs e)
@@ -265,8 +281,7 @@ namespace AcupunctureProject.GUI
             if (item.DataContext.GetType() == typeof(ConnectionValue<database.Point>))
             {
                 ConnectionValue<database.Point> con = (ConnectionValue<database.Point>)item.DataContext;
-                PointInfo p = new PointInfo(con.Value);
-                p.Show();
+                new PointInfo(con.Value).Show();
             }
         }
 
@@ -284,12 +299,56 @@ namespace AcupunctureProject.GUI
             ComboBoxItem resoltItem = (ComboBoxItem)resolt.SelectedItem;
             meeting.Result = (Meeting.ResultValue)resoltItem.DataContext;
             Database.Instance.updateMeeting(meeting);
+
+            for (int i = 0; i < symptomsToAdd.Count; i++)
+            {
+                int j = 0;
+                while (j < symptomsToRemove.Count)
+                {
+                    if (symptomsToAdd[i].Id == symptomsToRemove[j].Id)
+                    {
+                        symptomsToAdd.RemoveAt(i);
+                        symptomsToRemove.RemoveAt(j);
+                        continue;
+                    }
+                    j++;
+                }
+            }
+
+            for (int i = 0; i < symptomsToRemove.Count; i++)
+                Database.Instance.deleteSymptomMeetingRelation(symptomsToRemove[i], meeting);
+            for (int i = 0; i < symptomsToAdd.Count; i++)
+                Database.Instance.insertSymptomMeetingRelation(symptomsToAdd[i], meeting);
+
+            for (int i = 0; i < pointsToAdd.Count; i++)
+            {
+                int j = 0;
+                while (j < pointsToRemove.Count)
+                {
+                    if (pointsToAdd[i].Name == pointsToRemove[j].Name)
+                    {
+                        pointsToRemove.RemoveAt(j);
+                        pointsToAdd.RemoveAt(i);
+                        continue;
+                    }
+                    j++;
+                }
+            }
+
+            for (int i = 0; i < pointsToRemove.Count; i++)
+                Database.Instance.deleteMeetingPoint(meeting, pointsToRemove[i]);
+            for (int i = 0; i < pointsToAdd.Count; i++)
+                Database.Instance.insertMeetingPointRelation(meeting, pointsToAdd[i]);
+
         }
 
         private void saveAndExit_Click(object sender, RoutedEventArgs e)
         {
             saveData();
-            Close();
+            if (goBack == null)
+                perent.Close();
+            else
+                perent.Content = goBack;
         }
 
         private void openPatientButton_Click(object sender, RoutedEventArgs e)
@@ -354,7 +413,7 @@ namespace AcupunctureProject.GUI
             if (isThereACopy)
                 return;
             pointThatUsed.Items.Add(new ListBoxItem() { Content = item.Content, DataContext = item.DataContext });
-            Database.Instance.insertMeetingPointRelation(meeting, (database.Point)item.DataContext);
+            pointsToAdd.Add((database.Point)item.DataContext);
         }
 
         private void pointThatUsed_KeyDown(object sender, KeyEventArgs e)
@@ -374,7 +433,7 @@ namespace AcupunctureProject.GUI
                 return;
             pointThatUsed.Items.RemoveAt(pointThatUsed.SelectedIndex);
             ListBoxItem item = (ListBoxItem)pointThatUsed.SelectedItem;
-            Database.Instance.deleteMeetingPoint(meeting, (database.Point)item.DataContext);
+            pointsToRemove.Add((database.Point)item.DataContext);
         }
 
         private void symptomTreeDelete_Click(object sender, RoutedEventArgs e)
@@ -386,7 +445,7 @@ namespace AcupunctureProject.GUI
                 item = (TreeViewItem)item.Parent;
             if (symptomTreeView.Items.Contains(item))
                 symptomTreeView.Items.Remove(item);
-            Database.Instance.deleteSymptomMeetingRelation((Symptom)item.DataContext, meeting);
+            symptomsToRemove.Add((Symptom)item.DataContext);
         }
     }
 }

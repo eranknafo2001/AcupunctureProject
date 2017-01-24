@@ -30,6 +30,7 @@ namespace AcupunctureProject.database
     public class Database
     {
         private static readonly string ID = "ID";
+
         private static Database database = null;
         public static Database Instance
         {
@@ -48,6 +49,9 @@ namespace AcupunctureProject.database
         private SQLiteCommand getAllSymptomRelativeToPointSt;
         private SQLiteCommand getAllMeetingsRelativeToPatientSt;
         private SQLiteCommand getAllSymptomRelativeToMeetingSt;
+        private SQLiteCommand getAllPointRelativeToMeetingSt;
+
+        private SQLiteCommand getPatientRelativeToMeetingSt;
 
         private SQLiteCommand insertSymptomSt;
         private SQLiteCommand insertMeetingSt;
@@ -115,8 +119,14 @@ namespace AcupunctureProject.database
             getAllChannelRelativeToSymptomSt = new SQLiteCommand("SELECT CHANNEL.* , SYMPTOM_CHANNEL.IMPORTENCE , SYMPTOM_CHANNEL.COMMENT from CHANNEL INNER JOIN SYMPTOM_CHANNEL ON CHANNEL.ID = SYMPTOM_CHANNEL.CHANNEL_ID where SYMPTOM_CHANNEL.SYMPTOM_ID = @symptomId order by SYMPTOM_CHANNEL.IMPORTENCE DESC;", connection);
             getAllChannelRelativeToSymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
 
-            getAllSymptomRelativeToMeetingSt = new SQLiteCommand("SELECT SYMPTOM.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID=MEETING.ID INNER JOIN ON SYMPTOM.ID=MEETING_POINTS.POINT_ID WHERE MEETING.ID=@meetingId", connection);
+            getAllSymptomRelativeToMeetingSt = new SQLiteCommand("SELECT SYMPTOM.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID=MEETING.ID INNER JOIN SYMPTOM ON SYMPTOM.ID=MEETING_POINTS.POINT_ID WHERE MEETING.ID=@meetingId;", connection);
             getAllSymptomRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
+
+            getAllPointRelativeToMeetingSt = new SQLiteCommand("SELECT POINTS.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID=MEETING.ID INNER JOIN POINTS ON MEETING_POINTS.POINT_ID=POINTS.ID WHERE MEETING.ID=@meetingId", connection);
+            getAllPointRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
+
+            getPatientRelativeToMeetingSt = new SQLiteCommand("SELECT PATIENT.* FROM MEETING INNER JOIN PATIENT ON MEETING.PATIENT_ID=PATIENT.ID WHERE MEETING.ID=@meetingId", connection);
+            getPatientRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
 
             insertSymptomSt = new SQLiteCommand("insert into SYMPTOM(NAME,COMMENT) values(@name,@comment);", connection);
             insertSymptomSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@comment") });
@@ -149,8 +159,8 @@ namespace AcupunctureProject.database
             updateSymptomSt = new SQLiteCommand("update SYMPTOM set NAME = @name ,COMMENT = @comment where ID = @symptomId;", connection);
             updateSymptomSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@comment") });
 
-            updateMeetingSt = new SQLiteCommand("update MEETING set PATIENT_ID = @patientId ,PURPOSE = @purpose ,DATE = @date ,DESCRIPTION = @description ,SUMMERY = @summery ,RESULT_DESCRIPTION = @resultDescription ,RESULT_VALUE = @resultValue where ID = @meetingId;", connection);
-            updateMeetingSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@patientId"), new SQLiteParameter("@purpose"), new SQLiteParameter("@date"), new SQLiteParameter("@description"), new SQLiteParameter("@summery"), new SQLiteParameter("@resultDescription"), new SQLiteParameter("@resultValue") });
+            updateMeetingSt = new SQLiteCommand("update MEETING set PATIENT_ID = @patientId ,PURPOSE = @purpose ,DATE = @date ,DESCRIPTION = @description ,SUMMERY = @summery ,RESULT_DESCRIPTION = @resultDecription ,RESULT_VALUE = @resultValue where ID = @meetingId;", connection);
+            updateMeetingSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@patientId"), new SQLiteParameter("@purpose"), new SQLiteParameter("@date"), new SQLiteParameter("@description"), new SQLiteParameter("@summery"), new SQLiteParameter("@resultDecription"), new SQLiteParameter("@resultValue"), new SQLiteParameter("@meetingId") });
 
             updatePatientSt = new SQLiteCommand("update PATIENT set NAME = @name ,TELEPHONE = @telephone ,CELLPHONE = @cellphone ,BIRTHDAY = @birthday ,GENDER = @gander ,ADDRESS = @address ,EMAIL = @email ,MEDICAL_DESCRIPTION = @medicalDescription where ID = @patientId;", connection);
             updatePatientSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@telephone"), new SQLiteParameter("@cellphone"), new SQLiteParameter("@birthday"), new SQLiteParameter("@gender"), new SQLiteParameter("@address"), new SQLiteParameter("@email"), new SQLiteParameter("@medicalDescription") });
@@ -233,7 +243,7 @@ namespace AcupunctureProject.database
         public void updateMeeting(Meeting meeting)
         {
             updateMeetingSt.Parameters["@patientId"].Value = meeting.PatientId;
-            updateMeetingSt.Parameters["@purpese"].Value = meeting.Purpose;
+            updateMeetingSt.Parameters["@purpose"].Value = meeting.Purpose;
             updateMeetingSt.Parameters["@date"].Value = meeting.Date;
             updateMeetingSt.Parameters["@description"].Value = meeting.Description;
             updateMeetingSt.Parameters["@summery"].Value = meeting.Summery;
@@ -723,6 +733,7 @@ namespace AcupunctureProject.database
             return o;
         }
         #endregion
+
         //TODO imploment this function
         public Color GetLevel(int level)
         {
@@ -744,6 +755,7 @@ namespace AcupunctureProject.database
                     return new Color() { A = 255, R = 255, G = 255, B = 255 };
             }
         }
+
         //TODO imploment this function
         public void SetLevel(int level, Color color)
         {
@@ -755,6 +767,26 @@ namespace AcupunctureProject.database
             getAllSymptomRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
             using (SQLiteDataReader rs = getAllSymptomRelativeToMeetingSt.ExecuteReader())
                 return getSymptoms(rs);
+        }
+
+        //TODO cheack on this function
+        public Patient getPatientRelativeToMeeting(Meeting meeting)
+        {
+            getPatientRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
+            using (SQLiteDataReader rs = getPatientRelativeToMeetingSt.ExecuteReader())
+            {
+                if (rs.Read())
+                    return getPatient(rs);
+                else
+                    return null;
+            }
+        }
+
+        public List<Point> getAllPointRelativeToMeeting(Meeting meeting)
+        {
+            getAllPointRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
+            using (SQLiteDataReader rs = getAllPointRelativeToMeetingSt.ExecuteReader())
+                return getPoints(rs);
         }
     }
 }
