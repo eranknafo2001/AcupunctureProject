@@ -46,7 +46,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBox x:Name="patientSearchTextBox" Grid.Column="0"/>
-            <Button x:Name="openPatientButton" Content="לפתוח" IsEnabled="False" Grid.Column="2" Click="openPatientButton_Click"/>
+            <Button x:Name="openPatientButton" Content="לפתוח" IsEnabled="False" Grid.Column="2" Click="OpenPatientButton_Click"/>
         </Grid>
         <!--#endregion-->
         <!--#region date -->
@@ -55,9 +55,9 @@
         <!--#endregion-->
         <!--#region symptoms -->
         <Label Content="סימפטומים" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center"/>
-        <TextBox x:Name="symptomSearch" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Height="25" TextChanged="SymptomSearch_TextChanged" IsEnabled="False" LostFocus="symptomSearch_LostFocus" GotFocus="symptomSearch_GotFocus" KeyDown="symptomSearch_KeyDown"/>
-        <ListView x:Name="symptomSearchList" MaxHeight="100" SelectionMode="Single" Visibility="Hidden" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" LostFocus="symptomSearchList_LostFocus" GotFocus="symptomSearchList_GotFocus" KeyDown="symptomSearchList_KeyDown" MouseDoubleClick="symptomSearchList_MouseDoubleClick" Grid.RowSpan="3" Panel.ZIndex="20"/>
-        <TreeView x:Name="symptomTreeView" Grid.Row="6" Grid.Column="2" Margin="0,0,0,0" IsEnabled="False" MouseDoubleClick="symptomTreeView_MouseDoubleClick"/>
+        <TextBox x:Name="symptomSearch" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Height="25" TextChanged="SymptomSearch_TextChanged" IsEnabled="False" LostFocus="SymptomSearch_LostFocus" GotFocus="SymptomSearch_GotFocus" KeyDown="SymptomSearch_KeyDown"/>
+        <ListView x:Name="symptomSearchList" MaxHeight="100" SelectionMode="Single" Visibility="Hidden" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" LostFocus="SymptomSearchList_LostFocus" GotFocus="SymptomSearchList_GotFocus" KeyDown="SymptomSearchList_KeyDown" MouseDoubleClick="SymptomSearchList_MouseDoubleClick" Grid.RowSpan="3" Panel.ZIndex="20"/>
+        <TreeView x:Name="symptomTreeView" Grid.Row="6" Grid.Column="2" Margin="0,0,0,0" IsEnabled="False" MouseDoubleClick="SymptomTreeView_MouseDoubleClick"/>
         <!--#region levels and delete for symptom tree -->
         <Grid Grid.Row="8" Grid.Column="2">
             <Grid.ColumnDefinitions>
@@ -89,22 +89,22 @@
                 <Label Content="5" HorizontalAlignment="Center"/>
             </Border>
             <!--#endregion-->
-            <Button x:Name="symptomTreeDelete" Content="מחק" Grid.Column="6" IsEnabled="False" Width="45" Click="symptomTreeDelete_Click"/>
+            <Button x:Name="symptomTreeDelete" Content="מחק" Grid.Column="6" IsEnabled="False" Width="45" Click="SymptomTreeDelete_Click"/>
         </Grid>
         <!--#endregion-->
         <!--#endregion-->
         <!--#region points that used -->
         <Label Content="נקודות שטופלו" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center"/>
-        <TextBox x:Name="pointThatUsedSearch" Grid.Column="4" Grid.Row="4" IsEnabled="False" GotFocus="pointThatUsedSearch_GotFocus" LostFocus="pointThatUsedSearch_LostFocus" FlowDirection="LeftToRight" TextChanged="pointThatUsedSearch_TextChanged"/>
-        <ListView x:Name="pointThatUsedSearchList" MaxHeight="100" SelectionMode="Single" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="20" Visibility="Hidden" Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" LostFocus="pointThatUsedSearchList_LostFocus" GotFocus="pointThatUsedSearchList_GotFocus" FlowDirection="LeftToRight" KeyDown="pointThatUsedSearchList_KeyDown" MouseDoubleClick="pointThatUsedSearchList_MouseDoubleClick"/>
-        <ListBox x:Name="pointThatUsed" Grid.Row="6" Grid.Column="4" IsEnabled="False" KeyDown="pointThatUsed_KeyDown" FlowDirection="LeftToRight"/>
+        <TextBox x:Name="pointThatUsedSearch" Grid.Column="4" Grid.Row="4" IsEnabled="False" GotFocus="PointThatUsedSearch_GotFocus" LostFocus="PointThatUsedSearch_LostFocus" FlowDirection="LeftToRight" TextChanged="PointThatUsedSearch_TextChanged"/>
+        <ListView x:Name="pointThatUsedSearchList" MaxHeight="100" SelectionMode="Single" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="20" Visibility="Hidden" Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" LostFocus="PointThatUsedSearchList_LostFocus" GotFocus="PointThatUsedSearchList_GotFocus" FlowDirection="LeftToRight" KeyDown="PointThatUsedSearchList_KeyDown" MouseDoubleClick="PointThatUsedSearchList_MouseDoubleClick"/>
+        <ListBox x:Name="pointThatUsed" Grid.Row="6" Grid.Column="4" IsEnabled="False" KeyDown="PointThatUsed_KeyDown" FlowDirection="LeftToRight"/>
         <!--#region points that used delete button -->
         <Grid Grid.Column="4" Grid.Row="8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="pointThatUsedDelete" Content="מחק" Grid.Column="2" IsEnabled="False" Click="pointThatUsedDelete_Click" Width="45"/>
+            <Button x:Name="pointThatUsedDelete" Content="מחק" Grid.Column="2" IsEnabled="False" Click="PointThatUsedDelete_Click" Width="45"/>
         </Grid>
         <!--#endregion-->
         <!--#endregion-->
@@ -143,8 +143,8 @@
                 <ColumnDefinition Width="10"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="save" Content="שמור" Grid.Column="1" IsEnabled="False" Click="save_Click" Width="50" Height="29"/>
-            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="3" IsEnabled="False" Click="saveAndExit_Click" Width="80" Height="29"/>
+            <Button x:Name="save" Content="שמור" Grid.Column="1" IsEnabled="False" Click="Save_Click" Width="50" Height="29"/>
+            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="3" IsEnabled="False" Click="SaveAndExit_Click" Width="80" Height="29"/>
         </Grid>
         <!--#endregion-->
     </Grid>

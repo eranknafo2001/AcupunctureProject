@@ -66,7 +66,7 @@ namespace AcupunctureProject.GUI
 
             try
             {
-                Database.Instance.insertPatient(new Patient(name.Text, telphone.Text, cellphone.Text, (DateTime)berthday.SelectedDate, Patient.Gender.FromValue(gender.SelectedIndex), address.Text, email.Text, hestory.Text));
+                Database.Instance.InsertPatient(new Patient(name.Text, telphone.Text, cellphone.Text, (DateTime)berthday.SelectedDate, Patient.Gender.FromValue(gender.SelectedIndex), address.Text, email.Text, hestory.Text));
             }
             catch (database.Exceptions.UniqueNameException e)
             {

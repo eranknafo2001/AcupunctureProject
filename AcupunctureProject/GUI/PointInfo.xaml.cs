@@ -27,15 +27,15 @@ namespace AcupunctureProject.GUI
             InitializeComponent();
             Title += point.Name;
             this.point = point;
-            List<database.Point> pointList = Database.Instance.getAllPoints();
+            List<database.Point> pointList = Database.Instance.GetAllPoints();
             for (int i = 0; i < pointList.Count; i++)
                 points.Items.Add(new ListViewItem() { Content = pointList[i].ToString(), DataContext = pointList[i] });
             syptomTreeView.Items.Clear();
-            List<ConnectionValue<Symptom>> symptomList = Database.Instance.getAllSymptomRelativeToPoint(point);
+            List<ConnectionValue<Symptom>> symptomList = Database.Instance.GetAllSymptomRelativeToPoint(point);
             for (int i = 0; i < symptomList.Count; i++)
             {
                 TreeViewItem symptom = new TreeViewItem() { Header = symptomList[i].Value.ToString(), DataContext = symptomList[i].Value };
-                List<ConnectionValue<database.Point>> pointsRelatedToSymptom = Database.Instance.getAllPointRelativeToSymptom(symptomList[i].Value);
+                List<ConnectionValue<database.Point>> pointsRelatedToSymptom = Database.Instance.GetAllPointRelativeToSymptom(symptomList[i].Value);
                 for (int j = 0; j < pointsRelatedToSymptom.Count; j++)
                 {
                     symptom.Items.Add(new TreeViewItem()
@@ -49,7 +49,7 @@ namespace AcupunctureProject.GUI
                     });
                 }
 
-                List<ConnectionValue<Channel>> channels = Database.Instance.getAllChannelRelativeToSymptom(symptomList[i].Value);
+                List<ConnectionValue<Channel>> channels = Database.Instance.GetAllChannelRelativeToSymptom(symptomList[i].Value);
                 for (int j = 0; j < channels.Count; j++)
                 {
                     symptom.Items.Add(new TreeViewItem()
@@ -90,18 +90,18 @@ namespace AcupunctureProject.GUI
             comment2.Text = point.Comment2;
         }
 
-        private void points_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void Points_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListViewItem item = (ListViewItem)points.SelectedItem;
-            setAll((database.Point)item.DataContext);
+            SetAll((database.Point)item.DataContext);
         }
 
-        private void setAll(database.Point point)
+        private void SetAll(database.Point point)
         {
             new PointInfo(point).Show();
         }
 
-        private void syptomTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void SyptomTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             TreeViewItem item = (TreeViewItem)syptomTreeView.SelectedItem;
             if (item == null)
@@ -109,11 +109,11 @@ namespace AcupunctureProject.GUI
             if (item.DataContext.GetType() == typeof(ConnectionValue<database.Point>))
             {
                 ConnectionValue<database.Point> con = (ConnectionValue<database.Point>)(item.DataContext);
-                setAll(con.Value);
+                SetAll(con.Value);
             }
         }
 
-        private void saveData()
+        private void SaveData()
         {
             point.Comment1 = comment1.Text;
             point.Comment2 = comment2.Text;
@@ -122,30 +122,30 @@ namespace AcupunctureProject.GUI
             point.MinNeedleDepth = int.Parse(minDepth.Text);
             point.Note = note.Text;
             point.Position = place.Text;
-            Database.Instance.updatePoint(point);
+            Database.Instance.UpdatePoint(point);
             points.Items.Clear();
-            List<database.Point> pointList = Database.Instance.getAllPoints();
+            List<database.Point> pointList = Database.Instance.GetAllPoints();
             for (int i = 0; i < pointList.Count; i++)
                 points.Items.Add(new ListViewItem() { Content = pointList[i].ToString(), DataContext = pointList[i] });
         }
 
-        private void censel_Click(object sender, RoutedEventArgs e)
+        private void Censel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void saveAndExit_Click(object sender, RoutedEventArgs e)
+        private void SaveAndExit_Click(object sender, RoutedEventArgs e)
         {
-            saveData();
+            SaveData();
             Close();
         }
 
-        private void save_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
-            saveData();
+            SaveData();
         }
 
-        private void pointImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void PointImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             new FullWindowPic(pointImage.Source).Show();
         }

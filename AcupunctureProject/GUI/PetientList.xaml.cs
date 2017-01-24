@@ -23,15 +23,15 @@ namespace AcupunctureProject.GUI
         public PatientList()
         {
             InitializeComponent();
-            patientDataGrid.ItemsSource = Database.Instance.findPatient(searchTextBox.Text);
+            patientDataGrid.ItemsSource = Database.Instance.FindPatient(searchTextBox.Text);
         }
 
-        private void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            patientDataGrid.ItemsSource = Database.Instance.findPatient(searchTextBox.Text);
+            patientDataGrid.ItemsSource = Database.Instance.FindPatient(searchTextBox.Text);
         }
 
-        private void patientDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void PatientDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (patientDataGrid.SelectedIndex != -1)
             {

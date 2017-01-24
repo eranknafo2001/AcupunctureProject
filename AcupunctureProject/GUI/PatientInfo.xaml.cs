@@ -40,7 +40,7 @@ namespace AcupunctureProject.GUI
             hestory.Text = patient.MedicalDescription;
         }
 
-        private void saveData()
+        private void SaveData()
         {
             patient.Name = name.Text;
             patient.Birthday = (DateTime)berthday.SelectedDate;
@@ -51,26 +51,26 @@ namespace AcupunctureProject.GUI
             ComboBoxItem gendItem = (ComboBoxItem)gender.SelectedItem;
             patient.Gend = (Patient.Gender)gendItem.DataContext;
             patient.Email = email.Text;
-            Database.Instance.updatePatient(patient);
+            Database.Instance.UpdatePatient(patient);
         }
 
-        private void censel_Click(object sender, RoutedEventArgs e)
+        private void Censel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void saveAndExit_Click(object sender, RoutedEventArgs e)
+        private void SaveAndExit_Click(object sender, RoutedEventArgs e)
         {
-            saveData();
+            SaveData();
             Close();
         }
 
-        private void save_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
-            saveData();
+            SaveData();
         }
 
-        private void openMeetings_Click(object sender, RoutedEventArgs e)
+        private void OpenMeetings_Click(object sender, RoutedEventArgs e)
         {
             MeetingListByPatient m = new MeetingListByPatient(patient);
             m.Show();

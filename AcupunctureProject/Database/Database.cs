@@ -104,10 +104,10 @@ namespace AcupunctureProject.database
             {
                 folder += tempFolder[i] + "\\";
             }
-            SQLiteConnectionStringBuilder d = new SQLiteConnectionStringBuilder();
-            d.DataSource = folder + "database.db";
-            connection = new SQLiteConnection(d.ConnectionString);
-            //connection = new SQLiteConnection("Data Source=" + folder + "database.db;Version=3;");
+            //SQLiteConnectionStringBuilder d = new SQLiteConnectionStringBuilder();
+            //d.DataSource = folder + "database.db";
+            //connection = new SQLiteConnection(d.ConnectionString);
+            connection = new SQLiteConnection("Data Source=" + folder + "database.db;Version=3;");
             connection.Open();
 
             getAllPointRelativeToSymptomSt = new SQLiteCommand("select POINTS.* , SYMPTOM_POINTS.IMPORTENCE , SYMPTOM_POINTS.COMMENT from POINTS INNER JOIN SYMPTOM_POINTS ON POINTS.ID = SYMPTOM_POINTS.POINT_ID and SYMPTOM_POINTS.SYMPTOM_ID = @symptomId order by SYMPTOM_POINTS.IMPORTENCE DESC;", connection);
@@ -232,7 +232,7 @@ namespace AcupunctureProject.database
         }
 
         #region updates
-        public void updateSymptom(Symptom symptom)
+        public void UpdateSymptom(Symptom symptom)
         {
             updateSymptomSt.Parameters["@name"].Value = symptom.Name;
             updateSymptomSt.Parameters["@comment"].Value = symptom.Comment;
@@ -240,7 +240,7 @@ namespace AcupunctureProject.database
             updateSymptomSt.ExecuteNonQuery();
         }
 
-        public void updateMeeting(Meeting meeting)
+        public void UpdateMeeting(Meeting meeting)
         {
             updateMeetingSt.Parameters["@patientId"].Value = meeting.PatientId;
             updateMeetingSt.Parameters["@purpose"].Value = meeting.Purpose;
@@ -253,7 +253,7 @@ namespace AcupunctureProject.database
             updateMeetingSt.ExecuteNonQuery();
         }
 
-        public void updatePatient(Patient patient)
+        public void UpdatePatient(Patient patient)
         {
             updatePatientSt.Parameters["@name"].Value = patient.Name;
             updatePatientSt.Parameters["@telephone"].Value = patient.Telephone;
@@ -267,7 +267,7 @@ namespace AcupunctureProject.database
             updatePatientSt.ExecuteNonQuery();
         }
 
-        public void updatePoint(Point point)
+        public void UpdatePoint(Point point)
         {
             updatePointSt.Parameters["@name"].Value = point.Name;
             updatePointSt.Parameters["@minNeedleDepth"].Value = point.MinNeedleDepth;
@@ -282,7 +282,7 @@ namespace AcupunctureProject.database
             updatePointSt.ExecuteNonQuery();
         }
 
-        public void updateChannel(Channel channel)
+        public void UpdateChannel(Channel channel)
         {
             updateChannelSt.Parameters["@name"].Value = channel.Name;
             updateChannelSt.Parameters["@rt"].Value = channel.Rt;
@@ -295,7 +295,7 @@ namespace AcupunctureProject.database
             updateChannelSt.ExecuteNonQuery();
         }
 
-        public void updateChannelSymptomRelation(Channel channel, Symptom symptom, int importance, string comment)
+        public void UpdateChannelSymptomRelation(Channel channel, Symptom symptom, int importance, string comment)
         {
             updateChannelSymptomRelationSt.Parameters["@importance"].Value = importance;
             updateChannelSymptomRelationSt.Parameters["@comment"].Value = comment;
@@ -304,7 +304,7 @@ namespace AcupunctureProject.database
             updateChannelSymptomRelationSt.ExecuteNonQuery();
         }
 
-        public void updatePointSymptomRelation(Point point, Symptom symptom, int importance, string comment)
+        public void UpdatePointSymptomRelation(Point point, Symptom symptom, int importance, string comment)
         {
             updatePointSymptomRelationSt.Parameters["@importance"].Value = importance;
             updatePointSymptomRelationSt.Parameters["@comment"].Value = comment;
@@ -314,58 +314,58 @@ namespace AcupunctureProject.database
         }
         #endregion
         #region deletes
-        public void deleteSymptom(Symptom symptom)
+        public void DeleteSymptom(Symptom symptom)
         {
             deleteSymptomSt.Parameters["@symptomId"].Value = symptom.Id;
             deleteSymptomSt.ExecuteNonQuery();
         }
 
-        public void deleteMeeting(Meeting meeting)
+        public void DeleteMeeting(Meeting meeting)
         {
             deleteMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
             deleteMeetingSt.ExecuteNonQuery();
         }
 
-        public void deletePatient(Patient patient)
+        public void DeletePatient(Patient patient)
         {
             deletePatientSt.Parameters["@patientId"].Value = patient.Id;
             deletePatientSt.ExecuteNonQuery();
         }
 
-        public void deletePoint(Point point)
+        public void DeletePoint(Point point)
         {
             deletePointSt.Parameters["@pointId"].Value = point.Id;
             deletePointSt.ExecuteNonQuery();
         }
 
-        public void deleteChannel(Channel channel)
+        public void DeleteChannel(Channel channel)
         {
             deleteChannelSt.Parameters["@channelId"].Value = channel.Id;
             deleteChannelSt.ExecuteNonQuery();
         }
 
-        public void deleteSymptomPointRelation(Symptom symptom, Point point)
+        public void DeleteSymptomPointRelation(Symptom symptom, Point point)
         {
             deleteSymptomPointRelationSt.Parameters["@symptomId"].Value = symptom.Id;
             deleteSymptomPointRelationSt.Parameters["@pointId"].Value = point.Id;
             deleteSymptomPointRelationSt.ExecuteNonQuery();
         }
 
-        public void deleteSymptomMeetingRelation(Symptom symptom, Meeting meeting)
+        public void DeleteSymptomMeetingRelation(Symptom symptom, Meeting meeting)
         {
             deleteSymptomMeetingRelationSt.Parameters["@symptomId"].Value = symptom.Id;
             deleteSymptomMeetingRelationSt.Parameters["@meetingId"].Value = meeting.Id;
             deleteSymptomMeetingRelationSt.ExecuteNonQuery();
         }
 
-        public void deleteSymptomChannelRelation(Symptom symptom, Channel channel)
+        public void DeleteSymptomChannelRelation(Symptom symptom, Channel channel)
         {
             deleteSymptomChannelRelationSt.Parameters["@symptomId"].Value = symptom.Id;
             deleteSymptomChannelRelationSt.Parameters["@channelId"].Value = channel.Id;
             deleteSymptomChannelRelationSt.ExecuteNonQuery();
         }
 
-        public void deleteMeetingPoint(Meeting meeting, Point point)
+        public void DeleteMeetingPoint(Meeting meeting, Point point)
         {
             deleteMeetingPointSt.Parameters["@meetingId"].Value = meeting.Id;
             deleteMeetingPointSt.Parameters["@pointId"].Value = point.Id;
@@ -379,125 +379,125 @@ namespace AcupunctureProject.database
             getAllMeetingsRelativeToPatientSt.Parameters["@patientId"].Value = patient.Id;
             using (SQLiteDataReader rs = getAllMeetingsRelativeToPatientSt.ExecuteReader())
             {
-                return getMeetings(rs);
+                return GetMeetings(rs);
             }
         }
-        public Channel getChannel(int id)
+        public Channel GetChannel(int id)
         {
             getChannelByIdSt.Parameters["@id"].Value = id;
             using (SQLiteDataReader rs = getChannelByIdSt.ExecuteReader())
             {
                 if (rs.Read())
-                    return getChannel(rs);
+                    return GetChannel(rs);
                 return null;
             }
         }
 
-        public Point getPoint(int id)
+        public Point GetPoint(int id)
         {
             getPointByIdSt.Parameters["@id"].Value = id;
             using (SQLiteDataReader rs = getPointByIdSt.ExecuteReader())
             {
                 if (rs.Read())
-                    return getPoint(rs);
+                    return GetPoint(rs);
                 return null;
             }
         }
 
-        public List<Point> getAllPoints()
+        public List<Point> GetAllPoints()
         {
             using (SQLiteDataReader rs = getAllPointsSt.ExecuteReader())
             {
-                return getPoints(rs);
+                return GetPoints(rs);
             }
         }
 
-        public Point getPoint(string name)
+        public Point GetPoint(string name)
         {
             getPointByNameSt.Parameters["@name"].Value = name;
             using (SQLiteDataReader rs = getPointByNameSt.ExecuteReader())
             {
                 if (rs.Read())
-                    return getPoint(rs);
+                    return GetPoint(rs);
                 return null;
             }
         }
 
-        public Symptom getSymptom(string name)
+        public Symptom GetSymptom(string name)
         {
             getSymptomSt.Parameters["@name"].Value = name;
             using (SQLiteDataReader rs = getSymptomSt.ExecuteReader())
             {
                 if (rs.Read())
-                    return getSymptom(rs);
+                    return GetSymptom(rs);
                 return null;
             }
         }
 
-        public List<Symptom> findSymptom(string name)
+        public List<Symptom> FindSymptom(string name)
         {
             findSymptomSt.CommandText = "SELECT * FROM SYMPTOM where NAME like '%" + name + "%';";
             using (SQLiteDataReader rs = findSymptomSt.ExecuteReader())
             {
-                return getSymptoms(rs);
+                return GetSymptoms(rs);
             }
         }
 
-        public List<Point> findPoint(string name)
+        public List<Point> FindPoint(string name)
         {
             findPointSt.CommandText = "SELECT * FROM POINTS where NAME like '%" + name + "%';";
             using (SQLiteDataReader rs = findPointSt.ExecuteReader())
             {
-                return getPoints(rs);
+                return GetPoints(rs);
             }
         }
 
 
-        public List<Patient> findPatient(string name)
+        public List<Patient> FindPatient(string name)
         {
             findPatientSt.CommandText = "SELECT * FROM PATIENT where NAME like '%" + name + "%';";
             using (SQLiteDataReader rs = findPatientSt.ExecuteReader())
             {
-                return getPatients(rs);
+                return GetPatients(rs);
             }
         }
 
-        public List<ConnectionValue<Channel>> getAllChannelRelativeToSymptom(Symptom symptom)
+        public List<ConnectionValue<Channel>> GetAllChannelRelativeToSymptom(Symptom symptom)
         {
             getAllChannelRelativeToSymptomSt.Parameters["@symptomId"].Value = symptom.Id;
             using (SQLiteDataReader rs = getAllChannelRelativeToSymptomSt.ExecuteReader())
             {
                 List<ConnectionValue<Channel>> o = new List<ConnectionValue<Channel>>();
                 while (rs.Read())
-                    o.Add(new ConnectionValue<Channel>(getChannel(rs), rs.GetIntL(ConnectionValue<Channel>.IMPORTENCE),
+                    o.Add(new ConnectionValue<Channel>(GetChannel(rs), rs.GetIntL(ConnectionValue<Channel>.IMPORTENCE),
                             rs.GetStringL(ConnectionValue<Channel>.COMMENT)));
                 return o;
             }
         }
 
-        public List<ConnectionValue<Point>> getAllPointRelativeToSymptom(Symptom symptom)
+        public List<ConnectionValue<Point>> GetAllPointRelativeToSymptom(Symptom symptom)
         {
             getAllPointRelativeToSymptomSt.Parameters["@symptomId"].Value = symptom.Id;
             using (SQLiteDataReader rs = getAllPointRelativeToSymptomSt.ExecuteReader())
             {
                 List<ConnectionValue<Point>> o = new List<ConnectionValue<Point>>();
                 while (rs.Read())
-                    o.Add(new ConnectionValue<Point>(getPoint(rs), rs.GetIntL(ConnectionValue<Point>.IMPORTENCE),
+                    o.Add(new ConnectionValue<Point>(GetPoint(rs), rs.GetIntL(ConnectionValue<Point>.IMPORTENCE),
                             rs.GetStringL(ConnectionValue<Point>.COMMENT)));
                 return o;
             }
         }
 
-        public List<ConnectionValue<Symptom>> getAllSymptomRelativeToPoint(Point point)
+        public List<ConnectionValue<Symptom>> GetAllSymptomRelativeToPoint(Point point)
         {
             getAllSymptomRelativeToPointSt.Parameters["@pointId"].Value = point.Id;
             using (SQLiteDataReader rs = getAllSymptomRelativeToPointSt.ExecuteReader())
             {
-                return getSymptomsConnection(rs);
+                return GetSymptomsConnection(rs);
             }
         }
 
-        public List<Meeting> getAllMeetingsRelativeToSymptoms(List<Symptom> symptoms)
+        public List<Meeting> GetAllMeetingsRelativeToSymptoms(List<Symptom> symptoms)
         {
             string sql = "select MEETING.*,count(MEETING.ID) from MEETING INNER JOIN MEETING_SYMPTOM ON MEETING.ID = MEETING_SYMPTOM.MEETING_ID where ";
             for (int i = 0; i < symptoms.Count; i++)
@@ -510,12 +510,12 @@ namespace AcupunctureProject.database
             getAllMeetingsRelativeToSymptomsSt.CommandText = sql;
             using (SQLiteDataReader rs = getAllMeetingsRelativeToSymptomsSt.ExecuteReader())
             {
-                return getMeetings(rs);
+                return GetMeetings(rs);
             }
         }
         #endregion
         #region inserts
-        public Channel insertChannel(Channel channel)
+        public Channel InsertChannel(Channel channel)
         {
             insertChannelSt.Parameters["@channelId"].Value = channel.Id;
             insertChannelSt.Parameters["@name"].Value = channel.Name;
@@ -529,7 +529,7 @@ namespace AcupunctureProject.database
             return channel;
         }
 
-        public void insertSymptomChannelRelation(Symptom symptom, Channel channel, int importance, string comment)
+        public void InsertSymptomChannelRelation(Symptom symptom, Channel channel, int importance, string comment)
         {
             insertSymptomChannelRelationSt.Parameters["@symptomId"].Value = symptom.Id;
             insertSymptomChannelRelationSt.Parameters["@channelId"].Value = channel.Id;
@@ -538,14 +538,14 @@ namespace AcupunctureProject.database
             insertSymptomChannelRelationSt.ExecuteNonQuery();
         }
 
-        public void insertMeetingPointRelation(Meeting meeting, Point point)
+        public void InsertMeetingPointRelation(Meeting meeting, Point point)
         {
             insertMeetingPointRelationSt.Parameters["@meetingId"].Value = meeting.Id;
             insertMeetingPointRelationSt.Parameters["@pointId"].Value = point.Id;
             insertMeetingPointRelationSt.ExecuteNonQuery();
         }
 
-        public void insertSymptomPointRelation(Symptom symptom, Point point, int importance, string comment)
+        public void InsertSymptomPointRelation(Symptom symptom, Point point, int importance, string comment)
         {
             insertSymptomPointRelationSt.Parameters["@symptomId"].Value = symptom.Id;
             insertSymptomPointRelationSt.Parameters["@pointId"].Value = point.Id;
@@ -554,14 +554,14 @@ namespace AcupunctureProject.database
             insertSymptomPointRelationSt.ExecuteNonQuery();
         }
 
-        public void insertSymptomMeetingRelation(Symptom symptom, Meeting meeting)
+        public void InsertSymptomMeetingRelation(Symptom symptom, Meeting meeting)
         {
             insertSymptomMeetingRelationSt.Parameters["@meetingId"].Value = meeting.Id;
             insertSymptomMeetingRelationSt.Parameters["@symptomId"].Value = symptom.Id;
             insertSymptomMeetingRelationSt.ExecuteNonQuery();
         }
 
-        public Symptom insertSymptom(Symptom symptom)
+        public Symptom InsertSymptom(Symptom symptom)
         {
             insertSymptomSt.Parameters["@name"].Value = symptom.Name;
             insertSymptomSt.Parameters["@comment"].Value = symptom.Comment;
@@ -578,7 +578,7 @@ namespace AcupunctureProject.database
             throw new Exception("ERORR:Insert didn't accure");
         }
 
-        public Meeting insertMeeting(Meeting meeting)
+        public Meeting InsertMeeting(Meeting meeting)
         {
             insertMeetingSt.Parameters["@patientId"].Value = meeting.PatientId;
             insertMeetingSt.Parameters["@purpose"].Value = meeting.Purpose;
@@ -599,7 +599,7 @@ namespace AcupunctureProject.database
             throw new Exception("ERORR:insert meeting didn't accure");
         }
 
-        public Patient insertPatient(Patient patient)
+        public Patient InsertPatient(Patient patient)
         {
             try
             {
@@ -629,7 +629,7 @@ namespace AcupunctureProject.database
             throw new Exception("ERORR:insert patient didn't accure");
         }
 
-        public Point insertPoint(Point point)
+        public Point InsertPoint(Point point)
         {
             insertPointsSt.Parameters["@name"].Value = point.Name;
             insertPointsSt.Parameters["@minNeedleDepth"].Value = point.MinNeedleDepth;
@@ -652,14 +652,14 @@ namespace AcupunctureProject.database
         }
         #endregion
         #region get from SQLiteDataReader the objects
-        private Channel getChannel(SQLiteDataReader rs)
+        private Channel GetChannel(SQLiteDataReader rs)
         {
             return new Channel(rs.GetIntL(ID), rs.GetStringL(Channel.NAME), rs.GetStringL(Channel.RT),
                     rs.GetIntL(Channel.MAIN_POINT), rs.GetIntL(Channel.EVEN_POINT), rs.GetStringL(Channel.PATH),
                     rs.GetStringL(Channel.ROLE), rs.GetStringL(Channel.COMMENT));
         }
 
-        private Meeting getMeeting(SQLiteDataReader rs)
+        private Meeting GetMeeting(SQLiteDataReader rs)
         {
             return new Meeting(rs.GetIntL(ID), rs.GetIntL(Meeting.PATIENT_ID), rs.GetStringL(Meeting.PURPOSE),
                     rs.GetDateTimeL(Meeting.DATE), rs.GetStringL(Meeting.DESCRIPTION), rs.GetStringL(Meeting.SUMMERY),
@@ -667,15 +667,15 @@ namespace AcupunctureProject.database
                     Meeting.ResultValue.FromValue(rs.GetIntL(Meeting.RESULT_VALUE)));
         }
 
-        private List<Meeting> getMeetings(SQLiteDataReader rs)
+        private List<Meeting> GetMeetings(SQLiteDataReader rs)
         {
             List<Meeting> o = new List<Meeting>();
             while (rs.Read())
-                o.Add(getMeeting(rs));
+                o.Add(GetMeeting(rs));
             return o;
         }
 
-        private Patient getPatient(SQLiteDataReader rs)
+        private Patient GetPatient(SQLiteDataReader rs)
         {
             return new Patient(rs.GetIntL(ID), rs.GetStringL(Patient.NAME), rs.GetStringL(Patient.TELEPHONE),
                     rs.GetStringL(Patient.CELLPHONE), rs.GetDateTimeL(Patient.BIRTHDAY),
@@ -683,15 +683,15 @@ namespace AcupunctureProject.database
                     rs.GetStringL(Patient.MEDICAL_DESCRIPTION));
         }
 
-        private List<Patient> getPatients(SQLiteDataReader rs)
+        private List<Patient> GetPatients(SQLiteDataReader rs)
         {
             List<Patient> o = new List<Patient>();
             while (rs.Read())
-                o.Add(getPatient(rs));
+                o.Add(GetPatient(rs));
             return o;
         }
 
-        private Point getPoint(SQLiteDataReader rs)
+        private Point GetPoint(SQLiteDataReader rs)
         {
             return new Point(rs.GetIntL(ID), rs.GetStringL(Point.NAME), rs.GetIntL(Point.MIN_NEEDLE_DEPTH),
                     rs.GetIntL(Point.MAX_NEEDLE_DEPTH), rs.GetStringL(Point.NEEDLE_DESCRIPTION), rs.GetStringL(Point.POSITION),
@@ -699,37 +699,37 @@ namespace AcupunctureProject.database
                     rs.GetStringL(Point.NOTE), rs.GetStringL(Point.IMAGE));
         }
 
-        private List<Point> getPoints(SQLiteDataReader rs)
+        private List<Point> GetPoints(SQLiteDataReader rs)
         {
             List<Point> o = new List<Point>();
             while (rs.Read())
-                o.Add(getPoint(rs));
+                o.Add(GetPoint(rs));
             return o;
         }
 
-        private Symptom getSymptom(SQLiteDataReader rs)
+        private Symptom GetSymptom(SQLiteDataReader rs)
         {
             return new Symptom(rs.GetIntL(ID), rs.GetStringL(Symptom.NAME), rs.GetStringL(Symptom.COMMENT));
         }
 
-        private List<Symptom> getSymptoms(SQLiteDataReader rs)
+        private List<Symptom> GetSymptoms(SQLiteDataReader rs)
         {
             List<Symptom> o = new List<Symptom>();
             while (rs.Read())
-                o.Add(getSymptom(rs));
+                o.Add(GetSymptom(rs));
             return o;
         }
 
-        private ConnectionValue<Symptom> getSymptomConnection(SQLiteDataReader rs)
+        private ConnectionValue<Symptom> GetSymptomConnection(SQLiteDataReader rs)
         {
-            return new ConnectionValue<Symptom>(getSymptom(rs), rs.GetIntL(ConnectionValue<Symptom>.IMPORTENCE), rs.GetStringL(ConnectionValue<Symptom>.COMMENT));
+            return new ConnectionValue<Symptom>(GetSymptom(rs), rs.GetIntL(ConnectionValue<Symptom>.IMPORTENCE), rs.GetStringL(ConnectionValue<Symptom>.COMMENT));
         }
 
-        private List<ConnectionValue<Symptom>> getSymptomsConnection(SQLiteDataReader rs)
+        private List<ConnectionValue<Symptom>> GetSymptomsConnection(SQLiteDataReader rs)
         {
             List<ConnectionValue<Symptom>> o = new List<ConnectionValue<Symptom>>();
             while (rs.Read())
-                o.Add(getSymptomConnection(rs));
+                o.Add(GetSymptomConnection(rs));
             return o;
         }
         #endregion
@@ -762,31 +762,31 @@ namespace AcupunctureProject.database
         }
 
         //TODO cheack on this function
-        public List<Symptom> getAllSymptomRelativeToMeeting(Meeting meeting)
+        public List<Symptom> GetAllSymptomRelativeToMeeting(Meeting meeting)
         {
             getAllSymptomRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
             using (SQLiteDataReader rs = getAllSymptomRelativeToMeetingSt.ExecuteReader())
-                return getSymptoms(rs);
+                return GetSymptoms(rs);
         }
 
         //TODO cheack on this function
-        public Patient getPatientRelativeToMeeting(Meeting meeting)
+        public Patient GetPatientRelativeToMeeting(Meeting meeting)
         {
             getPatientRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
             using (SQLiteDataReader rs = getPatientRelativeToMeetingSt.ExecuteReader())
             {
                 if (rs.Read())
-                    return getPatient(rs);
+                    return GetPatient(rs);
                 else
                     return null;
             }
         }
 
-        public List<Point> getAllPointRelativeToMeeting(Meeting meeting)
+        public List<Point> GetAllPointRelativeToMeeting(Meeting meeting)
         {
             getAllPointRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
             using (SQLiteDataReader rs = getAllPointRelativeToMeetingSt.ExecuteReader())
-                return getPoints(rs);
+                return GetPoints(rs);
         }
     }
 }

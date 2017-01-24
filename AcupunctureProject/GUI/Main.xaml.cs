@@ -34,19 +34,19 @@ namespace AcupunctureProject.GUI
             {
                 folder += tempFolder[i] + "\\";
             }
-            BitmapImage backimagesource = new BitmapImage();
-            backimagesource.BeginInit();
-            backimagesource.UriSource = new Uri(folder + "images\\backpic.jpg");
-            backimagesource.EndInit();
-            backImage.Source = backimagesource;
+            BitmapImage BackImageSource = new BitmapImage();
+            BackImageSource.BeginInit();
+            BackImageSource.UriSource = new Uri(folder + "images\\backpic.jpg");
+            BackImageSource.EndInit();
+            BackImage.Source = BackImageSource;
         }
 
-        private void newPatientMI_Click(object sender, RoutedEventArgs e)
+        private void NewPatientMI_Click(object sender, RoutedEventArgs e)
         {
             new NewPatient().Show();
         }
 
-        private void newMeetingMI_Click(object sender, RoutedEventArgs e)
+        private void NewMeetingMI_Click(object sender, RoutedEventArgs e)
         {
             
             perent.Content = new NewMeeting(perent);
@@ -57,13 +57,13 @@ namespace AcupunctureProject.GUI
             new PatientList().Show();
         }
 
-        private void pointsListMI_Click(object sender, RoutedEventArgs e)
+        private void PointsListMI_Click(object sender, RoutedEventArgs e)
         {
-            List<database.Point> points = Database.Instance.getAllPoints();
+            List<database.Point> points = Database.Instance.GetAllPoints();
             new PointInfo(points[new Random().Next(0, points.Count - 1)]).Show();
         }
 
-        private void settingMI_Click(object sender, RoutedEventArgs e)
+        private void SettingMI_Click(object sender, RoutedEventArgs e)
         {
             new SettingWindow().Show();
         }

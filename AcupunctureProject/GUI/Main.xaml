@@ -15,13 +15,13 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="מטופל" Padding="5">
-                <MenuItem x:Name="newPatientMI" Header="הוסף מטופל" Click="newPatientMI_Click"/>
+                <MenuItem x:Name="NewPatientMI" Header="הוסף מטופל" Click="NewPatientMI_Click"/>
                 <MenuItem x:Name="PatientListMI" Header="רשימת מטופלים" Click="PatientListMI_Click"/>
             </MenuItem>
-            <MenuItem x:Name="newMeetingMI" Header="הוספת טפול" Click="newMeetingMI_Click" Padding="5"/>
-            <MenuItem x:Name="pointsListMI" Header="רשימת נקודות" Click="pointsListMI_Click" Padding="5"/>
-            <MenuItem x:Name="settingMI" Header="הגדרות" Padding="5" Click="settingMI_Click"/>
+            <MenuItem x:Name="NewMeetingMI" Header="הוספת טפול" Click="NewMeetingMI_Click" Padding="5"/>
+            <MenuItem x:Name="PointsListMI" Header="רשימת נקודות" Click="PointsListMI_Click" Padding="5"/>
+            <MenuItem x:Name="SettingMI" Header="הגדרות" Padding="5" Click="SettingMI_Click"/>
         </Menu>
-        <Image x:Name="backImage" Source="C:\Users\magshimim\Desktop\AcupunctureProject\images\backpic.jpg" Stretch="UniformToFill" Grid.Row="1"/>
+        <Image x:Name="BackImage" Source="C:\Users\magshimim\Desktop\AcupunctureProject\images\backpic.jpg" Stretch="UniformToFill" Grid.Row="1"/>
     </Grid>
 </Page>

@@ -41,7 +41,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBox x:Name="pointsSearch" Grid.Column="0" Grid.Row="0"/>
-            <ListView x:Name="points" Grid.Column="0" Grid.Row="2" Grid.RowSpan="5" Width="100" MouseDoubleClick="points_MouseDoubleClick"/>
+            <ListView x:Name="points" Grid.Column="0" Grid.Row="2" Grid.RowSpan="5" Width="100" MouseDoubleClick="Points_MouseDoubleClick"/>
             <Label Content="שם" Grid.Row="0" Grid.Column="2"/>
             <TextBox x:Name="name" Grid.Row="0" Grid.Column="4" />
             <Label Content="עומק מחט" Grid.Row="2" Grid.Column="2"/>
@@ -66,9 +66,9 @@
             <TextBox x:Name="note" Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="3"/>
             <TextBox x:Name="comment1" TextWrapping="Wrap" Grid.Row="2" Grid.RowSpan="3" Grid.Column="6"/>
             <TextBox x:Name="comment2" TextWrapping="Wrap" Grid.Row="2" Grid.RowSpan="3" Grid.Column="8"/>
-            <TreeView x:Name="syptomTreeView" Grid.Row="0" Grid.RowSpan="5" Grid.Column="10" Width="200" MouseDoubleClick="syptomTreeView_MouseDoubleClick"/>
+            <TreeView x:Name="syptomTreeView" Grid.Row="0" Grid.RowSpan="5" Grid.Column="10" Width="200" MouseDoubleClick="SyptomTreeView_MouseDoubleClick"/>
         </Grid>
-        <Image x:Name="pointImage" Source="C:\Users\magshimim\Documents\Visual Studio 2015\Projects\AcupunctureProject\AcupunctureProject\images\BL 60.jpg" Grid.Column="2" Grid.Row="0" MouseLeftButtonDown="pointImage_MouseLeftButtonDown"/>
+        <Image x:Name="pointImage" Source="C:\Users\magshimim\Documents\Visual Studio 2015\Projects\AcupunctureProject\AcupunctureProject\images\BL 60.jpg" Grid.Column="2" Grid.Row="0" MouseLeftButtonDown="PointImage_MouseLeftButtonDown"/>
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
@@ -77,9 +77,9 @@
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="censel" Content="ביטול" Grid.Column="0" Height="20" VerticalAlignment="Top" Click="censel_Click"/>
-            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="2" Height="20" VerticalAlignment="Top" Click="saveAndExit_Click"/>
-            <Button x:Name="save" Content="שמור" Grid.Column="4" Click="save_Click"/>
+            <Button x:Name="censel" Content="ביטול" Grid.Column="0" Height="20" VerticalAlignment="Top" Click="Censel_Click"/>
+            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="2" Height="20" VerticalAlignment="Top" Click="SaveAndExit_Click"/>
+            <Button x:Name="save" Content="שמור" Grid.Column="4" Click="Save_Click"/>
         </Grid>
     </Grid>
 </Window>
