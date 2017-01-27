@@ -47,7 +47,7 @@ namespace AcupunctureProject.database
         private SQLiteCommand getAllChannelRelativeToSymptomSt;
         private SQLiteCommand getAllPointRelativeToSymptomSt;
         private SQLiteCommand getAllSymptomRelativeToPointSt;
-        private SQLiteCommand getAllMeetingsRelativeToPatientSt;
+        private SQLiteCommand getAllMeetingsRelativeToPatientOrderByDateSt;
         private SQLiteCommand getAllSymptomRelativeToMeetingSt;
         private SQLiteCommand getAllPointRelativeToMeetingSt;
 
@@ -96,7 +96,7 @@ namespace AcupunctureProject.database
 
         private SQLiteCommand getAllPointsSt;
         #endregion
-        public Database()
+        private Database()
         {
             string[] tempFolder = System.Reflection.Assembly.GetEntryAssembly().Location.Split('\\');
             string folder = "";
@@ -104,9 +104,6 @@ namespace AcupunctureProject.database
             {
                 folder += tempFolder[i] + "\\";
             }
-            //SQLiteConnectionStringBuilder d = new SQLiteConnectionStringBuilder();
-            //d.DataSource = folder + "database.db";
-            //connection = new SQLiteConnection(d.ConnectionString);
             connection = new SQLiteConnection("Data Source=" + folder + "database.db;Version=3;");
             connection.Open();
 
@@ -163,7 +160,15 @@ namespace AcupunctureProject.database
             updateMeetingSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@patientId"), new SQLiteParameter("@purpose"), new SQLiteParameter("@date"), new SQLiteParameter("@description"), new SQLiteParameter("@summery"), new SQLiteParameter("@resultDecription"), new SQLiteParameter("@resultValue"), new SQLiteParameter("@meetingId") });
 
             updatePatientSt = new SQLiteCommand("update PATIENT set NAME = @name ,TELEPHONE = @telephone ,CELLPHONE = @cellphone ,BIRTHDAY = @birthday ,GENDER = @gander ,ADDRESS = @address ,EMAIL = @email ,MEDICAL_DESCRIPTION = @medicalDescription where ID = @patientId;", connection);
-            updatePatientSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@telephone"), new SQLiteParameter("@cellphone"), new SQLiteParameter("@birthday"), new SQLiteParameter("@gender"), new SQLiteParameter("@address"), new SQLiteParameter("@email"), new SQLiteParameter("@medicalDescription") });
+            updatePatientSt.Parameters.Add(new SQLiteParameter("@name"));
+            updatePatientSt.Parameters.Add(new SQLiteParameter("@telephone"));
+            updatePatientSt.Parameters.Add(new SQLiteParameter("@cellphone"));
+            updatePatientSt.Parameters.Add(new SQLiteParameter("@birthday"));
+            updatePatientSt.Parameters.Add(new SQLiteParameter("@gander"));
+            updatePatientSt.Parameters.Add(new SQLiteParameter("@address"));
+            updatePatientSt.Parameters.Add(new SQLiteParameter("@email"));
+            updatePatientSt.Parameters.Add(new SQLiteParameter("@medicalDescription"));
+            updatePatientSt.Parameters.Add(new SQLiteParameter("@patientId"));
 
             updatePointSt = new SQLiteCommand("update POINTS set NAME = @name ,MIN_NEEDLE_DEPTH = @minNeedleDepth ,MAX_NEEDLE_DEPTH = @maxNeedleDepth ,POSITION = @position ,IMPORTENCE = @importance ,COMMENT1 = @comment1 ,COMMENT2 = @comment2,NOTE = @note,IMAGE = @image where ID = @pointId;", connection);
             updatePointSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@minNeedleDepth"), new SQLiteParameter("@maxNeedleDepth"), new SQLiteParameter("@position"), new SQLiteParameter("@importance"), new SQLiteParameter("@comment1"), new SQLiteParameter("@comment2"), new SQLiteParameter("@note"), new SQLiteParameter("@image"), new SQLiteParameter("@pointId") });
@@ -217,8 +222,8 @@ namespace AcupunctureProject.database
             getChannelByIdSt = new SQLiteCommand("select * from CHANNEL where ID = @id;", connection);
             getChannelByIdSt.Parameters.Add(new SQLiteParameter("@id"));
 
-            getAllMeetingsRelativeToPatientSt = new SQLiteCommand("SELECT * FROM MEETING WHERE PATIENT_ID=@patientId", connection);
-            getAllMeetingsRelativeToPatientSt.Parameters.Add(new SQLiteParameter("@patientId"));
+            getAllMeetingsRelativeToPatientOrderByDateSt = new SQLiteCommand("SELECT * FROM MEETING WHERE PATIENT_ID=@patientId ORDER BY DATE DESC;", connection);
+            getAllMeetingsRelativeToPatientOrderByDateSt.Parameters.Add(new SQLiteParameter("@patientId"));
 
             getAllPointsSt = new SQLiteCommand("select * from POINTS;", connection);
 
@@ -257,7 +262,7 @@ namespace AcupunctureProject.database
         {
             updatePatientSt.Parameters["@name"].Value = patient.Name;
             updatePatientSt.Parameters["@telephone"].Value = patient.Telephone;
-            updatePatientSt.Parameters["@Cellphone"].Value = patient.Cellphone;
+            updatePatientSt.Parameters["@cellphone"].Value = patient.Cellphone;
             updatePatientSt.Parameters["@birthday"].Value = patient.Birthday;
             updatePatientSt.Parameters["@gender"].Value = patient.Gend.Value;
             updatePatientSt.Parameters["@address"].Value = patient.Address;
@@ -374,10 +379,10 @@ namespace AcupunctureProject.database
         #endregion
         #region finds objects
 
-        public List<Meeting> GetAllMeetingsRelativeToPatient(Patient patient)
+        public List<Meeting> GetAllMeetingsRelativeToPatientOrderByDate(Patient patient)
         {
-            getAllMeetingsRelativeToPatientSt.Parameters["@patientId"].Value = patient.Id;
-            using (SQLiteDataReader rs = getAllMeetingsRelativeToPatientSt.ExecuteReader())
+            getAllMeetingsRelativeToPatientOrderByDateSt.Parameters["@patientId"].Value = patient.Id;
+            using (SQLiteDataReader rs = getAllMeetingsRelativeToPatientOrderByDateSt.ExecuteReader())
             {
                 return GetMeetings(rs);
             }
@@ -740,19 +745,19 @@ namespace AcupunctureProject.database
             switch (level)
             {
                 case 0:
-                    return new Color() { A = 255, R = 255, G = 255, B = 0 };
+                    return new Color() { A = 255, R = 51, G = 0, B = 0 };
                 case 1:
-                    return new Color() { A = 255, R = 255, G = 0, B = 255 };
+                    return new Color() { A = 255, R = 102, G = 102, B = 0 };
                 case 2:
-                    return new Color() { A = 255, R = 0, G = 255, B = 255 };
+                    return new Color() { A = 255, R = 0, G = 102, B = 102 };
                 case 3:
-                    return new Color() { A = 255, R = 255, G = 0, B = 0 };
+                    return new Color() { A = 255, R = 51, G = 0, B = 102 };
                 case 4:
-                    return new Color() { A = 255, R = 0, G = 255, B = 0 };
+                    return new Color() { A = 255, R = 102, G = 0, B = 51 };
                 case 5:
-                    return new Color() { A = 255, R = 0, G = 0, B = 255 };
+                    return new Color() { A = 255, R = 0, G = 0, B = 102 };
                 default:
-                    return new Color() { A = 255, R = 255, G = 255, B = 255 };
+                    return new Color() { A = 255, R = 0, G = 0, B = 0 };
             }
         }
 

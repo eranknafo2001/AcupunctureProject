@@ -27,8 +27,6 @@ namespace AcupunctureProject.database
             public int Value { get; private set; }
             public static ResultValue FromValue(int value)
             {
-                if (value <= 0 && value >= 3)
-                    throw new Exception("ERROR::ResultValue is not exist");
                 switch (value)
                 {
                     case 0:
@@ -40,7 +38,7 @@ namespace AcupunctureProject.database
                     case 3:
                         return NO_CHANGE;
                     default:
-                        return null;
+                        throw new Exception("ERROR::ResultValue is not exist");
                 }
             }
 

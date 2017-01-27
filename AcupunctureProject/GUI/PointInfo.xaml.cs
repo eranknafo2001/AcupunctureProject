@@ -27,9 +27,9 @@ namespace AcupunctureProject.GUI
             InitializeComponent();
             Title += point.Name;
             this.point = point;
-            List<database.Point> pointList = Database.Instance.GetAllPoints();
-            for (int i = 0; i < pointList.Count; i++)
-                points.Items.Add(new ListViewItem() { Content = pointList[i].ToString(), DataContext = pointList[i] });
+            List<database.Point> points = Database.Instance.GetAllPoints();
+            for (int i = 0; i < points.Count; i++)
+                pointsList.Items.Add(new ListViewItem() { Content = points[i].ToString(), DataContext = points[i] });
             syptomTreeView.Items.Clear();
             List<ConnectionValue<Symptom>> symptomList = Database.Instance.GetAllSymptomRelativeToPoint(point);
             for (int i = 0; i < symptomList.Count; i++)
@@ -92,7 +92,7 @@ namespace AcupunctureProject.GUI
 
         private void Points_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ListViewItem item = (ListViewItem)points.SelectedItem;
+            ListViewItem item = (ListViewItem)pointsList.SelectedItem;
             SetAll((database.Point)item.DataContext);
         }
 
@@ -123,10 +123,10 @@ namespace AcupunctureProject.GUI
             point.Note = note.Text;
             point.Position = place.Text;
             Database.Instance.UpdatePoint(point);
-            points.Items.Clear();
+            pointsList.Items.Clear();
             List<database.Point> pointList = Database.Instance.GetAllPoints();
             for (int i = 0; i < pointList.Count; i++)
-                points.Items.Add(new ListViewItem() { Content = pointList[i].ToString(), DataContext = pointList[i] });
+                pointsList.Items.Add(new ListViewItem() { Content = pointList[i].ToString(), DataContext = pointList[i] });
         }
 
         private void Censel_Click(object sender, RoutedEventArgs e)
@@ -148,6 +148,16 @@ namespace AcupunctureProject.GUI
         private void PointImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             new FullWindowPic(pointImage.Source).Show();
+        }
+
+        private void PointsSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            List<database.Point> points = Database.Instance.FindPoint(pointsSearch.Text);
+            pointsList.Items.Clear();
+            for (int i = 0; i < points.Count; i++)
+            {
+                pointsList.Items.Add(new ListViewItem() { Content = points[i].ToString(), DataContext = points[i] });
+            }
         }
     }
 }

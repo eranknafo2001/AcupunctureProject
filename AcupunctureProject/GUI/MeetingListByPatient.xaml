@@ -18,8 +18,8 @@
         
         <DataGrid x:Name="meetingsDataGrid" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" FlowDirection="RightToLeft" AutoGenerateColumns="False" MouseDoubleClick="MeetingsDataGrid_MouseDoubleClick">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding DateString}" Header="תאריך" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding SmallDescription}" Header="הערות" IsReadOnly="True" Width="1000"/>
+                <DataGridTextColumn Binding="{Binding DateString}" Header="תאריך" IsReadOnly="True" CanUserSort="False"/>
+                <DataGridTextColumn Binding="{Binding SmallDescription}" Header="הערות" IsReadOnly="True" Width="1*" CanUserSort="False"/>
             </DataGrid.Columns>
         </DataGrid>
 

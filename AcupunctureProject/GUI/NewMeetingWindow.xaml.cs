@@ -11,19 +11,18 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using AcupunctureProject.database;
 
 namespace AcupunctureProject.GUI
 {
     /// <summary>
-    /// Interaction logic for MeetingInfoWindow.xaml
+    /// Interaction logic for newMeetingWindow.xaml
     /// </summary>
-    public partial class MeetingInfoWindow : Window
+    public partial class NewMeetingWindow : Window
     {
-        public MeetingInfoWindow(Meeting meeting, MeetingListByPatient meetingList)
+        public NewMeetingWindow()
         {
             InitializeComponent();
-            Content = new MeetingInfoPage(this, meeting, null, meetingList);
+            Content = new NewMeeting(this);
         }
     }
 }

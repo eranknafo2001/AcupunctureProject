@@ -11,6 +11,8 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -18,10 +20,17 @@
         <TextBox x:Name="searchTextBox" Grid.Row="0" Grid.Column="0" TextChanged="SearchTextBox_TextChanged"/>
         <DataGrid x:Name="patientDataGrid" Grid.Row="2" Grid.Column="0" FlowDirection="RightToLeft" AutoGenerateColumns="False" MouseDoubleClick="PatientDataGrid_MouseDoubleClick">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name}" Header="שם" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding BirthdaySort}" Header="תאריך לידה" IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding Gend}" Header="מין" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Name}" Header="שם" IsReadOnly="True" Width="1*" SortDirection="Ascending"/>
+                <DataGridTextColumn Binding="{Binding BirthdaySort}" Header="תאריך לידה" IsReadOnly="True" Width="auto" CanUserSort="False"/>
+                <DataGridTextColumn Binding="{Binding Gend}" Header="מין" IsReadOnly="True" Width="auto"/>
             </DataGrid.Columns>
         </DataGrid>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="delete" Content="מחק" Grid.Column="2" Width="50" Height="25" Click="Delete_Click"/>
+        </Grid>
     </Grid>
 </Window>

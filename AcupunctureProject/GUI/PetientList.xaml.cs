@@ -33,12 +33,36 @@ namespace AcupunctureProject.GUI
 
         private void PatientDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (patientDataGrid.SelectedIndex != -1)
+            Patient p = (Patient)patientDataGrid.SelectedItem;
+            if (p == null)
+                return;
+            PatientInfo pwin = new PatientInfo(p,this);
+            pwin.Show();
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            Patient patient = (Patient)patientDataGrid.SelectedItem;
+            if (patient == null)
+                return;
+            List<Meeting> meetings = Database.Instance.GetAllMeetingsRelativeToPatientOrderByDate(patient);
+            for (int i = 0; i < meetings.Count; i++)
             {
-                Patient p = (Patient)patientDataGrid.SelectedItem;
-                PatientInfo pwin = new PatientInfo(p);
-                pwin.Show();
+                List<database.Point> points = Database.Instance.GetAllPointsRelativeToMeeting(meetings[i]);
+                for (int j = 0; j < points.Count; j++)
+                    Database.Instance.DeleteMeetingPoint(meetings[i], points[j]);
+                List<Symptom> symptoms = Database.Instance.GetAllSymptomRelativeToMeeting(meetings[i]);
+                for (int j = 0; j < symptoms.Count; j++)
+                    Database.Instance.DeleteSymptomMeetingRelation(symptoms[j], meetings[i]);
+                Database.Instance.DeleteMeeting(meetings[i]);
             }
+            Database.Instance.DeletePatient(patient);
+            patientDataGrid.ItemsSource = Database.Instance.FindPatient(searchTextBox.Text);
+        }
+
+        internal void UpdateData()
+        {
+            patientDataGrid.ItemsSource = Database.Instance.FindPatient(searchTextBox.Text);
         }
     }
 }

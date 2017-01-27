@@ -17,8 +17,7 @@
                 <TreeViewItem Header="רמות חשיבות" IsSelected="True"/>
             </TreeViewItem>
         </TreeView>
-
-
+        
         <Frame x:Name="Settings" Grid.Column="2" BorderBrush="Black" BorderThickness="0.5"/>
     </Grid>
 </Window>

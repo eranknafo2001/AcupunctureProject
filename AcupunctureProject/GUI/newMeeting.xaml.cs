@@ -188,6 +188,8 @@ namespace AcupunctureProject.GUI
         private void SelectSymptom()
         {
             ListViewItem item = (ListViewItem)symptomSearchList.SelectedItem;
+            if (item == null)
+                return;
             for (int i = 0; i < symptomTreeView.Items.Count; i++)
             {
                 TreeViewItem tempItem = (TreeViewItem)symptomTreeView.Items[i];
@@ -319,12 +321,22 @@ namespace AcupunctureProject.GUI
         {
             if (e.Key.Equals(Key.Enter))
                 SelectSymptom();
+            else if (e.Key == Key.Escape)
+            {
+                Focus();
+                SetSymptomListVisibility(false);
+            }
         }
 
         private void SymptomSearchList_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key.Equals(Key.Enter))
                 SelectSymptom();
+            else if (e.Key == Key.Escape)
+            {
+                Focus();
+                SetSymptomListVisibility(false);
+            }
         }
 
         private void SymptomSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -423,6 +435,11 @@ namespace AcupunctureProject.GUI
         {
             if (e.Key == Key.Enter)
                 SelectPointThatUsed();
+            else if (e.Key == Key.Escape)
+            {
+                Focus();
+                SetPatientListVisibility(false);
+            }
         }
 
         private void SelectPointThatUsed()
@@ -443,6 +460,11 @@ namespace AcupunctureProject.GUI
         {
             if (e.Key == Key.Enter)
                 SelectPointThatUsed();
+            else if (e.Key == Key.Escape)
+            {
+                Focus();
+                SetPatientListVisibility(false);
+            }
         }
 
         private void PointThatUsedSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -465,6 +487,40 @@ namespace AcupunctureProject.GUI
                 item = (TreeViewItem)item.Parent;
             if (symptomTreeView.Items.Contains(item))
                 symptomTreeView.Items.Remove(item);
+        }
+
+        private void ResoltSummeryTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                AddNewLine(resoltSummeryTextBox);
+        }
+
+        private void AddNewLine(TextBox textBox)
+        {
+            int temp = textBox.SelectionStart;
+            textBox.Text = textBox.Text.Remove(temp, textBox.SelectionLength);
+            textBox.Text = textBox.Text.Insert(temp, "\n");
+            textBox.SelectionStart = temp + 1;
+        }
+
+        private void Notes_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                AddNewLine(notes);
+        }
+
+        private void SummeryTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                AddNewLine(summeryTextBox);
+        }
+
+        private void PointThatUsed_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (pointThatUsed.SelectedIndex == -1)
+                return;
+            ListBoxItem item = (ListBoxItem)pointThatUsed.SelectedItem;
+            new PointInfo((database.Point)item.DataContext).Show();
         }
     }
 }

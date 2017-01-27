@@ -21,11 +21,14 @@ namespace AcupunctureProject.GUI
     public partial class PatientInfo : Window
     {
         private Patient patient;
+        private PatientList perent;
 
-        public PatientInfo(Patient patient)
+        public PatientInfo(Patient patient, PatientList perent = null)
         {
             InitializeComponent();
             this.patient = patient;
+            this.perent = perent;
+            Title += patient.Name;
             name.Text = patient.Name;
             berthday.SelectedDate = patient.Birthday;
             address.Text = patient.Address;
@@ -48,10 +51,11 @@ namespace AcupunctureProject.GUI
             patient.Cellphone = cellphone.Text;
             patient.Telephone = telphone.Text;
             patient.MedicalDescription = hestory.Text;
-            ComboBoxItem gendItem = (ComboBoxItem)gender.SelectedItem;
-            patient.Gend = (Patient.Gender)gendItem.DataContext;
+            patient.Gend = Patient.Gender.FromValue(gender.SelectedIndex);
             patient.Email = email.Text;
             Database.Instance.UpdatePatient(patient);
+            if (perent != null)
+                perent.UpdateData();
         }
 
         private void Censel_Click(object sender, RoutedEventArgs e)

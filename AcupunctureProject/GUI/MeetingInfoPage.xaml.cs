@@ -29,13 +29,19 @@ namespace AcupunctureProject.GUI
         private List<Symptom> symptomsToAdd;
         private List<Symptom> symptomsToRemove;
         private Page goBack;
+        private MeetingListByPatient meetingList;
 
-        public MeetingInfoPage(Window perent, Meeting meeting, Page goBack = null)
+        private MeetingInfoPage()
         {
             InitializeComponent();
+        }
+
+        public MeetingInfoPage(Window perent, Meeting meeting, Page goBack = null, MeetingListByPatient meetingList = null) : this()
+        {
             this.perent = perent;
             this.meeting = meeting;
             this.goBack = goBack;
+            this.meetingList = meetingList;
             pointsToAdd = new List<database.Point>();
             pointsToRemove = new List<database.Point>();
             symptomsToAdd = new List<Symptom>();
@@ -47,7 +53,7 @@ namespace AcupunctureProject.GUI
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.BETTER.ToString(), DataContext = Meeting.ResultValue.BETTER });
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.WORSE.ToString(), DataContext = Meeting.ResultValue.WORSE });
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.NO_CHANGE.ToString(), DataContext = Meeting.ResultValue.NO_CHANGE });
-            resolt.SelectedIndex = 0;
+            resolt.SelectedIndex = meeting.Result.Value;
             level0.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(0) };
             level1.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(1) };
             level2.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(2) };
@@ -296,8 +302,7 @@ namespace AcupunctureProject.GUI
             meeting.Description = notes.Text;
             meeting.Summery = summeryTextBox.Text;
             meeting.ResultDescription = resoltSummeryTextBox.Text;
-            ComboBoxItem resoltItem = (ComboBoxItem)resolt.SelectedItem;
-            meeting.Result = (Meeting.ResultValue)resoltItem.DataContext;
+            meeting.Result = Meeting.ResultValue.FromValue(resolt.SelectedIndex);
             Database.Instance.UpdateMeeting(meeting);
 
             for (int i = 0; i < symptomsToAdd.Count; i++)
@@ -340,6 +345,8 @@ namespace AcupunctureProject.GUI
             for (int i = 0; i < pointsToAdd.Count; i++)
                 Database.Instance.InsertMeetingPointRelation(meeting, pointsToAdd[i]);
 
+            if (meetingList != null)
+                meetingList.UpdateData();
         }
 
         private void SaveAndExit_Click(object sender, RoutedEventArgs e)
@@ -446,6 +453,32 @@ namespace AcupunctureProject.GUI
             if (symptomTreeView.Items.Contains(item))
                 symptomTreeView.Items.Remove(item);
             symptomsToRemove.Add((Symptom)item.DataContext);
+        }
+
+        private void AddNewLine(TextBox textBox)
+        {
+            int temp = textBox.SelectionStart;
+            textBox.Text = textBox.Text.Remove(temp, textBox.SelectionLength);
+            textBox.Text = textBox.Text.Insert(temp, "\n");
+            textBox.SelectionStart = temp + 1;
+        }
+
+        private void Notes_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                AddNewLine(notes);
+        }
+
+        private void SummeryTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                AddNewLine(summeryTextBox);
+        }
+
+        private void ResoltSummeryTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                AddNewLine(resoltSummeryTextBox);
         }
     }
 }

@@ -48,8 +48,7 @@ namespace AcupunctureProject.GUI
 
         private void NewMeetingMI_Click(object sender, RoutedEventArgs e)
         {
-            
-            perent.Content = new NewMeeting(perent);
+            new NewMeetingWindow().Show();
         }
 
         private void PatientListMI_Click(object sender, RoutedEventArgs e)

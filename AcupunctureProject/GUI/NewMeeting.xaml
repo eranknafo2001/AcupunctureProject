@@ -97,7 +97,7 @@
         <Label Content="נקודות שטופלו" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center"/>
         <TextBox x:Name="pointThatUsedSearch" Grid.Column="4" Grid.Row="4" IsEnabled="False" GotFocus="PointThatUsedSearch_GotFocus" LostFocus="PointThatUsedSearch_LostFocus" FlowDirection="LeftToRight" TextChanged="PointThatUsedSearch_TextChanged"/>
         <ListView x:Name="pointThatUsedSearchList" MaxHeight="100" SelectionMode="Single" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="20" Visibility="Hidden" Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" LostFocus="PointThatUsedSearchList_LostFocus" GotFocus="PointThatUsedSearchList_GotFocus" FlowDirection="LeftToRight" KeyDown="PointThatUsedSearchList_KeyDown" MouseDoubleClick="PointThatUsedSearchList_MouseDoubleClick"/>
-        <ListBox x:Name="pointThatUsed" Grid.Row="6" Grid.Column="4" IsEnabled="False" KeyDown="PointThatUsed_KeyDown" FlowDirection="LeftToRight"/>
+        <ListBox x:Name="pointThatUsed" Grid.Row="6" Grid.Column="4" IsEnabled="False" MouseDoubleClick="PointThatUsed_MouseDoubleClick" KeyDown="PointThatUsed_KeyDown" FlowDirection="LeftToRight"/>
         <!--#region points that used delete button -->
         <Grid Grid.Column="4" Grid.Row="8">
             <Grid.ColumnDefinitions>
@@ -110,7 +110,7 @@
         <!--#endregion-->
         <!--#region notes -->
         <Label Content="הערות" Grid.Row="4" Grid.Column="6" HorizontalAlignment="Center"/>
-        <TextBox x:Name="notes" Grid.Row="6" Grid.Column="6" IsEnabled="False"/>
+        <TextBox x:Name="notes" Grid.Row="6" Grid.Column="6" IsEnabled="False" TextWrapping="Wrap" KeyDown="Notes_KeyDown"/>
         <!--#endregion-->
         <!--#region summery block -->
         <Label Content="סיכום" Grid.Row="4" Grid.Column="8" HorizontalAlignment="Center"/>
@@ -124,9 +124,9 @@
                 <RowDefinition Height="10"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="summeryTextBox" Grid.Row="0" IsEnabled="False"/>
+            <TextBox x:Name="summeryTextBox" Grid.Row="0" IsEnabled="False" TextWrapping="Wrap" KeyDown="SummeryTextBox_KeyDown"/>
             <Label Content="פרוט התוצאה" Grid.Row="2" HorizontalAlignment="Center"/>
-            <TextBox x:Name="resoltSummeryTextBox" Grid.Row="4" IsEnabled="False"/>
+            <TextBox x:Name="resoltSummeryTextBox" Grid.Row="4" IsEnabled="False" TextWrapping="Wrap" KeyDown="ResoltSummeryTextBox_KeyDown"/>
             <StackPanel Orientation="Horizontal" Grid.Row="6">
                 <Label Content="תוצאה"/>
                 <Border Width="5"/>
