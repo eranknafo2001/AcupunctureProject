@@ -56,7 +56,7 @@
         <!--#region symptoms -->
         <Label Content="סימפטומים" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center"/>
         <TextBox x:Name="symptomSearch" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Height="25" TextChanged="SymptomSearch_TextChanged" IsEnabled="False" LostFocus="SymptomSearch_LostFocus" GotFocus="SymptomSearch_GotFocus" KeyDown="SymptomSearch_KeyDown"/>
-        <ListView x:Name="symptomSearchList" MaxHeight="100" SelectionMode="Single" Visibility="Hidden" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top" LostFocus="SymptomSearchList_LostFocus" GotFocus="SymptomSearchList_GotFocus" KeyDown="SymptomSearchList_KeyDown" MouseDoubleClick="SymptomSearchList_MouseDoubleClick" Grid.RowSpan="3" Panel.ZIndex="20"/>
+        <ListView x:Name="symptomSearchList" MaxHeight="100" SelectionMode="Single" Visibility="Hidden" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" LostFocus="SymptomSearchList_LostFocus" GotFocus="SymptomSearchList_GotFocus" KeyDown="SymptomSearchList_KeyDown" MouseDoubleClick="SymptomSearchList_MouseDoubleClick" Grid.RowSpan="3" Panel.ZIndex="20"/>
         <TreeView x:Name="symptomTreeView" Grid.Row="6" Grid.Column="2" Margin="0,0,0,0" IsEnabled="False" MouseDoubleClick="SymptomTreeView_MouseDoubleClick"/>
         <!--#region levels and delete for symptom tree -->
         <Grid Grid.Row="8" Grid.Column="2">
@@ -96,7 +96,7 @@
         <!--#region points that used -->
         <Label Content="נקודות שטופלו" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center"/>
         <TextBox x:Name="pointThatUsedSearch" Grid.Column="4" Grid.Row="4" IsEnabled="False" GotFocus="PointThatUsedSearch_GotFocus" LostFocus="PointThatUsedSearch_LostFocus" FlowDirection="LeftToRight" TextChanged="PointThatUsedSearch_TextChanged"/>
-        <ListView x:Name="pointThatUsedSearchList" MaxHeight="100" SelectionMode="Single" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="20" Visibility="Hidden" Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" LostFocus="PointThatUsedSearchList_LostFocus" GotFocus="PointThatUsedSearchList_GotFocus" FlowDirection="LeftToRight" KeyDown="PointThatUsedSearchList_KeyDown" MouseDoubleClick="PointThatUsedSearchList_MouseDoubleClick"/>
+        <ListView x:Name="pointThatUsedSearchList" MaxHeight="100" SelectionMode="Single" VerticalAlignment="Top" Panel.ZIndex="20" Visibility="Hidden" Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" LostFocus="PointThatUsedSearchList_LostFocus" GotFocus="PointThatUsedSearchList_GotFocus" FlowDirection="LeftToRight" KeyDown="PointThatUsedSearchList_KeyDown" MouseDoubleClick="PointThatUsedSearchList_MouseDoubleClick"/>
         <ListBox x:Name="pointThatUsed" Grid.Row="6" Grid.Column="4" IsEnabled="False" MouseDoubleClick="PointThatUsed_MouseDoubleClick" KeyDown="PointThatUsed_KeyDown" FlowDirection="LeftToRight"/>
         <!--#region points that used delete button -->
         <Grid Grid.Column="4" Grid.Row="8">

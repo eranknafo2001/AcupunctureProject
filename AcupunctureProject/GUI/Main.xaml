@@ -18,7 +18,7 @@
                 <MenuItem x:Name="NewPatientMI" Header="הוסף מטופל" Click="NewPatientMI_Click"/>
                 <MenuItem x:Name="PatientListMI" Header="רשימת מטופלים" Click="PatientListMI_Click"/>
             </MenuItem>
-            <MenuItem x:Name="NewMeetingMI" Header="הוספת טפול" Click="NewMeetingMI_Click" Padding="5"/>
+            <MenuItem x:Name="NewMeetingMI" Header="הוספת טיפול" Click="NewMeetingMI_Click" Padding="5"/>
             <MenuItem x:Name="PointsListMI" Header="רשימת נקודות" Click="PointsListMI_Click" Padding="5"/>
             <!--<MenuItem x:Name="SettingMI" Header="הגדרות" Padding="5" Click="SettingMI_Click"/>-->
         </Menu>

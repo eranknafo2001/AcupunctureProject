@@ -480,5 +480,13 @@ namespace AcupunctureProject.GUI
             if (e.Key == Key.Enter)
                 AddNewLine(resoltSummeryTextBox);
         }
+
+        private void PointThatUsed_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (pointThatUsed.SelectedIndex == -1)
+                return;
+            ListBoxItem item = (ListBoxItem)pointThatUsed.SelectedItem;
+            new PointInfo((database.Point)item.DataContext).Show();
+        }
     }
 }
