@@ -160,15 +160,7 @@ namespace AcupunctureProject.database
             updateMeetingSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@patientId"), new SQLiteParameter("@purpose"), new SQLiteParameter("@date"), new SQLiteParameter("@description"), new SQLiteParameter("@summery"), new SQLiteParameter("@resultDecription"), new SQLiteParameter("@resultValue"), new SQLiteParameter("@meetingId") });
 
             updatePatientSt = new SQLiteCommand("update PATIENT set NAME = @name ,TELEPHONE = @telephone ,CELLPHONE = @cellphone ,BIRTHDAY = @birthday ,GENDER = @gander ,ADDRESS = @address ,EMAIL = @email ,MEDICAL_DESCRIPTION = @medicalDescription where ID = @patientId;", connection);
-            updatePatientSt.Parameters.Add(new SQLiteParameter("@name"));
-            updatePatientSt.Parameters.Add(new SQLiteParameter("@telephone"));
-            updatePatientSt.Parameters.Add(new SQLiteParameter("@cellphone"));
-            updatePatientSt.Parameters.Add(new SQLiteParameter("@birthday"));
-            updatePatientSt.Parameters.Add(new SQLiteParameter("@gander"));
-            updatePatientSt.Parameters.Add(new SQLiteParameter("@address"));
-            updatePatientSt.Parameters.Add(new SQLiteParameter("@email"));
-            updatePatientSt.Parameters.Add(new SQLiteParameter("@medicalDescription"));
-            updatePatientSt.Parameters.Add(new SQLiteParameter("@patientId"));
+            updatePatientSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@telephone"), new SQLiteParameter("@cellphone"), new SQLiteParameter("@birthday"), new SQLiteParameter("@gander"), new SQLiteParameter("@address"), new SQLiteParameter("@email"), new SQLiteParameter("@medicalDescription"), new SQLiteParameter("@patientId") });
 
             updatePointSt = new SQLiteCommand("update POINTS set NAME = @name ,MIN_NEEDLE_DEPTH = @minNeedleDepth ,MAX_NEEDLE_DEPTH = @maxNeedleDepth ,POSITION = @position ,IMPORTENCE = @importance ,COMMENT1 = @comment1 ,COMMENT2 = @comment2,NOTE = @note,IMAGE = @image where ID = @pointId;", connection);
             updatePointSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@minNeedleDepth"), new SQLiteParameter("@maxNeedleDepth"), new SQLiteParameter("@position"), new SQLiteParameter("@importance"), new SQLiteParameter("@comment1"), new SQLiteParameter("@comment2"), new SQLiteParameter("@note"), new SQLiteParameter("@image"), new SQLiteParameter("@pointId") });
@@ -264,7 +256,7 @@ namespace AcupunctureProject.database
             updatePatientSt.Parameters["@telephone"].Value = patient.Telephone;
             updatePatientSt.Parameters["@cellphone"].Value = patient.Cellphone;
             updatePatientSt.Parameters["@birthday"].Value = patient.Birthday;
-            updatePatientSt.Parameters["@gender"].Value = patient.Gend.Value;
+            updatePatientSt.Parameters["@gander"].Value = patient.Gend.Value;
             updatePatientSt.Parameters["@address"].Value = patient.Address;
             updatePatientSt.Parameters["@email"].Value = patient.Email;
             updatePatientSt.Parameters["@medicalDescription"].Value = patient.MedicalDescription;
