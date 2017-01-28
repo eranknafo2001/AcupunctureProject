@@ -23,7 +23,7 @@ namespace AcupunctureProject.GUI
         public MeetingInfoWindow(Meeting meeting, MeetingListByPatient meetingList)
         {
             InitializeComponent();
-            Content = new MeetingInfoPage(this, meeting, null, meetingList);
+            Content = new MeetingInfoPage(this, meeting, meetingList);
         }
     }
 }

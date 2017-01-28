@@ -28,7 +28,6 @@ namespace AcupunctureProject.GUI
         private List<database.Point> pointsToRemove;
         private List<Symptom> symptomsToAdd;
         private List<Symptom> symptomsToRemove;
-        private Page goBack;
         private MeetingListByPatient meetingList;
 
         private MeetingInfoPage()
@@ -36,12 +35,13 @@ namespace AcupunctureProject.GUI
             InitializeComponent();
         }
 
-        public MeetingInfoPage(Window perent, Meeting meeting, Page goBack = null, MeetingListByPatient meetingList = null) : this()
+        public MeetingInfoPage(Window perent, Meeting meeting, MeetingListByPatient meetingList = null) : this()
         {
             this.perent = perent;
             this.meeting = meeting;
-            this.goBack = goBack;
             this.meetingList = meetingList;
+            if (meetingList != null)
+                perent.Title += Database.Instance.GetPatientRelativeToMeeting(meeting).Name;
             pointsToAdd = new List<database.Point>();
             pointsToRemove = new List<database.Point>();
             symptomsToAdd = new List<Symptom>();
@@ -78,7 +78,7 @@ namespace AcupunctureProject.GUI
             List<Symptom> symptoms = Database.Instance.GetAllSymptomRelativeToMeeting(meeting);
             for (int i = 0; i < symptoms.Count; i++)
                 SddItemToSymptomTree(symptoms[i]);
-            SefindConnectedPoint();
+            FindConnectedPoint();
             List<database.Point> pointsThatUsed = Database.Instance.GetAllPointsRelativeToMeeting(meeting);
             for (int i = 0; i < pointsThatUsed.Count; i++)
                 pointThatUsed.Items.Add(new ListBoxItem() { Content = pointsThatUsed[i].ToString(), DataContext = pointsThatUsed[i] });
@@ -96,10 +96,7 @@ namespace AcupunctureProject.GUI
 
         private void Censel_Click(object sender, RoutedEventArgs e)
         {
-            if (goBack == null)
-                perent.Close();
-            else
-                perent.Content = goBack;
+            perent.Close();
         }
 
         private void RelaodSymptomList()
@@ -143,6 +140,8 @@ namespace AcupunctureProject.GUI
         private void SelectSymptom()
         {
             ListViewItem item = (ListViewItem)symptomSearchList.SelectedItem;
+            if (item == null)
+                return;
             for (int i = 0; i < symptomTreeView.Items.Count; i++)
             {
                 TreeViewItem tempItem = (TreeViewItem)symptomTreeView.Items[i];
@@ -153,12 +152,13 @@ namespace AcupunctureProject.GUI
             }
             SddItemToSymptomTree((Symptom)item.DataContext);
             symptomsToAdd.Add((Symptom)item.DataContext);
-            SefindConnectedPoint();
+            FindConnectedPoint();
+            SetSymptomListVisibility(false);
             symptomSearch.Clear();
             RelaodSymptomList();
         }
 
-        private void SefindConnectedPoint()
+        private void FindConnectedPoint()
         {
             Dictionary<Type, Dictionary<int, List<TreeViewItem>>> count = new Dictionary<Type, Dictionary<int, List<TreeViewItem>>>();
             for (int i = 0; i < symptomTreeView.Items.Count; i++)
@@ -186,6 +186,7 @@ namespace AcupunctureProject.GUI
                         count[chItem.DataContext.GetType()][point.Value.Id].Add(chItem);
                     }
                 }
+
             }
 
             List<Type> typeKeys = count.Keys.ToList();
@@ -352,10 +353,7 @@ namespace AcupunctureProject.GUI
         private void SaveAndExit_Click(object sender, RoutedEventArgs e)
         {
             SaveData();
-            if (goBack == null)
-                perent.Close();
-            else
-                perent.Content = goBack;
+            perent.Close();
         }
 
         private void OpenPatientButton_Click(object sender, RoutedEventArgs e)
@@ -410,17 +408,17 @@ namespace AcupunctureProject.GUI
         private void SelectPointThatUsed()
         {
             ListViewItem item = (ListViewItem)pointThatUsedSearchList.SelectedItem;
-            bool isThereACopy = false;
-            for (int i = 0; i < pointThatUsed.Items.Count && !isThereACopy; i++)
+            if (item == null)
+                return;
+            for (int i = 0; i < pointThatUsed.Items.Count; i++)
             {
                 ListBoxItem tempItem = (ListBoxItem)pointThatUsed.Items[i];
-                isThereACopy = tempItem.Content == item.Content;
+                if (tempItem.Content.Equals(item.Content))
+                    return;
             }
-
-            if (isThereACopy)
-                return;
             pointThatUsed.Items.Add(new ListBoxItem() { Content = item.Content, DataContext = item.DataContext });
             pointsToAdd.Add((database.Point)item.DataContext);
+            SetpointThatUsedSearchListViability(false);
         }
 
         private void PointThatUsed_KeyDown(object sender, KeyEventArgs e)

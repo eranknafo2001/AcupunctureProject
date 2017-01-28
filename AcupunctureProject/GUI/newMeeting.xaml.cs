@@ -49,7 +49,7 @@ namespace AcupunctureProject.GUI
 
         private void Censel_Click(object sender, RoutedEventArgs e)
         {
-            perent.Content = new Main(perent);
+            perent.Close();
         }
 
         private void PatientSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -74,6 +74,8 @@ namespace AcupunctureProject.GUI
         private void SelectPatient()
         {
             ListViewItem item = (ListViewItem)patientSearchList.SelectedItem;
+            if (item == null)
+                return;
             selectedPatient = (Patient)item.DataContext;
             patientSearchTextBox.Text = selectedPatient.Name;
             patientSearchTextBox.IsEnabled = false;
@@ -200,6 +202,7 @@ namespace AcupunctureProject.GUI
             }
             AddItemToSymptomTree((Symptom)item.DataContext);
             RefindConnectedPoint();
+            SetSymptomListVisibility(false);
             symptomSearch.Clear();
             RelaodSymptomList();
         }
@@ -360,7 +363,7 @@ namespace AcupunctureProject.GUI
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             Meeting meeting = SaveData();
-            perent.Content = new MeetingInfoPage(perent, meeting, new Main(perent));
+            perent.Content = new MeetingInfoPage(perent, meeting);
         }
 
         private Meeting SaveData()
@@ -385,7 +388,7 @@ namespace AcupunctureProject.GUI
         private void SaveAndExit_Click(object sender, RoutedEventArgs e)
         {
             SaveData();
-            perent.Content = new Main(perent);
+            perent.Close();
         }
 
         private void OpenPatientButton_Click(object sender, RoutedEventArgs e)
@@ -445,15 +448,16 @@ namespace AcupunctureProject.GUI
         private void SelectPointThatUsed()
         {
             ListViewItem item = (ListViewItem)pointThatUsedSearchList.SelectedItem;
-            bool isThereACopy = false;
-            for (int i = 0; i < pointThatUsed.Items.Count && !isThereACopy; i++)
+            if (item == null)
+                return;
+            for (int i = 0; i < pointThatUsed.Items.Count; i++)
             {
                 ListBoxItem tempItem = (ListBoxItem)pointThatUsed.Items[i];
-                isThereACopy = tempItem.Content == item.Content;
+                if (tempItem.Content.Equals(item.Content))
+                    return;
             }
-
-            if (!isThereACopy)
-                pointThatUsed.Items.Add(new ListBoxItem() { Content = item.Content, DataContext = item.DataContext });
+            pointThatUsed.Items.Add(new ListBoxItem() { Content = item.Content, DataContext = item.DataContext });
+            SetpointThatUsedSearchListViability(false);
         }
 
         private void PointThatUsed_KeyDown(object sender, KeyEventArgs e)

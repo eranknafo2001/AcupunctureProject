@@ -93,6 +93,8 @@ namespace AcupunctureProject.GUI
         private void Points_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ListViewItem item = (ListViewItem)pointsList.SelectedItem;
+            if (item == null)
+                return;
             SetAll((database.Point)item.DataContext);
         }
 
@@ -147,7 +149,7 @@ namespace AcupunctureProject.GUI
 
         private void PointImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            new FullWindowPic(pointImage.Source).Show();
+            new FullWindowPic(pointImage.Source, (int)(pointImage.ActualWidth * 2), (int)(pointImage.ActualHeight * 2)).Show();
         }
 
         private void PointsSearch_TextChanged(object sender, TextChangedEventArgs e)

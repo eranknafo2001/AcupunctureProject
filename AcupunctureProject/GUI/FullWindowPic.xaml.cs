@@ -19,10 +19,12 @@ namespace AcupunctureProject.GUI
     /// </summary>
     public partial class FullWindowPic : Window
     {
-        public FullWindowPic(ImageSource source)
+        public FullWindowPic(ImageSource source, int width, int height)
         {
             InitializeComponent();
             image.Source = source;
+            Width = width;
+            Height = height;
         }
     }
 }

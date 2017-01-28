@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:AcupunctureProject.GUI"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="MeetingInfoPage" FlowDirection="RightToLeft" Background="GhostWhite">
+      FlowDirection="RightToLeft" Background="GhostWhite">
 
     <Grid Margin="10">
         <!--#region row and col definitions -->
