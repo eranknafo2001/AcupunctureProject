@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using System.IO;
 
 namespace AcupunctureProject.database
 {
@@ -24,6 +25,18 @@ namespace AcupunctureProject.database
         public static int GetIntL(this SQLiteDataReader reader, string str)
         {
             return (int)(Int64)reader[str];
+        }
+
+        public static Color ReadColor(this BinaryReader reader)
+        {
+            return new Color() { R = reader.ReadByte(), G = reader.ReadByte(), B = reader.ReadByte(), A = 255 };
+        }
+
+        public static void Write(this BinaryWriter writer,Color color)
+        {
+            writer.Write(color.R);
+            writer.Write(color.G);
+            writer.Write(color.B);
         }
     }
 
@@ -95,11 +108,16 @@ namespace AcupunctureProject.database
         private SQLiteCommand getAllMeetingsRelativeToSymptomsSt;
 
         private SQLiteCommand getAllPointsSt;
+
+        private Color[] priorityColors;
+        public readonly static int NUM_OF_PRIORITIES = 6;
+        private readonly static string SETTING_COLOR_FILE = "setting_color.dat";
+        private readonly string folder;
         #endregion
         private Database()
         {
             string[] tempFolder = System.Reflection.Assembly.GetEntryAssembly().Location.Split('\\');
-            string folder = "";
+            folder = "";
             for (int i = 0; i < tempFolder.Length - 1; i++)
             {
                 folder += tempFolder[i] + "\\";
@@ -116,13 +134,13 @@ namespace AcupunctureProject.database
             getAllChannelRelativeToSymptomSt = new SQLiteCommand("SELECT CHANNEL.* , SYMPTOM_CHANNEL.IMPORTENCE , SYMPTOM_CHANNEL.COMMENT from CHANNEL INNER JOIN SYMPTOM_CHANNEL ON CHANNEL.ID = SYMPTOM_CHANNEL.CHANNEL_ID where SYMPTOM_CHANNEL.SYMPTOM_ID = @symptomId order by SYMPTOM_CHANNEL.IMPORTENCE DESC;", connection);
             getAllChannelRelativeToSymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
 
-            getAllSymptomRelativeToMeetingSt = new SQLiteCommand("SELECT SYMPTOM.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID=MEETING.ID INNER JOIN SYMPTOM ON SYMPTOM.ID=MEETING_POINTS.POINT_ID WHERE MEETING.ID=@meetingId;", connection);
+            getAllSymptomRelativeToMeetingSt = new SQLiteCommand("SELECT SYMPTOM.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID = MEETING.ID INNER JOIN SYMPTOM ON SYMPTOM.ID = MEETING_POINTS.POINT_ID WHERE MEETING.ID = @meetingId;", connection);
             getAllSymptomRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
 
-            getAllPointRelativeToMeetingSt = new SQLiteCommand("SELECT POINTS.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID=MEETING.ID INNER JOIN POINTS ON MEETING_POINTS.POINT_ID=POINTS.ID WHERE MEETING.ID=@meetingId", connection);
+            getAllPointRelativeToMeetingSt = new SQLiteCommand("SELECT POINTS.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID = MEETING.ID INNER JOIN POINTS ON MEETING_POINTS.POINT_ID = POINTS.ID WHERE MEETING.ID = @meetingId", connection);
             getAllPointRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
 
-            getPatientRelativeToMeetingSt = new SQLiteCommand("SELECT PATIENT.* FROM MEETING INNER JOIN PATIENT ON MEETING.PATIENT_ID=PATIENT.ID WHERE MEETING.ID=@meetingId", connection);
+            getPatientRelativeToMeetingSt = new SQLiteCommand("SELECT PATIENT.* FROM MEETING INNER JOIN PATIENT ON MEETING.PATIENT_ID = PATIENT.ID WHERE MEETING.ID = @meetingId", connection);
             getPatientRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
 
             insertSymptomSt = new SQLiteCommand("insert into SYMPTOM(NAME,COMMENT) values(@name,@comment);", connection);
@@ -226,8 +244,56 @@ namespace AcupunctureProject.database
             findPointSt = new SQLiteCommand(connection);
 
             getAllMeetingsRelativeToSymptomsSt = new SQLiteCommand(connection);
+
+            initColors();
         }
 
+        #region colors handler
+        private void initColors()
+        {
+            priorityColors = new Color[NUM_OF_PRIORITIES];
+            try
+            {
+                using (BinaryReader reader = new BinaryReader(new FileStream(folder + SETTING_COLOR_FILE, FileMode.Open)))
+                {
+                    for (int i = 0; i < NUM_OF_PRIORITIES; i++)
+                        priorityColors[i] = reader.ReadColor();
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                priorityColors[0] = new Color() { A = 255, R = 51, G = 0, B = 0 };
+                priorityColors[1] = new Color() { A = 255, R = 102, G = 102, B = 0 };
+                priorityColors[2] = new Color() { A = 255, R = 0, G = 102, B = 102 };
+                priorityColors[3] = new Color() { A = 255, R = 51, G = 0, B = 102 };
+                priorityColors[4] = new Color() { A = 255, R = 102, G = 0, B = 51 };
+                priorityColors[5] = new Color() { A = 255, R = 0, G = 0, B = 102 };
+                using (BinaryWriter writer = new BinaryWriter(new FileStream(folder + SETTING_COLOR_FILE, FileMode.Create)))
+                {
+                    for (int i = 0; i < NUM_OF_PRIORITIES; i++)
+                    {
+                        writer.Write(priorityColors[i]);
+                    }
+                }
+            }
+        }
+        public Color GetLevel(int level)
+        {
+            return priorityColors[level];
+        }
+
+        public void SetLevel(int level, Color color)
+        {
+            priorityColors[level] = color;
+            using (BinaryWriter writer = new BinaryWriter(new FileStream(folder + SETTING_COLOR_FILE, FileMode.OpenOrCreate)))
+            {
+                for (int i = 0; i < NUM_OF_PRIORITIES; i++)
+                {
+                    writer.Write(priorityColors[i]);
+                }
+            }
+        }
+        #endregion
         #region updates
         public void UpdateSymptom(Symptom symptom)
         {
@@ -510,6 +576,31 @@ namespace AcupunctureProject.database
                 return GetMeetings(rs);
             }
         }
+        public List<Symptom> GetAllSymptomRelativeToMeeting(Meeting meeting)
+        {
+            getAllSymptomRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
+            using (SQLiteDataReader rs = getAllSymptomRelativeToMeetingSt.ExecuteReader())
+                return GetSymptoms(rs);
+        }
+
+        public Patient GetPatientRelativeToMeeting(Meeting meeting)
+        {
+            getPatientRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
+            using (SQLiteDataReader rs = getPatientRelativeToMeetingSt.ExecuteReader())
+            {
+                if (rs.Read())
+                    return GetPatient(rs);
+                else
+                    return null;
+            }
+        }
+
+        public List<Point> GetAllPointsRelativeToMeeting(Meeting meeting)
+        {
+            getAllPointRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
+            using (SQLiteDataReader rs = getAllPointRelativeToMeetingSt.ExecuteReader())
+                return GetPoints(rs);
+        }
         #endregion
         #region inserts
         public Channel InsertChannel(Channel channel)
@@ -730,60 +821,5 @@ namespace AcupunctureProject.database
             return o;
         }
         #endregion
-
-        //TODO imploment this function
-        public Color GetLevel(int level)
-        {
-            switch (level)
-            {
-                case 0:
-                    return new Color() { A = 255, R = 51, G = 0, B = 0 };
-                case 1:
-                    return new Color() { A = 255, R = 102, G = 102, B = 0 };
-                case 2:
-                    return new Color() { A = 255, R = 0, G = 102, B = 102 };
-                case 3:
-                    return new Color() { A = 255, R = 51, G = 0, B = 102 };
-                case 4:
-                    return new Color() { A = 255, R = 102, G = 0, B = 51 };
-                case 5:
-                    return new Color() { A = 255, R = 0, G = 0, B = 102 };
-                default:
-                    return new Color() { A = 255, R = 0, G = 0, B = 0 };
-            }
-        }
-
-        //TODO imploment this function
-        public void SetLevel(int level, Color color)
-        {
-        }
-
-        //TODO cheack on this function
-        public List<Symptom> GetAllSymptomRelativeToMeeting(Meeting meeting)
-        {
-            getAllSymptomRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
-            using (SQLiteDataReader rs = getAllSymptomRelativeToMeetingSt.ExecuteReader())
-                return GetSymptoms(rs);
-        }
-
-        //TODO cheack on this function
-        public Patient GetPatientRelativeToMeeting(Meeting meeting)
-        {
-            getPatientRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
-            using (SQLiteDataReader rs = getPatientRelativeToMeetingSt.ExecuteReader())
-            {
-                if (rs.Read())
-                    return GetPatient(rs);
-                else
-                    return null;
-            }
-        }
-
-        public List<Point> GetAllPointsRelativeToMeeting(Meeting meeting)
-        {
-            getAllPointRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
-            using (SQLiteDataReader rs = getAllPointRelativeToMeetingSt.ExecuteReader())
-                return GetPoints(rs);
-        }
     }
 }
