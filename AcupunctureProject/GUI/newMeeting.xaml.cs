@@ -399,13 +399,13 @@ namespace AcupunctureProject.GUI
 
         private void ReloadPointThatUsedSearchList()
         {
+            pointThatUsedSearchList.SelectedIndex = 0;
             pointThatUsedSearchList.Items.Clear();
             List<database.Point> points = Database.Instance.FindPoint(pointThatUsedSearch.Text);
             for (int i = 0; i < points.Count; i++)
             {
                 pointThatUsedSearchList.Items.Add(new ListViewItem() { Content = points[i].ToString(), DataContext = points[i] });
             }
-            pointThatUsedSearchList.SelectedIndex = 0;
         }
 
         private void PointThatUsedSearch_GotFocus(object sender, RoutedEventArgs e)

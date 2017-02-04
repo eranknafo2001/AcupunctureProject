@@ -325,6 +325,8 @@ namespace AcupunctureProject.GUI
                 Database.Instance.DeleteSymptomMeetingRelation(symptomsToRemove[i], meeting);
             for (int i = 0; i < symptomsToAdd.Count; i++)
                 Database.Instance.InsertSymptomMeetingRelation(symptomsToAdd[i], meeting);
+            symptomsToAdd.Clear();
+            symptomsToRemove.Clear();
 
             for (int i = 0; i < pointsToAdd.Count; i++)
             {
@@ -345,6 +347,8 @@ namespace AcupunctureProject.GUI
                 Database.Instance.DeleteMeetingPoint(meeting, pointsToRemove[i]);
             for (int i = 0; i < pointsToAdd.Count; i++)
                 Database.Instance.InsertMeetingPointRelation(meeting, pointsToAdd[i]);
+            pointsToAdd.Clear();
+            pointsToRemove.Clear();
 
             if (meetingList != null)
                 meetingList.UpdateData();

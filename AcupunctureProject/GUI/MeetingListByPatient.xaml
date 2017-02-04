@@ -13,6 +13,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         
@@ -23,6 +24,6 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Button x:Name="Delete" Content="מחק" Width="50" Height="22" Grid.Row="1" Grid.Column="1" Click="Delete_Click"/>
+        <Button x:Name="Delete" Content="מחק" Width="50" Height="22" Grid.Row="2" Grid.Column="1" Click="Delete_Click"/>
     </Grid>
 </Window>

@@ -66,5 +66,10 @@ namespace AcupunctureProject.GUI
         {
             new SettingWindow().Show();
         }
+
+        private void Updates_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

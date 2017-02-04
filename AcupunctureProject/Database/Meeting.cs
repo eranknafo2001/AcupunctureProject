@@ -49,14 +49,19 @@ namespace AcupunctureProject.database
 
             public override string ToString()
             {
-                if (Value == 0)
-                    return "לא מוגדר";
-                else if (Value == 1)
-                    return "יותר טוב";
-                else if (Value == 2)
-                    return "החמיר";
-                else
-                    return "אין שינוי";
+                switch (Value)
+                {
+                    case 0:
+                        return "לא מוגדר";
+                    case 1:
+                        return "יותר טוב";
+                    case 2:
+                        return "החמיר";
+                    case 3:
+                        return "אין שינוי";
+                    default:
+                        return "Null";
+                }
             }
         };
 

@@ -20,6 +20,7 @@
             </MenuItem>
             <MenuItem x:Name="NewMeetingMI" Header="הוספת טיפול" Click="NewMeetingMI_Click" Padding="5"/>
             <MenuItem x:Name="PointsListMI" Header="רשימת נקודות" Click="PointsListMI_Click" Padding="5"/>
+            <MenuItem x:Name="Updates" Header="התקן" Click="Updates_Click" Padding="5"/>
             <!--<MenuItem x:Name="SettingMI" Header="הגדרות" Padding="5" Click="SettingMI_Click"/>-->
         </Menu>
         <Image x:Name="BackImage" Stretch="UniformToFill" Grid.Row="1"/>

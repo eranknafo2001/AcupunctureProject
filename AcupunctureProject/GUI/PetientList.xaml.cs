@@ -36,8 +36,7 @@ namespace AcupunctureProject.GUI
             Patient p = (Patient)patientDataGrid.SelectedItem;
             if (p == null)
                 return;
-            PatientInfo pwin = new PatientInfo(p,this);
-            pwin.Show();
+            new PatientInfo(p, this).Show();
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -60,9 +59,17 @@ namespace AcupunctureProject.GUI
             patientDataGrid.ItemsSource = Database.Instance.FindPatient(searchTextBox.Text);
         }
 
-        internal void UpdateData()
+        public void UpdateData()
         {
             patientDataGrid.ItemsSource = Database.Instance.FindPatient(searchTextBox.Text);
+        }
+
+        private void openMeetingsList_Click(object sender, RoutedEventArgs e)
+        {
+            Patient p = (Patient)patientDataGrid.SelectedItem;
+            if (p == null)
+                return;
+            new MeetingListByPatient(p).Show();
         }
     }
 }
