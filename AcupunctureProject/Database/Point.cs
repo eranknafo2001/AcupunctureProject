@@ -57,7 +57,7 @@ namespace AcupunctureProject.database
 
         public override string ToString()
         {
-            return Name + "(ID="+Id+")";
+            return Name;
         }
     }
 }

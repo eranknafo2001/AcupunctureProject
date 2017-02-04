@@ -9,9 +9,9 @@ namespace AcupunctureProject.database
     public class Symptom
     {
         public static readonly string NAME = "NAME";
-	    public static readonly string COMMENT = "COMMENT";
+        public static readonly string COMMENT = "COMMENT";
 
-	    public int Id { get; private set; }
+        public int Id { get; private set; }
         public string Name { get; set; }
         public string Comment { get; set; }
 
@@ -22,17 +22,17 @@ namespace AcupunctureProject.database
             this.Comment = Comment;
         }
 
-        public Symptom(string Name, string Comment) : this(-1,Name,Comment)
+        public Symptom(string Name, string Comment) : this(-1, Name, Comment)
         {
         }
 
-        public Symptom(int Id, Symptom other) : this(Id,other.Name,other.Comment)
+        public Symptom(int Id, Symptom other) : this(Id, other.Name, other.Comment)
         {
         }
 
         public override string ToString()
         {
-            return Name + "(ID=" + Id + ")";
+            return Name;
         }
     }
 }
