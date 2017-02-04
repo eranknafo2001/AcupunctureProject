@@ -32,7 +32,7 @@ namespace AcupunctureProject.database
 
         public override string ToString()
         {
-            return Name;
+            return Name + "(ID=" + Id + ")";
         }
     }
 }
