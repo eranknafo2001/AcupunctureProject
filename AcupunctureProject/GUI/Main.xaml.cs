@@ -1,4 +1,5 @@
 ﻿using AcupunctureProject.database;
+using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace AcupunctureProject.GUI
 {
@@ -69,7 +71,19 @@ namespace AcupunctureProject.GUI
 
         private void Updates_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            ProcessStartInfo i = new ProcessStartInfo(folder + "UpdateApp.exe", folder);
+            i.UseShellExecute = true;
+            i.CreateNoWindow = true;
+            i.Verb = "runas";
+            try
+            {
+                Process.Start(i);
+                Application.Current.Shutdown();
+            }
+            catch (Win32Exception ex)
+            {
+                MessageBox.Show("codent open as admenistartor", "", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
+            }
         }
     }
 }
