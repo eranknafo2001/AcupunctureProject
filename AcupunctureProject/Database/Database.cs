@@ -134,7 +134,7 @@ namespace AcupunctureProject.database
             getAllChannelRelativeToSymptomSt = new SQLiteCommand("SELECT CHANNEL.* , SYMPTOM_CHANNEL.IMPORTENCE , SYMPTOM_CHANNEL.COMMENT from CHANNEL INNER JOIN SYMPTOM_CHANNEL ON CHANNEL.ID = SYMPTOM_CHANNEL.CHANNEL_ID where SYMPTOM_CHANNEL.SYMPTOM_ID = @symptomId order by SYMPTOM_CHANNEL.IMPORTENCE DESC;", connection);
             getAllChannelRelativeToSymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
 
-            getAllSymptomRelativeToMeetingSt = new SQLiteCommand("SELECT SYMPTOM.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID = MEETING.ID INNER JOIN SYMPTOM ON SYMPTOM.ID = MEETING_POINTS.POINT_ID WHERE MEETING.ID = @meetingId;", connection);
+            getAllSymptomRelativeToMeetingSt = new SQLiteCommand("SELECT SYMPTOM.* FROM MEETING_SYMPTOM INNER JOIN MEETING ON MEETING_SYMPTOM.MEETING_ID = MEETING.ID INNER JOIN SYMPTOM ON SYMPTOM.ID = MEETING_SYMPTOM.SYMPTOM_ID WHERE MEETING.ID = @meetingId;", connection);
             getAllSymptomRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
 
             getAllPointRelativeToMeetingSt = new SQLiteCommand("SELECT POINTS.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID = MEETING.ID INNER JOIN POINTS ON MEETING_POINTS.POINT_ID = POINTS.ID WHERE MEETING.ID = @meetingId", connection);
@@ -646,7 +646,16 @@ namespace AcupunctureProject.database
         {
             insertSymptomMeetingRelationSt.Parameters["@meetingId"].Value = meeting.Id;
             insertSymptomMeetingRelationSt.Parameters["@symptomId"].Value = symptom.Id;
-            insertSymptomMeetingRelationSt.ExecuteNonQuery();
+            try {
+                insertSymptomMeetingRelationSt.ExecuteNonQuery();
+            }catch(SQLiteException e)
+            {
+                if(e.ErrorCode == (int)SQLiteErrorCode.Constraint)
+                {
+                    throw new Exceptions.UniqueNameException();
+                }
+                throw e;
+            }
         }
 
         public Symptom InsertSymptom(Symptom symptom)
