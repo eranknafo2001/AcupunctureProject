@@ -438,10 +438,10 @@ namespace AcupunctureProject.GUI
 
         private void PointThatUsedDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (pointThatUsed.SelectedIndex == -1)
+            ListBoxItem item = (ListBoxItem)pointThatUsed.SelectedItem;
+            if (item == null)
                 return;
             pointThatUsed.Items.RemoveAt(pointThatUsed.SelectedIndex);
-            ListBoxItem item = (ListBoxItem)pointThatUsed.SelectedItem;
             pointsToRemove.Add((database.Point)item.DataContext);
         }
 
