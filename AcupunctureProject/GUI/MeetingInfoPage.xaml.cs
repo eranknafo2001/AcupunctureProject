@@ -212,7 +212,7 @@ namespace AcupunctureProject.GUI
 
         private void SddItemToSymptomTree(Symptom symptom)
         {
-            TreeViewItem sym = new TreeViewItem() { Header = symptom.ToString(), DataContext = symptom };
+            TreeViewItem sym = new TreeViewItem() { Header = symptom.ToString(), DataContext = symptom ,IsExpanded=true };
             List<ConnectionValue<database.Point>> points = Database.Instance.GetAllPointRelativeToSymptom(symptom);
             for (int i = 0; i < points.Count; i++)
             {

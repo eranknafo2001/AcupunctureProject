@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcupunctureProject.GUI"
         mc:Ignorable="d"
-        Title="FullWindowPic" Height="300" Width="300" Background="GhostWhite" WindowStartupLocation="CenterScreen">
+        Title="תמונה - " Height="300" Width="300" Background="GhostWhite" WindowStartupLocation="CenterScreen">
     <Grid>
         <Image x:Name="image"/>
     </Grid>
