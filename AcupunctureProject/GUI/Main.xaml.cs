@@ -1,4 +1,5 @@
 ﻿using AcupunctureProject.database;
+using AcupunctureProject;
 using System.Diagnostics;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,8 @@ namespace AcupunctureProject.GUI
             BackImageSource.UriSource = new Uri(folder + "images\\backpic.jpg");
             BackImageSource.EndInit();
             BackImage.Source = BackImageSource;
+
+            VersionLab.Content += Version.Value;
         }
 
         private void NewPatientMI_Click(object sender, RoutedEventArgs e)
@@ -80,7 +83,7 @@ namespace AcupunctureProject.GUI
                 Process.Start(i);
                 Application.Current.Shutdown();
             }
-            catch (Win32Exception ex)
+            catch (Win32Exception)
             {
                 MessageBox.Show("codent open as admenistartor", "", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
             }
