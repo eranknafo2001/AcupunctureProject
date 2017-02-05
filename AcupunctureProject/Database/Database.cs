@@ -100,6 +100,7 @@ namespace AcupunctureProject.database
         private SQLiteCommand getPointByIdSt;
 
         private SQLiteCommand getChannelByIdSt;
+        private SQLiteCommand getTheLastMeetingSt;
 
         private SQLiteCommand findSymptomSt;
         private SQLiteCommand findPatientSt;
@@ -242,6 +243,9 @@ namespace AcupunctureProject.database
             findPatientSt = new SQLiteCommand(connection);
 
             findPointSt = new SQLiteCommand(connection);
+
+            getTheLastMeetingSt = new SQLiteCommand("select * from MEETING where MEETING.PATIENT_ID = @patientId order by date desc limit 1;");
+            getTheLastMeetingSt.Parameters.Add(new SQLiteParameter("@patientId"));
 
             getAllMeetingsRelativeToSymptomsSt = new SQLiteCommand(connection);
 
@@ -600,6 +604,19 @@ namespace AcupunctureProject.database
             getAllPointRelativeToMeetingSt.Parameters["@meetingId"].Value = meeting.Id;
             using (SQLiteDataReader rs = getAllPointRelativeToMeetingSt.ExecuteReader())
                 return GetPoints(rs);
+        }
+
+        public Meeting GetTheLastMeeting(Patient patient)
+        {
+            getTheLastMeetingSt.Parameters["@patientId"].Value = patient.Id;
+            using (SQLiteDataReader rs = getTheLastMeetingSt.ExecuteReader())
+            {
+                if (rs.Read())
+                    return GetMeeting(rs);
+                else
+                    return null;
+                
+            }
         }
         #endregion
         #region inserts
