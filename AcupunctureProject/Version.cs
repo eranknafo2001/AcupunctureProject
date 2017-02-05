@@ -12,7 +12,7 @@ namespace AcupunctureProject
 
         static Version()
         {
-            Value = "beta-0.2";
+            Value = "beta-0.3.1";
         }
     }
 }
