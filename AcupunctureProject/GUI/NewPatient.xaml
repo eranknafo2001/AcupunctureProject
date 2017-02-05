@@ -46,7 +46,7 @@
         <Label Content="מין" Grid.Row="12" Grid.Column="0"/>
         <ComboBox x:Name="gender" Grid.Row="12" Grid.Column="2" Width="100" HorizontalAlignment="Left" BorderBrush="Red" BorderThickness="1"/>
         <Label Content="תיאור רפואי" Grid.Row="14" Grid.Column="0"/>
-        <TextBox x:Name="hestory" Grid.Row="14" Grid.Column="2" Height="200"/>
+        <TextBox x:Name="hestory" TextWrapping="Wrap" KeyDown="Hestory_KeyDown" Grid.Row="14" Grid.Column="2" Height="200"/>
         <Grid Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>

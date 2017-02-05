@@ -112,5 +112,19 @@ namespace AcupunctureProject.GUI
             gender.SelectedIndex = -1;
             hestory.Clear();
         }
+
+        private void Hestory_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                AddNewLine(hestory);
+        }
+
+        private void AddNewLine(TextBox textBox)
+        {
+            int temp = textBox.SelectionStart;
+            textBox.Text = textBox.Text.Remove(temp, textBox.SelectionLength);
+            textBox.Text = textBox.Text.Insert(temp, "\n");
+            textBox.SelectionStart = temp + 1;
+        }
     }
 }
