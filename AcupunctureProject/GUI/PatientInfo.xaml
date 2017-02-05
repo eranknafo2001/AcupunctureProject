@@ -50,7 +50,7 @@
             <ComboBoxItem Content="אחר"/>
         </ComboBox>
         <Label Content="תיאור רפואי" Grid.Row="14" Grid.Column="0"/>
-        <TextBox x:Name="hestory" Grid.Row="14" Grid.Column="2" Height="200"/>
+        <TextBox x:Name="hestory" TextWrapping="Wrap" KeyDown="Hestory_KeyDown" Grid.Row="14" Grid.Column="2" Height="200"/>
         <Grid Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>

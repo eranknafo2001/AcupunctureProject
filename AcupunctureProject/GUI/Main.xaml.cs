@@ -1,20 +1,10 @@
 ﻿using AcupunctureProject.database;
-using AcupunctureProject;
 using System.Diagnostics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.ComponentModel;
 
 namespace AcupunctureProject.GUI
@@ -44,6 +34,7 @@ namespace AcupunctureProject.GUI
             BackImage.Source = BackImageSource;
 
             VersionLab.Content += Version.Value;
+            VersionLab.Visibility = Version.ShowVersion ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void NewPatientMI_Click(object sender, RoutedEventArgs e)
@@ -85,7 +76,7 @@ namespace AcupunctureProject.GUI
             }
             catch (Win32Exception)
             {
-                MessageBox.Show("codent open as admenistartor", "", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
+                MessageBox.Show("לא יכול לגשת לקבצים", "", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
             }
         }
     }
