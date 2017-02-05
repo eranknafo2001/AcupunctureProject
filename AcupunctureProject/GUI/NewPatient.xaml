@@ -58,9 +58,9 @@
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="censel" Content="ביטול" Grid.Column="0" Grid.Row="0" Click="censel_Click"/>
-            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="2" Grid.Row="0" Click="saveAndExit_Click"/>
-            <Button x:Name="save" Content="שמור" Grid.Column="4" Grid.Row="0" Click="save_Click"/>
+            <Button x:Name="censel" Content="ביטול" Grid.Column="0" Grid.Row="0" Click="Censel_Click"/>
+            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="2" Grid.Row="0" Click="SaveAndExit_Click"/>
+            <Button x:Name="save" Content="שמור" Grid.Column="4" Grid.Row="0" Click="Save_Click"/>
         </Grid>
     </Grid>
 </Window>

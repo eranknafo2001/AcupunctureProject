@@ -10,7 +10,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using Xceed.Wpf.Toolkit;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -80,6 +79,7 @@ namespace AcupunctureProject.GUI
             patientSearchTextBox.Text = selectedPatient.Name;
             patientSearchTextBox.IsEnabled = false;
             openPatientButton.IsEnabled = true;
+            copyFromLastMeeting.IsEnabled = true;
             date.IsEnabled = true;
             symptomSearch.IsEnabled = true;
             symptomTreeView.IsEnabled = true;
@@ -525,6 +525,25 @@ namespace AcupunctureProject.GUI
                 return;
             ListBoxItem item = (ListBoxItem)pointThatUsed.SelectedItem;
             new PointInfo((database.Point)item.DataContext).Show();
+        }
+
+        private void CopyFromLastMeeting_Click(object sender, RoutedEventArgs e)
+        {
+            Meeting meeting = Database.Instance.GetTheLastMeeting(selectedPatient);
+            if(meeting==null)
+            {
+                MessageBox.Show("אין פגישות", "",  MessageBoxButton.OK, MessageBoxImage.Error,MessageBoxResult.None, MessageBoxOptions.RtlReading);
+                return;
+            }
+            List<Symptom> symL = Database.Instance.GetAllSymptomRelativeToMeeting(meeting);
+            symptomTreeView.Items.Clear();
+            for (int i = 0; i < symL.Count; i++)
+                AddItemToSymptomTree(symL[i]);
+            List<database.Point> pointsL = Database.Instance.GetAllPointsRelativeToMeeting(meeting);
+            pointThatUsed.Items.Clear();
+            for (int i = 0; i < pointsL.Count; i++)
+                pointThatUsed.Items.Add(new ListBoxItem() { Content = pointsL[i].ToString(), DataContext = pointsL[i] });
+            notes.Text = meeting.Description;
         }
     }
 }

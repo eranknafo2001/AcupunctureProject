@@ -244,16 +244,16 @@ namespace AcupunctureProject.database
 
             findPointSt = new SQLiteCommand(connection);
 
-            getTheLastMeetingSt = new SQLiteCommand("select * from MEETING where MEETING.PATIENT_ID = @patientId order by date desc limit 1;");
+            getTheLastMeetingSt = new SQLiteCommand("select * from MEETING where MEETING.PATIENT_ID = @patientId order by date desc limit 1;", connection);
             getTheLastMeetingSt.Parameters.Add(new SQLiteParameter("@patientId"));
 
             getAllMeetingsRelativeToSymptomsSt = new SQLiteCommand(connection);
 
-            initColors();
+            InitColors();
         }
 
         #region colors handler
-        private void initColors()
+        private void InitColors()
         {
             priorityColors = new Color[NUM_OF_PRIORITIES];
             try

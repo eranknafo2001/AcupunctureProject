@@ -37,7 +37,7 @@ namespace AcupunctureProject.GUI
             //gender.BorderBrush = Brushes.Gray;
         }
 
-        private bool saveData()
+        private bool SaveData()
         {
             bool secses = true;
 
@@ -76,32 +76,32 @@ namespace AcupunctureProject.GUI
             return true;
         }
 
-        private void censel_Click(object sender, RoutedEventArgs e)
+        private void Censel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void saveAndExit_Click(object sender, RoutedEventArgs e)
+        private void SaveAndExit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (saveData())
+                if (SaveData())
                     Close();
             }
             catch (database.Exceptions.UniqueNameException) { }
         }
 
-        private void save_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (saveData())
-                    clearAll();
+                if (SaveData())
+                    ClearAll();
             }
             catch (database.Exceptions.UniqueNameException) { }
         }
 
-        private void clearAll()
+        private void ClearAll()
         {
             name.Clear();
             berthday.SelectedDate = null;

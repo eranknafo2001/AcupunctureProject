@@ -48,6 +48,7 @@
             <Button x:Name="openPatientButton" Content="לפתוח" IsEnabled="False" Grid.Column="2" Click="OpenPatientButton_Click"/>
         </Grid>
         <ListView x:Name="patientSearchList" Grid.Column="2" Grid.Row="0" Grid.RowSpan="6" Visibility="Hidden" GotFocus="PatientSearchList_GotFocus" LostFocus="PatientSearchList_LostFocus" Panel.ZIndex="20" MouseDoubleClick="PatientSearchList_MouseDoubleClick"/>
+        <Button x:Name="copyFromLastMeeting" Content="לטעון פגישה אחרונה" Grid.Column="4" Grid.Row="0" IsEnabled="False" Click="CopyFromLastMeeting_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <!--#endregion-->
         <!--#region date -->
         <Label  Content="תאריך" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center"/>
