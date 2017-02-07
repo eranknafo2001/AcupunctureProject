@@ -114,6 +114,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GUI\ChannelInfo.xaml.cs">
+      <DependentUpon>ChannelInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\MeetingInfoPage.xaml.cs">
       <DependentUpon>MeetingInfoPage.xaml</DependentUpon>
     </Compile>
@@ -124,6 +127,10 @@
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Version.cs" />
+    <Page Include="GUI\ChannelInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GUI\FullWindowPic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

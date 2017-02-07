@@ -450,14 +450,19 @@ namespace AcupunctureProject.GUI
             ListViewItem item = (ListViewItem)pointThatUsedSearchList.SelectedItem;
             if (item == null)
                 return;
+            AddItemToPointThatUsed((database.Point)item.DataContext);
+            SetpointThatUsedSearchListViability(false);
+        }
+
+        private void AddItemToPointThatUsed(database.Point point)
+        {
             for (int i = 0; i < pointThatUsed.Items.Count; i++)
             {
                 ListBoxItem tempItem = (ListBoxItem)pointThatUsed.Items[i];
-                if (tempItem.Content.Equals(item.Content))
+                if (tempItem.Content.Equals(point.ToString()))
                     return;
             }
-            pointThatUsed.Items.Add(new ListBoxItem() { Content = item.Content, DataContext = item.DataContext });
-            SetpointThatUsedSearchListViability(false);
+            pointThatUsed.Items.Add(new ListBoxItem() { Content = point.ToString(), DataContext = point });
         }
 
         private void PointThatUsed_KeyDown(object sender, KeyEventArgs e)
@@ -530,9 +535,9 @@ namespace AcupunctureProject.GUI
         private void CopyFromLastMeeting_Click(object sender, RoutedEventArgs e)
         {
             Meeting meeting = Database.Instance.GetTheLastMeeting(selectedPatient);
-            if(meeting==null)
+            if (meeting == null)
             {
-                MessageBox.Show("אין פגישות", "",  MessageBoxButton.OK, MessageBoxImage.Error,MessageBoxResult.None, MessageBoxOptions.RtlReading);
+                MessageBox.Show("אין פגישות", "", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
                 return;
             }
             List<Symptom> symL = Database.Instance.GetAllSymptomRelativeToMeeting(meeting);
@@ -545,5 +550,30 @@ namespace AcupunctureProject.GUI
                 pointThatUsed.Items.Add(new ListBoxItem() { Content = pointsL[i].ToString(), DataContext = pointsL[i] });
             notes.Text = meeting.Description;
         }
+
+        private void PointThatUsed_Drop(object sender, DragEventArgs e)
+        {
+            string[] formats = e.Data.GetFormats();
+            for (int i = 0; i < formats.Length; i++)
+            {
+                object data = e.Data.GetData(formats[i]);
+                if (data == null)
+                    return;
+                if (data.GetType() == typeof(TreeViewItem))
+                {
+                    TreeViewItem item = (TreeViewItem)data;
+                    if (item.DataContext.GetType() == typeof(ConnectionValue<database.Point>))
+                        AddItemToPointThatUsed(((ConnectionValue<database.Point>)item.DataContext).Value);
+                    //else if (item.DataContext.GetType() == typeof(ConnectionValue<database.Point>))) ;
+                } 
+            }
+        }
+
+        private void SymptomTreeView_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (symptomTreeView.SelectedItem != null && e.LeftButton.Equals(MouseButtonState.Pressed))
+                DragDrop.DoDragDrop(symptomTreeView, (TreeViewItem)symptomTreeView.SelectedItem, DragDropEffects.Copy);
+        }
+        
     }
 }
