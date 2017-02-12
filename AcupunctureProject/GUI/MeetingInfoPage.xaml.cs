@@ -507,7 +507,7 @@ namespace AcupunctureProject.GUI
             if (symptomTreeView.SelectedItem != null && e.LeftButton.Equals(MouseButtonState.Pressed))
                 DragDrop.DoDragDrop(symptomTreeView, (TreeViewItem)symptomTreeView.SelectedItem, DragDropEffects.Copy);
         }
-
+        
         private void AddItemToPointThatUsed(database.Point point)
         {
             for (int i = 0; i < pointThatUsed.Items.Count; i++)

@@ -46,7 +46,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBox x:Name="patientSearchTextBox" Grid.Column="0"/>
-            <Button x:Name="openPatientButton" Content="לפתוח" IsEnabled="False" Grid.Column="2" Click="OpenPatientButton_Click"/>
+            <Button x:Name="openPatientButton" Content="מידע" IsEnabled="False" Grid.Column="2" Click="OpenPatientButton_Click"/>
         </Grid>
         <!--#endregion-->
         <!--#region date -->
@@ -57,7 +57,7 @@
         <Label Content="סימפטומים" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center"/>
         <TextBox x:Name="symptomSearch" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Height="25" TextChanged="SymptomSearch_TextChanged" IsEnabled="False" LostFocus="SymptomSearch_LostFocus" GotFocus="SymptomSearch_GotFocus" KeyDown="SymptomSearch_KeyDown"/>
         <ListView x:Name="symptomSearchList" MaxHeight="100" SelectionMode="Single" Visibility="Hidden" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" LostFocus="SymptomSearchList_LostFocus" GotFocus="SymptomSearchList_GotFocus" KeyDown="SymptomSearchList_KeyDown" MouseDoubleClick="SymptomSearchList_MouseDoubleClick" Grid.RowSpan="3" Panel.ZIndex="20"/>
-        <TreeView x:Name="symptomTreeView" Grid.Row="6" Grid.Column="2" Margin="0,0,0,0" IsEnabled="False" MouseDoubleClick="SymptomTreeView_MouseDoubleClick" MouseMove="SymptomTreeView_MouseMove"/>
+        <TreeView x:Name="symptomTreeView" Grid.Row="6" Grid.Column="2" Margin="0,0,0,0" IsEnabled="False" MouseDoubleClick="SymptomTreeView_MouseDoubleClick" MouseMove="SymptomTreeView_MouseMove" />
         <!--#region levels and delete for symptom tree -->
         <Grid Grid.Row="8" Grid.Column="2">
             <Grid.ColumnDefinitions>
