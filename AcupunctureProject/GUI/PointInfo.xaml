@@ -43,7 +43,7 @@
             <TextBox x:Name="pointsSearch" Grid.Column="0" Grid.Row="0" TextChanged="PointsSearch_TextChanged"/>
             <ListView x:Name="pointsList" Grid.Column="0" Grid.Row="2" Grid.RowSpan="5" Width="100" MouseDoubleClick="Points_MouseDoubleClick"/>
             <Label Content="שם" Grid.Row="0" Grid.Column="2"/>
-            <TextBox x:Name="name" Grid.Row="0" Grid.Column="4" />
+            <Label x:Name="name" Grid.Row="0" Grid.Column="4" />
             <Label Content="עומק מחט" Grid.Row="2" Grid.Column="2"/>
             <!-- depth -->
             <Grid Grid.Row="2" Grid.Column="4">

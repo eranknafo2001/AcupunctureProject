@@ -8,7 +8,7 @@ namespace AcupunctureProject
 {
     public static class Version
     {
-        public static readonly string Value = "beta-0.7";
+        public static readonly string Value = "beta-0.7.1";
         public static readonly bool ShowVersion = true;
     }
 }

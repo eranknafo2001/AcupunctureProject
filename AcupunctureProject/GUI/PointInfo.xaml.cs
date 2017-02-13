@@ -59,7 +59,7 @@ namespace AcupunctureProject.GUI
             catch (Exception)
             {
             }
-            name.Text = point.Name;
+            name.Content= point.Name;
             minDepth.Text = point.MinNeedleDepth.ToString();
             maxDepth.Text = point.MaxNeedleDepth.ToString();
             place.Text = point.Position;
@@ -97,7 +97,6 @@ namespace AcupunctureProject.GUI
         {
             point.Comment1 = comment1.Text;
             point.Comment2 = comment2.Text;
-            point.Name = name.Text;
             point.MaxNeedleDepth = int.Parse(maxDepth.Text);
             point.MinNeedleDepth = int.Parse(minDepth.Text);
             point.Note = note.Text;
