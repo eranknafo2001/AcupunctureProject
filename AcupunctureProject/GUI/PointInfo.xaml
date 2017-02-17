@@ -73,7 +73,7 @@
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="symptomSearch" Grid.Column="0" TextChanged="symptomSearch_TextChanged" GotFocus="symptomSearch_GotFocus" LostFocus="symptomSearch_LostFocus"/>
+                <TextBox x:Name="symptomSearch" Grid.Column="0" TextChanged="SymptomSearch_TextChanged" GotFocus="SymptomSearch_GotFocus" LostFocus="SymptomSearch_LostFocus"/>
                 <ComboBox x:Name="symptomSearchImportece" Grid.Column="2" SelectedIndex="0">
                     <ComboBoxItem Content="0" DataContext="0" IsSelected="True"/>
                     <ComboBoxItem Content="1" DataContext="1"/>
@@ -83,7 +83,7 @@
                     <ComboBoxItem Content="5" DataContext="5"/>
                 </ComboBox>
             </Grid>
-            <ListView x:Name="symptomSearchList" Grid.Row="0" Grid.Column="10" Grid.RowSpan="6" Width="200" Visibility="Hidden" KeyDown="symptomSearchList_KeyDown" MouseDoubleClick="symptomSearchList_MouseDoubleClick" GotFocus="symptomSearchList_GotFocus" LostFocus="symptomSearchList_LostFocus" Panel.ZIndex="20" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <ListView x:Name="symptomSearchList" Grid.Row="0" Grid.Column="10" Grid.RowSpan="6" Width="200" Visibility="Hidden" KeyDown="SymptomSearchList_KeyDown" MouseDoubleClick="SymptomSearchList_MouseDoubleClick" GotFocus="SymptomSearchList_GotFocus" LostFocus="SymptomSearchList_LostFocus" Panel.ZIndex="20" VerticalAlignment="Top" HorizontalAlignment="Left"/>
             <Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -96,7 +96,7 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="deleteSymptom" Content="מחק" Grid.Column="1" Width="50" Click="deleteSymptom_Click"/>
+                    <Button x:Name="deleteSymptom" Content="מחק" Grid.Column="1" Width="50" Click="DeleteSymptom_Click"/>
                 </Grid>
             </Grid>
         </Grid>

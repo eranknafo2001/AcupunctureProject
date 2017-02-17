@@ -223,23 +223,23 @@ namespace AcupunctureProject.GUI
             syptomTreeView.Items.Add(symptom);
         }
 
-        private void symptomSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private void SymptomSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             ReloadSymptomSearchList();
         }
 
-        private void symptomSearchList_KeyDown(object sender, KeyEventArgs e)
+        private void SymptomSearchList_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
                 SelectSymptom();
         }
 
-        private void symptomSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void SymptomSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             SelectSymptom();
         }
 
-        private void deleteSymptom_Click(object sender, RoutedEventArgs e)
+        private void DeleteSymptom_Click(object sender, RoutedEventArgs e)
         {
             TreeViewItem item = (TreeViewItem)syptomTreeView.SelectedItem;
             if (item == null)
@@ -250,22 +250,22 @@ namespace AcupunctureProject.GUI
             syptomTreeView.Items.Remove(item);
         }
 
-        private void symptomSearch_GotFocus(object sender, RoutedEventArgs e)
+        private void SymptomSearch_GotFocus(object sender, RoutedEventArgs e)
         {
             SetSymptomSearchListVisability(true);
         }
 
-        private void symptomSearch_LostFocus(object sender, RoutedEventArgs e)
+        private void SymptomSearch_LostFocus(object sender, RoutedEventArgs e)
         {
             SetSymptomSearchListVisability(false);
         }
 
-        private void symptomSearchList_GotFocus(object sender, RoutedEventArgs e)
+        private void SymptomSearchList_GotFocus(object sender, RoutedEventArgs e)
         {
             SetSymptomSearchListVisability(true);
         }
 
-        private void symptomSearchList_LostFocus(object sender, RoutedEventArgs e)
+        private void SymptomSearchList_LostFocus(object sender, RoutedEventArgs e)
         {
             SetSymptomSearchListVisability(false);
         }
