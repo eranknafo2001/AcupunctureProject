@@ -9,42 +9,42 @@
     <ScrollViewer>
         <StackPanel Margin="10">
             <GroupBox Header="עבודה">
-                <TextBox x:Name="work"/>
+                <TextBox x:Name="Profession"/>
             </GroupBox>
             <Border Height="10"/>
 
             <GroupBox Header="תלונה עיקרית">
-                <TextBox x:Name="mainComplan" Height="100" KeyDown="Enter"/>
+                <TextBox x:Name="MainComplaint" Height="100" KeyDown="Enter"/>
             </GroupBox>
             <Border Height="10"/>
 
             <GroupBox Header="תלונה מישנית">
-                <TextBox x:Name="secendComplan" Height="100" KeyDown="Enter"/>
+                <TextBox x:Name="SeconderyComlaint" Height="100" KeyDown="Enter"/>
             </GroupBox>
             <Border Height="10"/>
 
             <GroupBox Header="תרופות בשימוש">
-                <TextBox x:Name="medical" Height="100" KeyDown="Enter"/>
+                <TextBox x:Name="DrugsUsed" Height="100" KeyDown="Enter"/>
             </GroupBox>
             <Border Height="10"/>
 
             <GroupBox Header="בדיקות שנעשו">
-                <TextBox x:Name="testsDone" Height="100" KeyDown="Enter"/>
+                <TextBox x:Name="TestsMade" Height="100" KeyDown="Enter"/>
             </GroupBox>
             <Border Height="10"/>
 
             <GroupBox Header="האם יש כאב ? כן לא מיקום, ממתי כואב">
-                <TextBox x:Name="heart" Height="100" KeyDown="Enter"/>
+                <TextBox x:Name="Pain" Height="100" KeyDown="Enter"/>
             </GroupBox>
             <Border Height="10"/>
 
             <GroupBox Header="האם קיימת אבחנה לגבי מקור הכאב ?">
-                <TextBox x:Name="heartSorce" Height="100" KeyDown="Enter"/>
+                <TextBox x:Name="PainPreviousEvaluations" Height="100" KeyDown="Enter"/>
             </GroupBox>
             <Border Height="10"/>
 
             <GroupBox Header="האם עברת בדיקות כלשהן? פרט:">
-                <TextBox x:Name="testpessed" Height="100" KeyDown="Enter"/>
+                <TextBox x:Name="Scans" Height="100" KeyDown="Enter"/>
             </GroupBox>
             <Border Height="10"/>
 
@@ -59,10 +59,10 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
 
-                        <RadioButton x:Name="terrifiedYas" Content="כן" DataContext="True" GroupName="terrified" Grid.Column="1"/>
-                        <RadioButton x:Name="terrifiedNo" Content="לא" IsChecked="True" DataContext="False" GroupName="terrified" Grid.Column="3"/>
+                        <RadioButton x:Name="UnderStressYas" Content="כן" DataContext="True" GroupName="UnderStress" Grid.Column="1"/>
+                        <RadioButton x:Name="UnderStressNo" Content="לא" IsChecked="True" DataContext="False" GroupName="UnderStress" Grid.Column="3"/>
                     </Grid>
-                    <TextBox x:Name="terrified"/>
+                    <TextBox x:Name="UnderStress"/>
                 </StackPanel>
             </GroupBox>
             <Border Height="10"/>
@@ -173,10 +173,10 @@
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
 
-                        <RadioButton x:Name="heartBeetYas" Content="כן" DataContext="True" GroupName="heartBeet" Grid.Column="1"/>
-                        <RadioButton x:Name="heartBeetNo" Content="לא" DataContext="False" GroupName="heartBeet" Grid.Column="3" IsChecked="True"/>
+                        <RadioButton x:Name="PainBeetYas" Content="כן" DataContext="True" GroupName="PainBeet" Grid.Column="1"/>
+                        <RadioButton x:Name="PainBeetNo" Content="לא" DataContext="False" GroupName="PainBeet" Grid.Column="3" IsChecked="True"/>
                     </Grid>
-                    <TextBox x:Name="heartBeet"/>
+                    <TextBox x:Name="PainBeet"/>
                 </StackPanel>
             </GroupBox>
             <Border Height="10"/>
