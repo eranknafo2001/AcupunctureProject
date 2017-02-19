@@ -34,12 +34,42 @@
             <Border Height="10"/>
 
             <GroupBox Header="האם יש כאב ? כן לא מיקום, ממתי כואב">
-                <TextBox x:Name="heart" Height="100" KeyDown="Enter"/>
+                <StackPanel>
+                    <Border Height="2"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <RadioButton x:Name="painYas" Content="כן" DataContext="True" GroupName="pain" Grid.Column="1"/>
+                        <RadioButton x:Name="painNo" Content="לא" DataContext="False" GroupName="pain" Grid.Column="3" IsChecked="True"/>
+                    </Grid>
+                    <Border Height="3"/>
+                    <TextBox x:Name="pain" Height="100" KeyDown="Enter"/>
+                </StackPanel>
             </GroupBox>
             <Border Height="10"/>
 
             <GroupBox Header="האם קיימת אבחנה לגבי מקור הכאב ?">
-                <TextBox x:Name="heartSorce" Height="100" KeyDown="Enter"/>
+                <StackPanel>
+                    <Border Height="2"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <RadioButton x:Name="heartSorceYas" Content="כן" DataContext="True" GroupName="heartSorce" Grid.Column="1"/>
+                        <RadioButton x:Name="heartSorceNo" Content="לא" DataContext="False" GroupName="heartSorce" Grid.Column="3" IsChecked="True"/>
+                    </Grid>
+                    <Border Height="3"/>
+                    <TextBox x:Name="heartSorce" Height="100" KeyDown="Enter"/>
+                </StackPanel>
             </GroupBox>
             <Border Height="10"/>
 
