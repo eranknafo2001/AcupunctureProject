@@ -27,6 +27,11 @@ namespace AcupunctureProject.database
             return (int)(Int64)reader[str];
         }
 
+        public static bool GetBoolL(this SQLiteDataReader reader, string str)
+        {
+            return (bool)reader[str];
+        }
+
         public static Color ReadColor(this BinaryReader reader)
         {
             return new Color() { R = reader.ReadByte(), G = reader.ReadByte(), B = reader.ReadByte(), A = 255 };
@@ -101,6 +106,8 @@ namespace AcupunctureProject.database
         private SQLiteCommand getSymptomSt;
         private SQLiteCommand getPointByNameSt;
         private SQLiteCommand getPointByIdSt;
+        private SQLiteCommand getAllDiagnosticByPatientSt;
+        private SQLiteCommand getDiagnosticByMeetingSt;
 
         private SQLiteCommand getChannelByIdSt;
         private SQLiteCommand getTheLastMeetingSt;
@@ -174,8 +181,9 @@ namespace AcupunctureProject.database
             insertSymptomChannelRelationSt = new SQLiteCommand("insert into SYMPTOM_CHANNEL values(@symptomId,@channelId,@importance,@comment);", connection);
             insertSymptomChannelRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@symptomId"), new SQLiteParameter("@channelId"), new SQLiteParameter("@importance"), new SQLiteParameter("@comment") });
 
-            insertDiagnosticSt = new SQLiteCommand("insert into DIAGNOSTIC(PROFESSION,MAIN_COMPLAINT,SECONDERY_COMPLAINT,DRUGS_USED,TESTS_MADE,IN_PAIN BOOLEAN,PAIN_INFO,IS_PAIN_PREVIOUS_EVALUATIONS,PAIN_PREVIOUS_EVALUATION_INFO,IS_THERE_ANYSORT_OF_SCANS,THE_SCANS_INFO,IS_UNDER_STRESS,STRESS_INFO,IS_TENSE_MUSCLES,TENSE_MUSCLES_INFO,IS_HIGH_BLOOD_PRESSURE_OR_COLESTEROL,HIGH_BLOOD_PRESSURE_OR_COLESTEROL_INFO,IS_GOOD_SLEEP,GOOD_SLEEP_INFO,IS_FALLEN_TO_SLEEP_PROBLEM,FALLEN_TO_SLEEP_PROBLEM_INFO,IS_PALPITATIONS,PALPITATIONS_INFO,DEFECATION_REGULARITY,IS_FATIGUE_OR_FEELS_FULL_AFTER_EATING,FATIGUE_OR_FEELS_FULL_AFTER_EATING_INFO,IS_DESIRE_FOR_SWEETS_AFTER_EATING,DESIRE_FOR_SWEETS_AFTER_EATING_INFO,IS_DIFFICULTY_CONCENTRATING,DIFFICULTY_CONCENTRATING_INFO,IS_OFTEN_ILL,OFTEN_ILL_INFO,IS_SUFFERING_FROM_MUCUS,SUFFERING_FROM_MUCUS_INFO,IS_COUGH_OR_ALLERGY_SUFFERS,COUGH_OR_ALLERGY_SUFFERS_INFO,IS_SMOKING,SMOKING_INFO,IS_FREQUENT_OR_URGENT_URINATION,FREQUENT_OR_URGENT_URINATION_INFO,PREFER_COLD_OR_HOT,PREFER_COLD_OR_HOT_INFO,IS_SUFFERS_FROM_COLD_OR_HOT,SUFFERS_FROM_COLD_OR_HOT_INFO,IS_SATISFIED_DIETS,SATISFIED_DIETS_INFO,IS_WANT_TO_LOST_WEIGHT,WANT_TO_LOST_WEIGHT_INFO,IS_USING_CONTRACEPTION,USING_CONTRACEPTION_INFO,IS_CYCLE_REGULAR,CYCLE_REGULAR_INFO,IS_SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION,SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION_INFO,IS_SUFFERING_FROM_MENOPAUSE,SUFFERING_FROM_MENOPAUSE_INFO,HOW_MANY_HOURS_A_WEEK_ARE_YOU_WILLING_TO_INVEST_TO_IMPROVE_THE_QUALITY_OF_LIFE,WHAT_CHANGES_DO_YOU_EXPECT_TO_SEE_FROM_TREATMENT) values;");
-            
+            insertDiagnosticSt = new SQLiteCommand("insert into DIAGNOSTIC(PROFESSION,MAIN_COMPLAINT,SECONDERY_COMPLAINT,DRUGS_USED,TESTS_MADE,IN_PAIN BOOLEAN,PAIN_INFO,IS_PAIN_PREVIOUS_EVALUATIONS,PAIN_PREVIOUS_EVALUATION_INFO,IS_THERE_ANYSORT_OF_SCANS,THE_SCANS_INFO,IS_UNDER_STRESS,STRESS_INFO,IS_TENSE_MUSCLES,TENSE_MUSCLES_INFO,IS_HIGH_BLOOD_PRESSURE_OR_COLESTEROL,HIGH_BLOOD_PRESSURE_OR_COLESTEROL_INFO,IS_GOOD_SLEEP,GOOD_SLEEP_INFO,IS_FALLEN_TO_SLEEP_PROBLEM,FALLEN_TO_SLEEP_PROBLEM_INFO,IS_PALPITATIONS,PALPITATIONS_INFO,DEFECATION_REGULARITY,IS_FATIGUE_OR_FEELS_FULL_AFTER_EATING,FATIGUE_OR_FEELS_FULL_AFTER_EATING_INFO,IS_DESIRE_FOR_SWEETS_AFTER_EATING,DESIRE_FOR_SWEETS_AFTER_EATING_INFO,IS_DIFFICULTY_CONCENTRATING,DIFFICULTY_CONCENTRATING_INFO,IS_OFTEN_ILL,OFTEN_ILL_INFO,IS_SUFFERING_FROM_MUCUS,SUFFERING_FROM_MUCUS_INFO,IS_COUGH_OR_ALLERGY_SUFFERS,COUGH_OR_ALLERGY_SUFFERS_INFO,IS_SMOKING,SMOKING_INFO,IS_FREQUENT_OR_URGENT_URINATION,FREQUENT_OR_URGENT_URINATION_INFO,PREFER_COLD_OR_HOT,PREFER_COLD_OR_HOT_INFO,IS_SUFFERS_FROM_COLD_OR_HOT,SUFFERS_FROM_COLD_OR_HOT_INFO,IS_SATISFIED_DIETS,SATISFIED_DIETS_INFO,IS_WANT_TO_LOST_WEIGHT,WANT_TO_LOST_WEIGHT_INFO,IS_USING_CONTRACEPTION,USING_CONTRACEPTION_INFO,IS_CYCLE_REGULAR,CYCLE_REGULAR_INFO,IS_SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION,SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION_INFO,IS_SUFFERING_FROM_MENOPAUSE,SUFFERING_FROM_MENOPAUSE_INFO,HOW_MANY_HOURS_A_WEEK_ARE_YOU_WILLING_TO_INVEST_TO_IMPROVE_THE_QUALITY_OF_LIFE,WHAT_CHANGES_DO_YOU_EXPECT_TO_SEE_FROM_TREATMENT,PATIENT_ID,CREATION_DATE) values(@Profession, @MainComplaint, @SeconderyComlaint, @DrugsUsed, @TestsMade, @IsPain, @PainInfo , @IsPainPreviousEvaluations, @PainPreviousEvaluationsInfo, @IsScans, @ScansInfo, @IsUnderStress, @UnderStressInfo, @IsTenseMuscles, @TenseMusclesInfo, @IsHighBloodPressureOrColesterol, @HighBloodPressureOrColesterolInfo, @IsGoodSleep, @GoodSleepInfo, @IsFallenToSleepProblem, @FallenToSleepProblemInfo, @IsPalpitations, @PalpitationsInfo, @DefeationRegularity, @IsFatigueOrFeelsFulAfterEating, @FatigueOrFeelsFulAfterEatingInfo, @IsDesireForSweetsAfterEating, @DesireForSweetsAfterEatingInfo, @IsDifficultyConcentating, @DifficultyConcentatingInfo, @IsOftenIll, @OftenIllInfo, @IsSufferingFromMucus, @SufferingFromMucusInfo, @IsCoughOrAllergySuffers, @CoughOrAllergySuffersInfo, @IsSmoking, @SmokingInfo, @IsFrequentOrUrgentUrination, @FrequentOrUrgentUrinationInfo, @PreferColdOrHot, @PreferColdOrHotInfo, @IsSuffersFromColdOrHot, @SuffersFromColdOrHotInfo, @IsSatisfiedDients, @SatisfiedDientsInfo, @IsWantToLostWeight, @WantToLostWeightInfo, @IsUsingContraception, @UsingContraceptionInfo, @IsCycleRegular, @CycleRegularInfo, @IsSufferingFromCrampsOrNervousBeforeMenstruation, @SufferingFromCrampsOrNervousBeforeMenstruationInfo, @IsSufferingFromMenpause, @SufferingFromMenpauseInfo, @HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife, @WhatChangesDoYouExpectToSeeFromTreatment,@patientId,@creationDate);", connection);
+            insertDiagnosticSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@Profession"), new SQLiteParameter("@MainComplaint"), new SQLiteParameter("@SeconderyComlaint"), new SQLiteParameter("@DrugsUsed"), new SQLiteParameter("@TestsMade"), new SQLiteParameter("@IsPain"), new SQLiteParameter("@PainInfo"), new SQLiteParameter("@IsPainPreviousEvaluations"), new SQLiteParameter("@PainPreviousEvaluationsInfo"), new SQLiteParameter("@IsScans"), new SQLiteParameter("@ScansInfo"), new SQLiteParameter("@IsUnderStress"), new SQLiteParameter("@UnderStressInfo"), new SQLiteParameter("@IsTenseMuscles"), new SQLiteParameter("@TenseMusclesInfo"), new SQLiteParameter("@IsHighBloodPressureOrColesterol"), new SQLiteParameter("@HighBloodPressureOrColesterolInfo"), new SQLiteParameter("@IsGoodSleep"), new SQLiteParameter("@GoodSleepInfo"), new SQLiteParameter("@IsFallenToSleepProblem"), new SQLiteParameter("@FallenToSleepProblemInfo"), new SQLiteParameter("@IsPalpitations"), new SQLiteParameter("@PalpitationsInfo"), new SQLiteParameter("@DefeationRegularity"), new SQLiteParameter("@IsFatigueOrFeelsFulAfterEating"), new SQLiteParameter("@FatigueOrFeelsFulAfterEatingInfo"), new SQLiteParameter("@IsDesireForSweetsAfterEating"), new SQLiteParameter("@DesireForSweetsAfterEatingInfo"), new SQLiteParameter("@IsDifficultyConcentating"), new SQLiteParameter("@DifficultyConcentatingInfo"), new SQLiteParameter("@IsOftenIll"), new SQLiteParameter("@OftenIllInfo"), new SQLiteParameter("@IsSufferingFromMucus"), new SQLiteParameter("@SufferingFromMucusInfo"), new SQLiteParameter("@IsCoughOrAllergySuffers"), new SQLiteParameter("@CoughOrAllergySuffersInfo"), new SQLiteParameter("@IsSmoking"), new SQLiteParameter("@SmokingInfo"), new SQLiteParameter("@IsFrequentOrUrgentUrination"), new SQLiteParameter("@FrequentOrUrgentUrinationInfo"), new SQLiteParameter("@PreferColdOrHot"), new SQLiteParameter("@PreferColdOrHotInfo"), new SQLiteParameter("@IsSuffersFromColdOrHot"), new SQLiteParameter("@SuffersFromColdOrHotInfo"), new SQLiteParameter("@IsSatisfiedDients"), new SQLiteParameter("@SatisfiedDientsInfo"), new SQLiteParameter("@IsWantToLostWeight"), new SQLiteParameter("@WantToLostWeightInfo"), new SQLiteParameter("@IsUsingContraception"), new SQLiteParameter("@UsingContraceptionInfo"), new SQLiteParameter("@IsCycleRegular"), new SQLiteParameter("@CycleRegularInfo"), new SQLiteParameter("@IsSufferingFromCrampsOrNervousBeforeMenstruation"), new SQLiteParameter("@SufferingFromCrampsOrNervousBeforeMenstruationInfo"), new SQLiteParameter("@IsSufferingFromMenpause"), new SQLiteParameter("@SufferingFromMenpauseInfo"), new SQLiteParameter("@HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife"), new SQLiteParameter("@WhatChangesDoYouExpectToSeeFromTreatment"),new SQLiteParameter("@patientId") ,new SQLiteParameter("@creationDate")});
+
             updateSymptomSt = new SQLiteCommand("update SYMPTOM set NAME = @name ,COMMENT = @comment where ID = @symptomId;", connection);
             updateSymptomSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@comment") });
 
@@ -197,6 +205,8 @@ namespace AcupunctureProject.database
             updatePointSymptomRelationSt = new SQLiteCommand("update SYMPTOM_POINTS set IMPORTENCE = @importance ,COMMENT = @comment where POINT_ID = @pointId and SYMPTOM_ID = @symptomId;", connection);
             updatePointSymptomRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@symptomId"), new SQLiteParameter("@pointId"), new SQLiteParameter("@importance"), new SQLiteParameter("@comment") });
 
+            updateDiagnosticSt = new SQLiteCommand("update DIAGNOSTIC set PROFESSION = @Profession, MAIN_COMPLAINT = @MainComplaint, SECONDERY_COMPLAINT = @SeconderyComlaint, DRUGS_USED = @DrugsUsed, TESTS_MADE = @TestsMade, IN_PAIN = @IsPain, PAIN_INFO = @PainInfo , IS_PAIN_PREVIOUS_EVALUATIONS = @IsPainPreviousEvaluations, PAIN_PREVIOUS_EVALUATION_INFO = @PainPreviousEvaluationsInfo, IS_THERE_ANYSORT_OF_SCANS = @IsScans, THE_SCANS_INFO = @ScansInfo, IS_UNDER_STRESS = @IsUnderStress, STRESS_INFO = @UnderStressInfo, IS_TENSE_MUSCLES = @IsTenseMuscles, TENSE_MUSCLES_INFO = @TenseMusclesInfo, IS_HIGH_BLOOD_PRESSURE_OR_COLESTEROL = @IsHighBloodPressureOrColesterol, HIGH_BLOOD_PRESSURE_OR_COLESTEROL_INFO = @HighBloodPressureOrColesterolInfo, IS_GOOD_SLEEP = @IsGoodSleep, GOOD_SLEEP_INFO = @GoodSleepInfo, IS_FALLEN_TO_SLEEP_PROBLEM = @IsFallenToSleepProblem, FALLEN_TO_SLEEP_PROBLEM_INFO = @FallenToSleepProblemInfo, IS_PALPITATIONS = @IsPalpitations, PALPITATIONS_INFO = @PalpitationsInfo, DEFECATION_REGULARITY = @DefeationRegularity, IS_FATIGUE_OR_FEELS_FULL_AFTER_EATING = @IsFatigueOrFeelsFulAfterEating, FATIGUE_OR_FEELS_FULL_AFTER_EATING_INFO = @FatigueOrFeelsFulAfterEatingInfo, IS_DESIRE_FOR_SWEETS_AFTER_EATING = @IsDesireForSweetsAfterEating, DESIRE_FOR_SWEETS_AFTER_EATING_INFO = @DesireForSweetsAfterEatingInfo, IS_DIFFICULTY_CONCENTRATING = @IsDifficultyConcentating, DIFFICULTY_CONCENTRATING_INFO = @DifficultyConcentatingInfo, IS_OFTEN_ILL = @IsOftenIll, OFTEN_ILL_INFO = @OftenIllInfo, IS_SUFFERING_FROM_MUCUS = @IsSufferingFromMucus, SUFFERING_FROM_MUCUS_INFO = @SufferingFromMucusInfo, IS_COUGH_OR_ALLERGY_SUFFERS = @IsCoughOrAllergySuffers, COUGH_OR_ALLERGY_SUFFERS_INFO = @CoughOrAllergySuffersInfo, IS_SMOKING = @IsSmoking, SMOKING_INFO = @SmokingInfo, IS_FREQUENT_OR_URGENT_URINATION = @IsFrequentOrUrgentUrination, FREQUENT_OR_URGENT_URINATION_INFO = @FrequentOrUrgentUrinationInfo, PREFER_COLD_OR_HOT = @PreferColdOrHot, PREFER_COLD_OR_HOT_INFO = @PreferColdOrHotInfo, IS_SUFFERS_FROM_COLD_OR_HOT = @IsSuffersFromColdOrHot, SUFFERS_FROM_COLD_OR_HOT_INFO = @SuffersFromColdOrHotInfo, IS_SATISFIED_DIETS = @IsSatisfiedDients, SATISFIED_DIETS_INFO = @SatisfiedDientsInfo, IS_WANT_TO_LOST_WEIGHT = @IsWantToLostWeight, WANT_TO_LOST_WEIGHT_INFO = @WantToLostWeightInfo, IS_USING_CONTRACEPTION = @IsUsingContraception, USING_CONTRACEPTION_INFO = @UsingContraceptionInfo, IS_CYCLE_REGULAR = @IsCycleRegular, CYCLE_REGULAR_INFO = @CycleRegularInfo, IS_SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION = @IsSufferingFromCrampsOrNervousBeforeMenstruation, SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION_INFO = @SufferingFromCrampsOrNervousBeforeMenstruationInfo, IS_SUFFERING_FROM_MENOPAUSE = @IsSufferingFromMenpause, SUFFERING_FROM_MENOPAUSE_INFO = @SufferingFromMenpauseInfo, HOW_MANY_HOURS_A_WEEK_ARE_YOU_WILLING_TO_INVEST_TO_IMPROVE_THE_QUALITY_OF_LIFE = @HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife, WHAT_CHANGES_DO_YOU_EXPECT_TO_SEE_FROM_TREATMENT = @WhatChangesDoYouExpectToSeeFromTreatment , PATIENT_ID = @patientId , CREATION_DATE = @creationDate where ID = @Id;",connection);
+            updateDiagnosticSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@Profession"), new SQLiteParameter("@MainComplaint"), new SQLiteParameter("@SeconderyComlaint"), new SQLiteParameter("@DrugsUsed"), new SQLiteParameter("@TestsMade"), new SQLiteParameter("@IsPain"), new SQLiteParameter("@PainInfo"), new SQLiteParameter("@IsPainPreviousEvaluations"), new SQLiteParameter("@PainPreviousEvaluationsInfo"), new SQLiteParameter("@IsScans"), new SQLiteParameter("@ScansInfo"), new SQLiteParameter("@IsUnderStress"), new SQLiteParameter("@UnderStressInfo"), new SQLiteParameter("@IsTenseMuscles"), new SQLiteParameter("@TenseMusclesInfo"), new SQLiteParameter("@IsHighBloodPressureOrColesterol"), new SQLiteParameter("@HighBloodPressureOrColesterolInfo"), new SQLiteParameter("@IsGoodSleep"), new SQLiteParameter("@GoodSleepInfo"), new SQLiteParameter("@IsFallenToSleepProblem"), new SQLiteParameter("@FallenToSleepProblemInfo"), new SQLiteParameter("@IsPalpitations"), new SQLiteParameter("@PalpitationsInfo"), new SQLiteParameter("@DefeationRegularity"), new SQLiteParameter("@IsFatigueOrFeelsFulAfterEating"), new SQLiteParameter("@FatigueOrFeelsFulAfterEatingInfo"), new SQLiteParameter("@IsDesireForSweetsAfterEating"), new SQLiteParameter("@DesireForSweetsAfterEatingInfo"), new SQLiteParameter("@IsDifficultyConcentating"), new SQLiteParameter("@DifficultyConcentatingInfo"), new SQLiteParameter("@IsOftenIll"), new SQLiteParameter("@OftenIllInfo"), new SQLiteParameter("@IsSufferingFromMucus"), new SQLiteParameter("@SufferingFromMucusInfo"), new SQLiteParameter("@IsCoughOrAllergySuffers"), new SQLiteParameter("@CoughOrAllergySuffersInfo"), new SQLiteParameter("@IsSmoking"), new SQLiteParameter("@SmokingInfo"), new SQLiteParameter("@IsFrequentOrUrgentUrination"), new SQLiteParameter("@FrequentOrUrgentUrinationInfo"), new SQLiteParameter("@PreferColdOrHot"), new SQLiteParameter("@PreferColdOrHotInfo"), new SQLiteParameter("@IsSuffersFromColdOrHot"), new SQLiteParameter("@SuffersFromColdOrHotInfo"), new SQLiteParameter("@IsSatisfiedDients"), new SQLiteParameter("@SatisfiedDientsInfo"), new SQLiteParameter("@IsWantToLostWeight"), new SQLiteParameter("@WantToLostWeightInfo"), new SQLiteParameter("@IsUsingContraception"), new SQLiteParameter("@UsingContraceptionInfo"), new SQLiteParameter("@IsCycleRegular"), new SQLiteParameter("@CycleRegularInfo"), new SQLiteParameter("@IsSufferingFromCrampsOrNervousBeforeMenstruation"), new SQLiteParameter("@SufferingFromCrampsOrNervousBeforeMenstruationInfo"), new SQLiteParameter("@IsSufferingFromMenpause"), new SQLiteParameter("@SufferingFromMenpauseInfo"), new SQLiteParameter("@HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife"), new SQLiteParameter("@WhatChangesDoYouExpectToSeeFromTreatment"),new SQLiteParameter("@Id") ,new SQLiteParameter("@patientId"),new SQLiteParameter("@creationDate")});
 
             deleteSymptomSt = new SQLiteCommand("delete from SYMPTOM where ID = @symptomId;", connection);
             deleteSymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
@@ -239,6 +249,12 @@ namespace AcupunctureProject.database
 
             getAllMeetingsRelativeToPatientOrderByDateSt = new SQLiteCommand("SELECT * FROM MEETING WHERE PATIENT_ID=@patientId ORDER BY DATE DESC;", connection);
             getAllMeetingsRelativeToPatientOrderByDateSt.Parameters.Add(new SQLiteParameter("@patientId"));
+
+            getAllDiagnosticByPatientSt = new SQLiteCommand("select * from DIAGNOSTIC where PATIENT_ID = @patientId order by CREATION_DATE DESC;", connection);
+            getAllDiagnosticByPatientSt.Parameters.Add(new SQLiteParameter("@patientId"));
+
+            getDiagnosticByMeetingSt = new SQLiteCommand("select * from DIAGNOSTIC where ID = @Id;", connection);
+            getDiagnosticByMeetingSt.Parameters.Add(new SQLiteParameter("@Id"));
 
             getAllPointsSt = new SQLiteCommand("select * from POINTS;", connection);
 
@@ -384,6 +400,72 @@ namespace AcupunctureProject.database
             updatePointSymptomRelationSt.Parameters["@symptomId"].Value = symptom.Id;
             updatePointSymptomRelationSt.ExecuteNonQuery();
         }
+
+        private void UpdateDiagnostic(Diagnostic diagnostic)
+        {
+            updateDiagnosticSt.Parameters["@Id"].Value = diagnostic.Id;
+            updateDiagnosticSt.Parameters["@Profession"].Value = diagnostic.Profession;
+            updateDiagnosticSt.Parameters["@MainComplaint"].Value = diagnostic.MainComplaint;
+            updateDiagnosticSt.Parameters["@SeconderyComlaint"].Value = diagnostic.SeconderyComlaint;
+            updateDiagnosticSt.Parameters["@DrugsUsed"].Value = diagnostic.DrugsUsed;
+            updateDiagnosticSt.Parameters["@TestsMade"].Value = diagnostic.TestsMade;
+            updateDiagnosticSt.Parameters["@IsPain"].Value = diagnostic.Pain.Value;
+            updateDiagnosticSt.Parameters["@PainInfo"].Value = diagnostic.Pain.Info;
+            updateDiagnosticSt.Parameters["@IsPainPreviousEvaluations"].Value = diagnostic.PainPreviousEvaluations.Value;
+            updateDiagnosticSt.Parameters["@PainPreviousEvaluationsInfo"].Value = diagnostic.PainPreviousEvaluations.Info;
+            updateDiagnosticSt.Parameters["@IsScans"].Value = diagnostic.Scans.Value;
+            updateDiagnosticSt.Parameters["@ScansInfo"].Value = diagnostic.Scans.Info;
+            updateDiagnosticSt.Parameters["@IsUnderStress"].Value = diagnostic.UnderStress.Value;
+            updateDiagnosticSt.Parameters["@UnderStressInfo"].Value = diagnostic.UnderStress.Info;
+            updateDiagnosticSt.Parameters["@IsTenseMuscles"].Value = diagnostic.TenseMuscles.Value;
+            updateDiagnosticSt.Parameters["@TenseMusclesInfo"].Value = diagnostic.TenseMuscles.Info;
+            updateDiagnosticSt.Parameters["@IsHighBloodPressureOrColesterol"].Value = diagnostic.HighBloodPressureOrColesterol.Value;
+            updateDiagnosticSt.Parameters["@HighBloodPressureOrColesterolInfo"].Value = diagnostic.HighBloodPressureOrColesterol.Info;
+            updateDiagnosticSt.Parameters["@IsGoodSleep"].Value = diagnostic.GoodSleep.Value;
+            updateDiagnosticSt.Parameters["@GoodSleepInfo"].Value = diagnostic.GoodSleep.Info;
+            updateDiagnosticSt.Parameters["@IsFallenToSleepProblem"].Value = diagnostic.FallenToSleepProblem.Value;
+            updateDiagnosticSt.Parameters["@FallenToSleepProblemInfo"].Value = diagnostic.FallenToSleepProblem.Info;
+            updateDiagnosticSt.Parameters["@IsPalpitations"].Value = diagnostic.Palpitations.Value;
+            updateDiagnosticSt.Parameters["@PalpitationsInfo"].Value = diagnostic.Palpitations.Info;
+            updateDiagnosticSt.Parameters["@DefeationRegularity"].Value = diagnostic.DefeationRegularity;
+            updateDiagnosticSt.Parameters["@IsFatigueOrFeelsFulAfterEating"].Value = diagnostic.FatigueOrFeelsFulAfterEating.Value;
+            updateDiagnosticSt.Parameters["@FatigueOrFeelsFulAfterEatingInfo"].Value = diagnostic.FatigueOrFeelsFulAfterEating.Info;
+            updateDiagnosticSt.Parameters["@IsDesireForSweetsAfterEating"].Value = diagnostic.DesireForSweetsAfterEating.Value;
+            updateDiagnosticSt.Parameters["@DesireForSweetsAfterEatingInfo"].Value = diagnostic.DesireForSweetsAfterEating.Info;
+            updateDiagnosticSt.Parameters["@IsDifficultyConcentating"].Value = diagnostic.DifficultyConcentating.Value;
+            updateDiagnosticSt.Parameters["@DifficultyConcentatingInfo"].Value = diagnostic.DifficultyConcentating.Info;
+            updateDiagnosticSt.Parameters["@IsOftenIll"].Value = diagnostic.OftenIll.Value;
+            updateDiagnosticSt.Parameters["@OftenIllInfo"].Value = diagnostic.OftenIll.Info;
+            updateDiagnosticSt.Parameters["@IsSufferingFromMucus"].Value = diagnostic.SufferingFromMucus.Value;
+            updateDiagnosticSt.Parameters["@SufferingFromMucusInfo"].Value = diagnostic.SufferingFromMucus.Info;
+            updateDiagnosticSt.Parameters["@IsCoughOrAllergySuffers"].Value = diagnostic.CoughOrAllergySuffers.Value;
+            updateDiagnosticSt.Parameters["@CoughOrAllergySuffersInfo"].Value = diagnostic.CoughOrAllergySuffers.Info;
+            updateDiagnosticSt.Parameters["@IsSmoking"].Value = diagnostic.Smoking.Value;
+            updateDiagnosticSt.Parameters["@SmokingInfo"].Value = diagnostic.Smoking.Info;
+            updateDiagnosticSt.Parameters["@IsFrequentOrUrgentUrination"].Value = diagnostic.FrequentOrUrgentUrination.Value;
+            updateDiagnosticSt.Parameters["@FrequentOrUrgentUrinationInfo"].Value = diagnostic.FrequentOrUrgentUrination.Info;
+            updateDiagnosticSt.Parameters["@PreferColdOrHot"].Value = diagnostic.PreferColdOrHot;
+            updateDiagnosticSt.Parameters["@PreferColdOrHotInfo"].Value = diagnostic.PreferColdOrHot.Info;
+            updateDiagnosticSt.Parameters["@IsSuffersFromColdOrHot"].Value = diagnostic.SuffersFromColdOrHot.Value;
+            updateDiagnosticSt.Parameters["@SuffersFromColdOrHotInfo"].Value = diagnostic.SuffersFromColdOrHot.Info;
+            updateDiagnosticSt.Parameters["@IsSatisfiedDients"].Value = diagnostic.SatisfiedDients.Value;
+            updateDiagnosticSt.Parameters["@SatisfiedDientsInfo"].Value = diagnostic.SatisfiedDients.Info;
+            updateDiagnosticSt.Parameters["@IsWantToLostWeight"].Value = diagnostic.WantToLostWeight.Value;
+            updateDiagnosticSt.Parameters["@WantToLostWeightInfo"].Value = diagnostic.WantToLostWeight.Info;
+            updateDiagnosticSt.Parameters["@IsUsingContraception"].Value = diagnostic.UsingContraception.Value;
+            updateDiagnosticSt.Parameters["@UsingContraceptionInfo"].Value = diagnostic.UsingContraception.Info;
+            updateDiagnosticSt.Parameters["@IsCycleRegular"].Value = diagnostic.CycleRegular.Value;
+            updateDiagnosticSt.Parameters["@CycleRegularInfo"].Value = diagnostic.CycleRegular.Info;
+            updateDiagnosticSt.Parameters["@IsSufferingFromCrampsOrNervousBeforeMenstruation"].Value = diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation.Value;
+            updateDiagnosticSt.Parameters["@SufferingFromCrampsOrNervousBeforeMenstruationInfo"].Value = diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation.Info;
+            updateDiagnosticSt.Parameters["@IsSufferingFromMenpause"].Value = diagnostic.SufferingFromMenpause.Value;
+            updateDiagnosticSt.Parameters["@SufferingFromMenpauseInfo"].Value = diagnostic.SufferingFromMenpause.Info;
+            updateDiagnosticSt.Parameters["@HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife"].Value = diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
+            updateDiagnosticSt.Parameters["@WhatChangesDoYouExpectToSeeFromTreatment"].Value = diagnostic.WhatChangesDoYouExpectToSeeFromTreatment;
+            updateDiagnosticSt.Parameters["@patientId"].Value = diagnostic.PatientId;
+            updateDiagnosticSt.Parameters["@creationDate"].Value = diagnostic.CreationDate;
+            updateDiagnosticSt.ExecuteNonQuery();
+        }
         #endregion
         #region deletes
         public void DeleteSymptom(Symptom symptom)
@@ -445,6 +527,34 @@ namespace AcupunctureProject.database
         }
         #endregion
         #region finds objects
+        public List<Diagnostic> GetAllDiagnosticByPatient(Patient patient)
+        {
+            getAllDiagnosticByPatientSt.Parameters["@patientId"].Value = patient.Id;
+            List<Diagnostic> o = new List<Diagnostic>();
+            using (SQLiteDataReader rs = getAllDiagnosticByPatientSt.ExecuteReader())
+            {
+                while(rs.Read())
+                {
+                    o.Add(GetDiagnostic(rs));
+                }
+            }
+            return o;
+        }
+        public Diagnostic GetDiagnosticByMeeting(Meeting meeting)
+        {
+            getDiagnosticByMeetingSt.Parameters["@diagnosticId"].Value = meeting.DiagnosticId;
+            using (SQLiteDataReader rs = getDiagnosticByMeetingSt.ExecuteReader())
+            {
+                if(rs.Read())
+                {
+                    return GetDiagnostic(rs);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
 
         public List<Meeting> GetAllMeetingsRelativeToPatientOrderByDate(Patient patient)
         {
@@ -625,6 +735,17 @@ namespace AcupunctureProject.database
         }
         #endregion
         #region inserts
+        public void SetDiagnostic(Diagnostic diagnostic)
+        {
+            if(diagnostic.Id == -1)
+            {
+                InsertDiagnostic(diagnostic);
+            }
+            else
+            {
+                UpdateDiagnostic(diagnostic);
+            }
+        }
         public Channel InsertChannel(Channel channel)
         {
             insertChannelSt.Parameters["@channelId"].Value = channel.Id;
@@ -637,6 +758,81 @@ namespace AcupunctureProject.database
             insertChannelSt.Parameters["@comments"].Value = channel.Comments;
             insertChannelSt.ExecuteNonQuery();
             return channel;
+        }
+
+        private Diagnostic InsertDiagnostic(Diagnostic diagnostic)
+        {
+            insertDiagnosticSt.Parameters["@Id"].Value = diagnostic.Id;
+            insertDiagnosticSt.Parameters["@Profession"].Value = diagnostic.Profession;
+            insertDiagnosticSt.Parameters["@MainComplaint"].Value = diagnostic.MainComplaint;
+            insertDiagnosticSt.Parameters["@SeconderyComlaint"].Value = diagnostic.SeconderyComlaint;
+            insertDiagnosticSt.Parameters["@DrugsUsed"].Value = diagnostic.DrugsUsed;
+            insertDiagnosticSt.Parameters["@TestsMade"].Value = diagnostic.TestsMade;
+            insertDiagnosticSt.Parameters["@IsPain"].Value = diagnostic.Pain.Value;
+            insertDiagnosticSt.Parameters["@PainInfo"].Value = diagnostic.Pain.Info;
+            insertDiagnosticSt.Parameters["@IsPainPreviousEvaluations"].Value = diagnostic.PainPreviousEvaluations.Value;
+            insertDiagnosticSt.Parameters["@PainPreviousEvaluationsInfo"].Value = diagnostic.PainPreviousEvaluations.Info;
+            insertDiagnosticSt.Parameters["@IsScans"].Value = diagnostic.Scans.Value;
+            insertDiagnosticSt.Parameters["@ScansInfo"].Value = diagnostic.Scans.Info;
+            insertDiagnosticSt.Parameters["@IsUnderStress"].Value = diagnostic.UnderStress.Value;
+            insertDiagnosticSt.Parameters["@UnderStressInfo"].Value = diagnostic.UnderStress.Info;
+            insertDiagnosticSt.Parameters["@IsTenseMuscles"].Value = diagnostic.TenseMuscles.Value;
+            insertDiagnosticSt.Parameters["@TenseMusclesInfo"].Value = diagnostic.TenseMuscles.Info;
+            insertDiagnosticSt.Parameters["@IsHighBloodPressureOrColesterol"].Value = diagnostic.HighBloodPressureOrColesterol.Value;
+            insertDiagnosticSt.Parameters["@HighBloodPressureOrColesterolInfo"].Value = diagnostic.HighBloodPressureOrColesterol.Info;
+            insertDiagnosticSt.Parameters["@IsGoodSleep"].Value = diagnostic.GoodSleep.Value;
+            insertDiagnosticSt.Parameters["@GoodSleepInfo"].Value = diagnostic.GoodSleep.Info;
+            insertDiagnosticSt.Parameters["@IsFallenToSleepProblem"].Value = diagnostic.FallenToSleepProblem.Value;
+            insertDiagnosticSt.Parameters["@FallenToSleepProblemInfo"].Value = diagnostic.FallenToSleepProblem.Info;
+            insertDiagnosticSt.Parameters["@IsPalpitations"].Value = diagnostic.Palpitations.Value;
+            insertDiagnosticSt.Parameters["@PalpitationsInfo"].Value = diagnostic.Palpitations.Info;
+            insertDiagnosticSt.Parameters["@DefeationRegularity"].Value = diagnostic.DefeationRegularity;
+            insertDiagnosticSt.Parameters["@IsFatigueOrFeelsFulAfterEating"].Value = diagnostic.FatigueOrFeelsFulAfterEating.Value;
+            insertDiagnosticSt.Parameters["@FatigueOrFeelsFulAfterEatingInfo"].Value = diagnostic.FatigueOrFeelsFulAfterEating.Info;
+            insertDiagnosticSt.Parameters["@IsDesireForSweetsAfterEating"].Value = diagnostic.DesireForSweetsAfterEating.Value;
+            insertDiagnosticSt.Parameters["@DesireForSweetsAfterEatingInfo"].Value = diagnostic.DesireForSweetsAfterEating.Info;
+            insertDiagnosticSt.Parameters["@IsDifficultyConcentating"].Value = diagnostic.DifficultyConcentating.Value;
+            insertDiagnosticSt.Parameters["@DifficultyConcentatingInfo"].Value = diagnostic.DifficultyConcentating.Info;
+            insertDiagnosticSt.Parameters["@IsOftenIll"].Value = diagnostic.OftenIll.Value;
+            insertDiagnosticSt.Parameters["@OftenIllInfo"].Value = diagnostic.OftenIll.Info;
+            insertDiagnosticSt.Parameters["@IsSufferingFromMucus"].Value = diagnostic.SufferingFromMucus.Value;
+            insertDiagnosticSt.Parameters["@SufferingFromMucusInfo"].Value = diagnostic.SufferingFromMucus.Info;
+            insertDiagnosticSt.Parameters["@IsCoughOrAllergySuffers"].Value = diagnostic.CoughOrAllergySuffers.Value;
+            insertDiagnosticSt.Parameters["@CoughOrAllergySuffersInfo"].Value = diagnostic.CoughOrAllergySuffers.Info;
+            insertDiagnosticSt.Parameters["@IsSmoking"].Value = diagnostic.Smoking.Value;
+            insertDiagnosticSt.Parameters["@SmokingInfo"].Value = diagnostic.Smoking.Info;
+            insertDiagnosticSt.Parameters["@IsFrequentOrUrgentUrination"].Value = diagnostic.FrequentOrUrgentUrination.Value;
+            insertDiagnosticSt.Parameters["@FrequentOrUrgentUrinationInfo"].Value = diagnostic.FrequentOrUrgentUrination.Info;
+            insertDiagnosticSt.Parameters["@PreferColdOrHot"].Value = diagnostic.PreferColdOrHot;
+            insertDiagnosticSt.Parameters["@PreferColdOrHotInfo"].Value = diagnostic.PreferColdOrHot.Info;
+            insertDiagnosticSt.Parameters["@IsSuffersFromColdOrHot"].Value = diagnostic.SuffersFromColdOrHot.Value;
+            insertDiagnosticSt.Parameters["@SuffersFromColdOrHotInfo"].Value = diagnostic.SuffersFromColdOrHot.Info;
+            insertDiagnosticSt.Parameters["@IsSatisfiedDients"].Value = diagnostic.SatisfiedDients.Value;
+            insertDiagnosticSt.Parameters["@SatisfiedDientsInfo"].Value = diagnostic.SatisfiedDients.Info;
+            insertDiagnosticSt.Parameters["@IsWantToLostWeight"].Value = diagnostic.WantToLostWeight.Value;
+            insertDiagnosticSt.Parameters["@WantToLostWeightInfo"].Value = diagnostic.WantToLostWeight.Info;
+            insertDiagnosticSt.Parameters["@IsUsingContraception"].Value = diagnostic.UsingContraception.Value;
+            insertDiagnosticSt.Parameters["@UsingContraceptionInfo"].Value = diagnostic.UsingContraception.Info;
+            insertDiagnosticSt.Parameters["@IsCycleRegular"].Value = diagnostic.CycleRegular.Value;
+            insertDiagnosticSt.Parameters["@CycleRegularInfo"].Value = diagnostic.CycleRegular.Info;
+            insertDiagnosticSt.Parameters["@IsSufferingFromCrampsOrNervousBeforeMenstruation"].Value = diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation.Value;
+            insertDiagnosticSt.Parameters["@SufferingFromCrampsOrNervousBeforeMenstruationInfo"].Value = diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation.Info;
+            insertDiagnosticSt.Parameters["@IsSufferingFromMenpause"].Value = diagnostic.SufferingFromMenpause.Value;
+            insertDiagnosticSt.Parameters["@SufferingFromMenpauseInfo"].Value = diagnostic.SufferingFromMenpause.Info;
+            insertDiagnosticSt.Parameters["@HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife"].Value = diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
+            insertDiagnosticSt.Parameters["@WhatChangesDoYouExpectToSeeFromTreatment"].Value = diagnostic.WhatChangesDoYouExpectToSeeFromTreatment;
+            insertDiagnosticSt.Parameters["@patientId"].Value = diagnostic.PatientId;
+            insertDiagnosticSt.Parameters["@creationDate"].Value = diagnostic.CreationDate;
+            insertDiagnosticSt.ExecuteNonQuery();
+
+            long rowId = connection.LastInsertRowId;
+
+            if (rowId != 0)
+            {
+                int id = (int)new SQLiteCommand("select ID from DIAGNOSTIC where rowId = " + rowId, connection).ExecuteScalar();
+                return new Diagnostic(id, diagnostic);
+            }
+            throw new Exception("ERORR:Insert didn't accure");
         }
 
         public void InsertSymptomChannelRelation(Symptom symptom, Channel channel, int importance, string comment)
@@ -851,6 +1047,48 @@ namespace AcupunctureProject.database
             while (rs.Read())
                 o.Add(GetSymptomConnection(rs));
             return o;
+        }
+
+        private Diagnostic GetDiagnostic(SQLiteDataReader rs)
+        {
+            return new Diagnostic(rs.GetIntL(ID))
+            {
+                Profession = rs.GetStringL(Diagnostic.PROFESSION),
+                MainComplaint = rs.GetStringL(Diagnostic.MAIN_COMPLAINT),
+                SeconderyComlaint = rs.GetStringL(Diagnostic.SECONDERY_COMPLAINT),
+                DrugsUsed = rs.GetStringL(Diagnostic.DRUGS_USED),
+                TestsMade = rs.GetStringL(Diagnostic.TESTS_MADE),
+                Pain = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IN_PAIN), rs.GetStringL(Diagnostic.PAIN_INFO)),
+                PainPreviousEvaluations = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_PAIN_PREVIOUS_EVALUATIONS), rs.GetStringL(Diagnostic.PAIN_PREVIOUS_EVALUATION_INFO)),
+                Scans = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_THERE_ANYSORT_OF_SCANS), rs.GetStringL(Diagnostic.THE_SCANS_INFO)),
+                UnderStress = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_UNDER_STRESS), rs.GetStringL(Diagnostic.STRESS_INFO)),
+                TenseMuscles = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_TENSE_MUSCLES), rs.GetStringL(Diagnostic.TENSE_MUSCLES_INFO)),
+                HighBloodPressureOrColesterol = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_HIGH_BLOOD_PRESSURE_OR_COLESTEROL), rs.GetStringL(Diagnostic.HIGH_BLOOD_PRESSURE_OR_COLESTEROL_INFO)),
+                GoodSleep = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_GOOD_SLEEP), rs.GetStringL(Diagnostic.GOOD_SLEEP_INFO)),
+                FallenToSleepProblem = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_FALLEN_TO_SLEEP_PROBLEM), rs.GetStringL(Diagnostic.FALLEN_TO_SLEEP_PROBLEM_INFO)),
+                Palpitations = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_PALPITATIONS), rs.GetStringL(Diagnostic.PALPITATIONS_INFO)),
+                DefeationRegularity = rs.GetStringL(Diagnostic.DEFECATION_REGULARITY),
+                FatigueOrFeelsFulAfterEating = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_FATIGUE_OR_FEELS_FULL_AFTER_EATING), rs.GetStringL(Diagnostic.FATIGUE_OR_FEELS_FULL_AFTER_EATING_INFO)),
+                DesireForSweetsAfterEating = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_DESIRE_FOR_SWEETS_AFTER_EATING), rs.GetStringL(Diagnostic.DESIRE_FOR_SWEETS_AFTER_EATING_INFO)),
+                DifficultyConcentating = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_DIFFICULTY_CONCENTRATING), rs.GetStringL(Diagnostic.DIFFICULTY_CONCENTRATING_INFO)),
+                OftenIll = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_OFTEN_ILL), rs.GetStringL(Diagnostic.OFTEN_ILL_INFO)),
+                SufferingFromMucus = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_SUFFERING_FROM_MUCUS), rs.GetStringL(Diagnostic.SUFFERING_FROM_MUCUS_INFO)),
+                CoughOrAllergySuffers = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_COUGH_OR_ALLERGY_SUFFERS), rs.GetStringL(Diagnostic.COUGH_OR_ALLERGY_SUFFERS_INFO)),
+                Smoking = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_SMOKING), rs.GetStringL(Diagnostic.SMOKING_INFO)),
+                FrequentOrUrgentUrination = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_FREQUENT_OR_URGENT_URINATION), rs.GetStringL(Diagnostic.FREQUENT_OR_URGENT_URINATION_INFO)),
+                PreferColdOrHot = new ValueInfo<PreferColdOrHotType>((PreferColdOrHotType)rs.GetIntL(Diagnostic.PREFER_COLD_OR_HOT), rs.GetStringL(Diagnostic.PREFER_COLD_OR_HOT_INFO)),
+                SuffersFromColdOrHot = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_SUFFERS_FROM_COLD_OR_HOT), rs.GetStringL(Diagnostic.SUFFERS_FROM_COLD_OR_HOT_INFO)),
+                SatisfiedDients = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_SATISFIED_DIETS), rs.GetStringL(Diagnostic.SATISFIED_DIETS_INFO)),
+                WantToLostWeight = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_WANT_TO_LOST_WEIGHT), rs.GetStringL(Diagnostic.WANT_TO_LOST_WEIGHT_INFO)),
+                UsingContraception = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_USING_CONTRACEPTION), rs.GetStringL(Diagnostic.USING_CONTRACEPTION_INFO)),
+                CycleRegular = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_CYCLE_REGULAR), rs.GetStringL(Diagnostic.CYCLE_REGULAR_INFO)),
+                SufferingFromCrampsOrNervousBeforeMenstruation = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION), rs.GetStringL(Diagnostic.SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION_INFO)),
+                SufferingFromMenpause = new ValueInfo<bool>(rs.GetBoolL(Diagnostic.IS_SUFFERING_FROM_MENOPAUSE), rs.GetStringL(Diagnostic.SUFFERING_FROM_MENOPAUSE_INFO)),
+                HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife = rs.GetStringL(Diagnostic.HOW_MANY_HOURS_A_WEEK_ARE_YOU_WILLING_TO_INVEST_TO_IMPROVE_THE_QUALITY_OF_LIFE),
+                WhatChangesDoYouExpectToSeeFromTreatment = rs.GetStringL(Diagnostic.WHAT_CHANGES_DO_YOU_EXPECT_TO_SEE_FROM_TREATMENT),
+                PatientId = rs.GetIntL(Diagnostic.PATIENT_ID),
+                CreationDate = rs.GetDateTimeL(Diagnostic.CREATION_DATE)
+            };
         }
         #endregion
     }

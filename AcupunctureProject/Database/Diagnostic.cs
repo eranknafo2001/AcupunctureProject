@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace AcupunctureProject.database
 {
-    public struct YesNotInfo
+    public struct ValueInfo<T>
     {
-        public bool Value { get; set; }
+        public T Value { get; set; }
         public string Info { get; set; }
-        public YesNotInfo(bool value,string info)
+        public ValueInfo(T value,string info)
         {
             Value = value;
             Info = info;
@@ -31,34 +31,36 @@ namespace AcupunctureProject.database
         public string SeconderyComlaint { get; set; }
         public string DrugsUsed { get; set; }
         public string TestsMade { get; set; }
-        public YesNotInfo Pain { get; set; }
-        public YesNotInfo PainPreviousEvaluations { get; set; }
-        public YesNotInfo Scans { get; set; }
-        public YesNotInfo UnderStress { get; set; }
-        public YesNotInfo TenseMuscles { get; set; }
-        public YesNotInfo HighBloodPressureOrColesterol { get; set; }
-        public YesNotInfo GoodSleep { get; set; }
-        public YesNotInfo FallenToSleepProblem { get; set; }
-        public YesNotInfo Palpitations { get; set; }
+        public ValueInfo<bool> Pain { get; set; }
+        public ValueInfo<bool> PainPreviousEvaluations { get; set; }
+        public ValueInfo<bool> Scans { get; set; }
+        public ValueInfo<bool> UnderStress { get; set; }
+        public ValueInfo<bool> TenseMuscles { get; set; }
+        public ValueInfo<bool> HighBloodPressureOrColesterol { get; set; }
+        public ValueInfo<bool> GoodSleep { get; set; }
+        public ValueInfo<bool> FallenToSleepProblem { get; set; }
+        public ValueInfo<bool> Palpitations { get; set; }
         public string DefeationRegularity { get; set; }
-        public YesNotInfo FatigueOrFeelsFulAfterEating { get; set; }
-        public YesNotInfo DesireForSweetsAfterEating { get; set; }
-        public YesNotInfo DifficultyConcentating { get; set; }
-        public YesNotInfo OftenIll { get; set; }
-        public YesNotInfo SufferingFromMucus { get; set; }
-        public YesNotInfo CoughOrAllergySuffers { get; set; }
-        public YesNotInfo Smoking { get; set; }
-        public YesNotInfo FrequentOrUrgentUrination { get; set; }
-        public PreferColdOrHotType PreferColdOrHot { get; set; }
-        public YesNotInfo SuffersFromColdOrHot { get; set; }
-        public YesNotInfo SatisfiedDients { get; set; }
-        public YesNotInfo WantToLostWeight { get; set; }
-        public YesNotInfo UsingContraception { get; set; }
-        public YesNotInfo CycleRegular { get; set; }
-        public YesNotInfo SufferingFromCrampsOrNervousBeforeMenstruation { get; set; }
-        public YesNotInfo SufferingFromMenpause { get; set; }
+        public ValueInfo<bool> FatigueOrFeelsFulAfterEating { get; set; }
+        public ValueInfo<bool> DesireForSweetsAfterEating { get; set; }
+        public ValueInfo<bool> DifficultyConcentating { get; set; }
+        public ValueInfo<bool> OftenIll { get; set; }
+        public ValueInfo<bool> SufferingFromMucus { get; set; }
+        public ValueInfo<bool> CoughOrAllergySuffers { get; set; }
+        public ValueInfo<bool> Smoking { get; set; }
+        public ValueInfo<bool> FrequentOrUrgentUrination { get; set; }
+        public ValueInfo<PreferColdOrHotType> PreferColdOrHot { get; set; }
+        public ValueInfo<bool> SuffersFromColdOrHot { get; set; }
+        public ValueInfo<bool> SatisfiedDients { get; set; }
+        public ValueInfo<bool> WantToLostWeight { get; set; }
+        public ValueInfo<bool> UsingContraception { get; set; }
+        public ValueInfo<bool> CycleRegular { get; set; }
+        public ValueInfo<bool> SufferingFromCrampsOrNervousBeforeMenstruation { get; set; }
+        public ValueInfo<bool> SufferingFromMenpause { get; set; }
         public string HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife { get; set; }
         public string WhatChangesDoYouExpectToSeeFromTreatment { get; set; }
+        public int PatientId { get; set; }
+        public DateTime CreationDate { get; set; }
         #endregion
         #region names of the variables
         public static readonly string PROFESSION = "PROFESSION";
@@ -119,11 +121,50 @@ namespace AcupunctureProject.database
         public static readonly string SUFFERING_FROM_MENOPAUSE_INFO = "SUFFERING_FROM_MENOPAUSE_INFO";
         public static readonly string HOW_MANY_HOURS_A_WEEK_ARE_YOU_WILLING_TO_INVEST_TO_IMPROVE_THE_QUALITY_OF_LIFE = "HOW_MANY_HOURS_A_WEEK_ARE_YOU_WILLING_TO_INVEST_TO_IMPROVE_THE_QUALITY_OF_LIFE";
         public static readonly string WHAT_CHANGES_DO_YOU_EXPECT_TO_SEE_FROM_TREATMENT = "WHAT_CHANGES_DO_YOU_EXPECT_TO_SEE_FROM_TREATMENT";
+        public static readonly string PATIENT_ID = "PATIENT_ID";
+        public static readonly string CREATION_DATE = "CREATION_DATE";
         #endregion
 
-        public Diagnostic(int id = -1)
+        public Diagnostic(int id = -1 , Diagnostic diagnostic = null)
         {
             Id = id;
+            if(diagnostic != null)
+            {
+                Profession = diagnostic.Profession;
+                MainComplaint = diagnostic.MainComplaint;
+                SeconderyComlaint = diagnostic.SeconderyComlaint;
+                DrugsUsed = diagnostic.DrugsUsed;
+                TestsMade = diagnostic.TestsMade;
+                Pain = diagnostic.Pain;
+                PainPreviousEvaluations = diagnostic.PainPreviousEvaluations;
+                Scans = diagnostic.Scans;
+                UnderStress = diagnostic.UnderStress;
+                TenseMuscles = diagnostic.TenseMuscles;
+                HighBloodPressureOrColesterol = diagnostic.HighBloodPressureOrColesterol;
+                GoodSleep = diagnostic.GoodSleep;
+                FallenToSleepProblem = diagnostic.FallenToSleepProblem;
+                Palpitations = diagnostic.Palpitations;
+                DefeationRegularity = diagnostic.DefeationRegularity;
+                FatigueOrFeelsFulAfterEating = diagnostic.FatigueOrFeelsFulAfterEating;
+                DesireForSweetsAfterEating = diagnostic.DesireForSweetsAfterEating;
+                DifficultyConcentating = diagnostic.DifficultyConcentating;
+                OftenIll = diagnostic.OftenIll;
+                SufferingFromMucus = diagnostic.SufferingFromMucus;
+                CoughOrAllergySuffers = diagnostic.CoughOrAllergySuffers;
+                Smoking = diagnostic.Smoking;
+                FrequentOrUrgentUrination = diagnostic.FrequentOrUrgentUrination;
+                PreferColdOrHot = diagnostic.PreferColdOrHot;
+                SuffersFromColdOrHot = diagnostic.SuffersFromColdOrHot;
+                SatisfiedDients = diagnostic.SatisfiedDients;
+                WantToLostWeight = diagnostic.WantToLostWeight;
+                UsingContraception = diagnostic.UsingContraception;
+                CycleRegular = diagnostic.CycleRegular;
+                SufferingFromCrampsOrNervousBeforeMenstruation = diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation;
+                SufferingFromMenpause = diagnostic.SufferingFromMenpause;
+                HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife = diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
+                WhatChangesDoYouExpectToSeeFromTreatment = diagnostic.WhatChangesDoYouExpectToSeeFromTreatment;
+                CreationDate = diagnostic.CreationDate;
+            }
         }
     }
 }
