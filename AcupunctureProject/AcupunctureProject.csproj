@@ -114,6 +114,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Database\Diagnostic.cs" />
     <Compile Include="GUI\ChannelInfo.xaml.cs">
       <DependentUpon>ChannelInfo.xaml</DependentUpon>
     </Compile>

@@ -16,6 +16,7 @@ namespace AcupunctureProject.database
         public static readonly string SUMMERY = "SUMMERY";
         public static readonly string RESULT_DESCRIPTION = "RESULT_DESCRIPTION";
         public static readonly string RESULT_VALUE = "RESULT_VALUE";
+        public static readonly string DIAGNOSTIC_ID = "DIAGNOSTIC_ID";
 
         public class ResultValue
         {
@@ -95,6 +96,7 @@ namespace AcupunctureProject.database
         public string Summery { get; set; }
         public string ResultDescription { get; set; }
         public ResultValue Result { get; set; }
+        public int DiagnosticId { get; set; }
 
         public Meeting(int id, int patiantId, string purpose, DateTime date, string description, string summery, string resultDescription, ResultValue resultValue)
         {
