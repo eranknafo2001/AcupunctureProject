@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AcupunctureProject.database;
 
 namespace AcupunctureProject.GUI
 {
@@ -19,7 +20,7 @@ namespace AcupunctureProject.GUI
     /// </summary>
     public partial class MoreInfoOnPatient : Window
     {
-        public MoreInfoOnPatient()
+        public MoreInfoOnPatient(Patient patient)
         {
             InitializeComponent();
         }
