@@ -63,11 +63,14 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="censel" Content="ביטול" Grid.Column="0" Grid.Row="0" Click="Censel_Click"/>
-            <Button x:Name="openMeetings" Content="פתח פגישות אחרונות" Grid.Column="2" Grid.Row="0" Click="OpenMeetings_Click"/>
-            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="4" Grid.Row="0" Click="SaveAndExit_Click"/>
-            <Button x:Name="save" Content="שמור" Grid.Column="6" Grid.Row="0" Click="Save_Click"/>
+            <Button x:Name="openDiagnostic" Content="פתח איבחונים" Grid.Row="0" Grid.Column="2" Click="openDiagnostic_Click"/>
+            <Button x:Name="openMeetings" Content="פתח פגישות אחרונות" Grid.Column="4" Grid.Row="0" Click="OpenMeetings_Click"/>
+            <Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="6" Grid.Row="0" Click="SaveAndExit_Click"/>
+            <Button x:Name="save" Content="שמור" Grid.Column="8" Grid.Row="0" Click="Save_Click"/>
         </Grid>
     </Grid>
 </Window>

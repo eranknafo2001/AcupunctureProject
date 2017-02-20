@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using AcupunctureProject.database;
+using AcupunctureProject.GUI.Exceptions;
 
 namespace AcupunctureProject.GUI
 {
@@ -58,10 +59,10 @@ namespace AcupunctureProject.GUI
                 MessageBox.Show(this, "חייב טלפון או פלפון", "בעיה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
                 secses = false;
             }
-            
+
             if (!secses)
             {
-                return false;
+                throw new NullValueException();
             }
 
             try
@@ -85,20 +86,20 @@ namespace AcupunctureProject.GUI
         {
             try
             {
-                if (SaveData())
-                    Close();
+                SaveData();
+                Close();
             }
-            catch (database.Exceptions.UniqueNameException) { }
+            catch (Exception) { }
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (SaveData())
-                    ClearAll();
+                SaveData();
+                ClearAll();
             }
-            catch (database.Exceptions.UniqueNameException) { }
+            catch (Exception) { }
         }
 
         private void ClearAll()
