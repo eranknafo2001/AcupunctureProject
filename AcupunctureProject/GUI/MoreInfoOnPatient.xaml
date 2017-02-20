@@ -73,7 +73,7 @@
             </GroupBox>
             <Border Height="10"/>
 
-            <GroupBox Header="האם עברת בדיקות כלשהן? פרט:">
+            <GroupBox Header="האם עברת בדיקות כלשהן? פרט:">  
                 <TextBox x:Name="testpessed" Height="100" KeyDown="Enter"/>
             </GroupBox>
             <Border Height="10"/>
