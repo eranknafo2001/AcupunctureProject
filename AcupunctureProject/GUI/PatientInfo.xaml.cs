@@ -93,5 +93,10 @@ namespace AcupunctureProject.GUI
             textBox.Text = textBox.Text.Insert(temp, "\n");
             textBox.SelectionStart = temp + 1;
         }
+
+        private void openDiagnostic_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

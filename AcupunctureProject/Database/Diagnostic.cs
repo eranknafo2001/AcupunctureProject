@@ -3,64 +3,412 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace AcupunctureProject.database
 {
-    public struct ValueInfo<T>
+    public class ValueInfo<T> : INotifyPropertyChanged
     {
-        public T Value { get; set; }
-        public string Info { get; set; }
-        public ValueInfo(T value,string info)
+        private T _Value;
+        public T Value
         {
-            Value = value;
-            Info = info;
+            get => _Value;
+            set
+            {
+                _Value = value;
+                OnPropertyChanged("Value");
+            }
+        }
+        private string _Info;
+        public string Info
+        {
+            get => _Info;
+            set
+            {
+                _Info = value;
+                OnPropertyChanged("Value");
+            }
+        }
+        public ValueInfo(T value, string info)
+        {
+            _Value = value;
+            _Info = info;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 
     public enum PreferColdOrHotType
     {
-        HOT,COLD,NIETHER
+        HOT, COLD, NIETHER
     }
 
-    public class Diagnostic
+    public class Diagnostic : INotifyPropertyChanged
     {
         #region all the variables
         public readonly int Id;
-        public string Profession { get; set; }
-        public string MainComplaint { get; set; }
-        public string SeconderyComlaint { get; set; }
-        public string DrugsUsed { get; set; }
-        public string TestsMade { get; set; }
-        public ValueInfo<bool> Pain { get; set; }
-        public ValueInfo<bool> PainPreviousEvaluations { get; set; }
-        public ValueInfo<bool> Scans { get; set; }
-        public ValueInfo<bool> UnderStress { get; set; }
-        public ValueInfo<bool> TenseMuscles { get; set; }
-        public ValueInfo<bool> HighBloodPressureOrColesterol { get; set; }
-        public ValueInfo<bool> GoodSleep { get; set; }
-        public ValueInfo<bool> FallenToSleepProblem { get; set; }
-        public ValueInfo<bool> Palpitations { get; set; }
-        public string DefeationRegularity { get; set; }
-        public ValueInfo<bool> FatigueOrFeelsFulAfterEating { get; set; }
-        public ValueInfo<bool> DesireForSweetsAfterEating { get; set; }
-        public ValueInfo<bool> DifficultyConcentating { get; set; }
-        public ValueInfo<bool> OftenIll { get; set; }
-        public ValueInfo<bool> SufferingFromMucus { get; set; }
-        public ValueInfo<bool> CoughOrAllergySuffers { get; set; }
-        public ValueInfo<bool> Smoking { get; set; }
-        public ValueInfo<bool> FrequentOrUrgentUrination { get; set; }
-        public ValueInfo<PreferColdOrHotType> PreferColdOrHot { get; set; }
-        public ValueInfo<bool> SuffersFromColdOrHot { get; set; }
-        public ValueInfo<bool> SatisfiedDients { get; set; }
-        public ValueInfo<bool> WantToLostWeight { get; set; }
-        public ValueInfo<bool> UsingContraception { get; set; }
-        public ValueInfo<bool> CycleRegular { get; set; }
-        public ValueInfo<bool> SufferingFromCrampsOrNervousBeforeMenstruation { get; set; }
-        public ValueInfo<bool> SufferingFromMenpause { get; set; }
-        public string HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife { get; set; }
-        public string WhatChangesDoYouExpectToSeeFromTreatment { get; set; }
-        public int PatientId { get; set; }
-        public DateTime CreationDate { get; set; }
+        string _Profession;
+        public string Profession
+        {
+            get => _Profession;
+            set
+            {
+                _Profession = value;
+                OnPropertyChanged("Profession");
+            }
+        }
+        private string _MainComplaint;
+        public string MainComplaint
+        {
+            get => _MainComplaint;
+            set
+            {
+                _MainComplaint = value;
+                OnPropertyChanged("MainComplaint");
+            }
+        }
+        private string _SeconderyComlaint;
+        public string SeconderyComlaint
+        {
+            get => _SeconderyComlaint;
+            set
+            {
+                _SeconderyComlaint = value;
+                OnPropertyChanged("SeconderyComlaint");
+            }
+        }
+        private string _DrugsUsed;
+        public string DrugsUsed
+        {
+            get => _DrugsUsed;
+            set
+            {
+                _DrugsUsed = value;
+                OnPropertyChanged("DrugsUsed");
+            }
+        }
+        private string _TestsMade;
+        public string TestsMade
+        {
+            get => _TestsMade;
+            set
+            {
+                _TestsMade = value;
+                OnPropertyChanged("TestsMade");
+            }
+        }
+        private ValueInfo<bool?> _Pain;
+        public ValueInfo<bool?> Pain
+        {
+            get => _Pain;
+            set
+            {
+                _Pain = value;
+                OnPropertyChanged("Pain");
+            }
+        }
+        private ValueInfo<bool?> _PainPreviousEvaluations;
+        public ValueInfo<bool?> PainPreviousEvaluations
+        {
+            get => _PainPreviousEvaluations;
+            set
+            {
+                _PainPreviousEvaluations = value;
+                OnPropertyChanged("PainPreviousEvaluations");
+            }
+        }
+        private ValueInfo<bool?> _Scans;
+        public ValueInfo<bool?> Scans
+        {
+            get => _Scans;
+            set
+            {
+                _Scans = value;
+                OnPropertyChanged("Scans");
+            }
+        }
+        private ValueInfo<bool?> _UnderStress;
+        public ValueInfo<bool?> UnderStress
+        {
+            get => _UnderStress;
+            set
+            {
+                _UnderStress = value;
+                OnPropertyChanged("UnderStress");
+            }
+        }
+        private ValueInfo<bool?> _TenseMuscles;
+        public ValueInfo<bool?> TenseMuscles
+        {
+            get => _TenseMuscles;
+            set
+            {
+                _TenseMuscles = value;
+                OnPropertyChanged("TenseMuscles");
+            }
+        }
+        private ValueInfo<bool?> _HighBloodPressureOrColesterol;
+        public ValueInfo<bool?> HighBloodPressureOrColesterol
+        {
+            get => _HighBloodPressureOrColesterol;
+            set
+            {
+                _HighBloodPressureOrColesterol = value;
+                OnPropertyChanged("HighBloodPressureOrColesterol");
+            }
+        }
+        private ValueInfo<bool?> _GoodSleep;
+        public ValueInfo<bool?> GoodSleep
+        {
+            get => _GoodSleep;
+            set
+            {
+                _GoodSleep = value;
+                OnPropertyChanged("GoodSleep");
+            }
+        }
+        private ValueInfo<bool?> _FallenToSleepProblem;
+        public ValueInfo<bool?> FallenToSleepProblem
+        {
+            get => _FallenToSleepProblem;
+            set
+            {
+                _FallenToSleepProblem = value;
+                OnPropertyChanged("FallenToSleepProblem");
+            }
+        }
+        private ValueInfo<bool?> _Palpitations;
+        public ValueInfo<bool?> Palpitations
+        {
+            get => _Palpitations;
+            set
+            {
+                _Palpitations = value;
+                OnPropertyChanged("Palpitations");
+            }
+        }
+        private string _DefeationRegularity;
+        public string DefeationRegularity
+        {
+            get => _DefeationRegularity;
+            set
+            {
+                _DefeationRegularity = value;
+                OnPropertyChanged("DefeationRegularity");
+            }
+        }
+        private ValueInfo<bool?> _FatigueOrFeelsFulAfterEating;
+        public ValueInfo<bool?> FatigueOrFeelsFulAfterEating
+        {
+            get => _FatigueOrFeelsFulAfterEating;
+            set
+            {
+                _FatigueOrFeelsFulAfterEating = value;
+                OnPropertyChanged("FatigueOrFeelsFulAfterEating");
+            }
+        }
+        private ValueInfo<bool?> _DesireForSweetsAfterEating;
+        public ValueInfo<bool?> DesireForSweetsAfterEating
+        {
+            get => _DesireForSweetsAfterEating;
+            set
+            {
+                _DesireForSweetsAfterEating = value;
+                OnPropertyChanged("DesireForSweetsAfterEating");
+            }
+        }
+        private ValueInfo<bool?> _DifficultyConcentating;
+        public ValueInfo<bool?> DifficultyConcentating
+        {
+            get => _DifficultyConcentating;
+            set
+            {
+                _DifficultyConcentating = value;
+                OnPropertyChanged("DifficultyConcentating");
+            }
+        }
+        private ValueInfo<bool?> _OftenIll;
+        public ValueInfo<bool?> OftenIll
+        {
+            get => _OftenIll;
+            set
+            {
+                _OftenIll = value;
+                OnPropertyChanged("OftenIll");
+            }
+        }
+        private ValueInfo<bool?> _SufferingFromMucus;
+        public ValueInfo<bool?> SufferingFromMucus
+        {
+            get => _SufferingFromMucus;
+            set
+            {
+                _SufferingFromMucus = value;
+                OnPropertyChanged("SufferingFromMucus");
+            }
+        }
+        private ValueInfo<bool?> _CoughOrAllergySuffers;
+        public ValueInfo<bool?> CoughOrAllergySuffers
+        {
+            get => _CoughOrAllergySuffers;
+            set
+            {
+                _CoughOrAllergySuffers = value;
+                OnPropertyChanged("CoughOrAllergySuffers");
+            }
+        }
+        private ValueInfo<bool?> _Smoking;
+        public ValueInfo<bool?> Smoking
+        {
+            get => _Smoking;
+            set
+            {
+                _Smoking = value;
+                OnPropertyChanged("Smoking");
+            }
+        }
+        private ValueInfo<bool?> _FrequentOrUrgentUrination;
+        public ValueInfo<bool?> FrequentOrUrgentUrination
+        {
+            get => _FrequentOrUrgentUrination;
+            set
+            {
+                _FrequentOrUrgentUrination = value;
+                OnPropertyChanged("FrequentOrUrgentUrination");
+            }
+        }
+        private ValueInfo<PreferColdOrHotType> _PreferColdOrHot;
+        public ValueInfo<PreferColdOrHotType> PreferColdOrHot
+        {
+            get => _PreferColdOrHot;
+            set
+            {
+                _PreferColdOrHot = value;
+                OnPropertyChanged("PreferColdOrHot");
+            }
+        }
+        private ValueInfo<bool?> _SuffersFromColdOrHot;
+        public ValueInfo<bool?> SuffersFromColdOrHot
+        {
+            get => _SuffersFromColdOrHot;
+            set
+            {
+                _SuffersFromColdOrHot = value;
+                OnPropertyChanged("SuffersFromColdOrHot");
+            }
+        }
+        private ValueInfo<bool?> _SatisfiedDients;
+        public ValueInfo<bool?> SatisfiedDients
+        {
+            get => _SatisfiedDients;
+            set
+            {
+                _SatisfiedDients = value;
+                OnPropertyChanged("SatisfiedDients");
+            }
+        }
+        private ValueInfo<bool?> _WantToLostWeight;
+        public ValueInfo<bool?> WantToLostWeight
+        {
+            get => _WantToLostWeight;
+            set
+            {
+                _WantToLostWeight = value;
+                OnPropertyChanged("WantToLostWeight");
+            }
+        }
+        private ValueInfo<bool?> _UsingContraception;
+        public ValueInfo<bool?> UsingContraception
+        {
+            get => _UsingContraception;
+            set
+            {
+                _UsingContraception = value;
+                OnPropertyChanged("UsingContraception");
+            }
+        }
+        private ValueInfo<bool?> _CycleRegular;
+        public ValueInfo<bool?> CycleRegular
+        {
+            get => _CycleRegular;
+            set
+            {
+                _CycleRegular = value;
+                OnPropertyChanged("CycleRegular");
+            }
+        }
+        private ValueInfo<bool?> _SufferingFromCrampsOrNervousBeforeMenstruation;
+        public ValueInfo<bool?> SufferingFromCrampsOrNervousBeforeMenstruation
+        {
+            get => _SufferingFromCrampsOrNervousBeforeMenstruation;
+            set
+            {
+                _SufferingFromCrampsOrNervousBeforeMenstruation = value;
+                OnPropertyChanged("SufferingFromCrampsOrNervousBeforeMenstruation");
+            }
+        }
+        private ValueInfo<bool?> _SufferingFromMenpause;
+        public ValueInfo<bool?> SufferingFromMenpause
+        {
+            get => _SufferingFromMenpause;
+            set
+            {
+                _SufferingFromMenpause = value;
+                OnPropertyChanged("SufferingFromMenpause");
+            }
+        }
+        private string _HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
+        public string HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife
+        {
+            get => _HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
+            set
+            {
+                _HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife = value;
+                OnPropertyChanged("HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife");
+            }
+        }
+        private string _WhatChangesDoYouExpectToSeeFromTreatment;
+        public string WhatChangesDoYouExpectToSeeFromTreatment
+        {
+            get => _WhatChangesDoYouExpectToSeeFromTreatment;
+            set
+            {
+                _WhatChangesDoYouExpectToSeeFromTreatment = value;
+                OnPropertyChanged("WhatChangesDoYouExpectToSeeFromTreatment");
+            }
+        }
+        private int _PatientId;
+        public int PatientId
+        {
+            get => _PatientId;
+            set
+            {
+                _PatientId = value;
+                OnPropertyChanged("PatientId");
+            }
+        }
+        private DateTime _CreationDate;
+        public DateTime CreationDate
+        {
+            get => _CreationDate;
+            set
+            {
+                _CreationDate = value;
+                OnPropertyChanged("CreationDate");
+            }
+        }
+        public string CreationDateString
+        {
+            get
+            {
+                return _CreationDate.ToShortDateString();
+            }
+        }
         #endregion
         #region names of the variables
         public static readonly string PROFESSION = "PROFESSION";
@@ -125,46 +473,53 @@ namespace AcupunctureProject.database
         public static readonly string CREATION_DATE = "CREATION_DATE";
         #endregion
 
-        public Diagnostic(int id = -1 , Diagnostic diagnostic = null)
+        public Diagnostic(int id = -1, Diagnostic diagnostic = null)
         {
             Id = id;
-            if(diagnostic != null)
+            if (diagnostic != null)
             {
                 Profession = diagnostic.Profession;
-                MainComplaint = diagnostic.MainComplaint;
-                SeconderyComlaint = diagnostic.SeconderyComlaint;
-                DrugsUsed = diagnostic.DrugsUsed;
-                TestsMade = diagnostic.TestsMade;
-                Pain = diagnostic.Pain;
-                PainPreviousEvaluations = diagnostic.PainPreviousEvaluations;
-                Scans = diagnostic.Scans;
-                UnderStress = diagnostic.UnderStress;
-                TenseMuscles = diagnostic.TenseMuscles;
-                HighBloodPressureOrColesterol = diagnostic.HighBloodPressureOrColesterol;
-                GoodSleep = diagnostic.GoodSleep;
-                FallenToSleepProblem = diagnostic.FallenToSleepProblem;
-                Palpitations = diagnostic.Palpitations;
-                DefeationRegularity = diagnostic.DefeationRegularity;
-                FatigueOrFeelsFulAfterEating = diagnostic.FatigueOrFeelsFulAfterEating;
-                DesireForSweetsAfterEating = diagnostic.DesireForSweetsAfterEating;
-                DifficultyConcentating = diagnostic.DifficultyConcentating;
-                OftenIll = diagnostic.OftenIll;
-                SufferingFromMucus = diagnostic.SufferingFromMucus;
-                CoughOrAllergySuffers = diagnostic.CoughOrAllergySuffers;
-                Smoking = diagnostic.Smoking;
-                FrequentOrUrgentUrination = diagnostic.FrequentOrUrgentUrination;
-                PreferColdOrHot = diagnostic.PreferColdOrHot;
-                SuffersFromColdOrHot = diagnostic.SuffersFromColdOrHot;
-                SatisfiedDients = diagnostic.SatisfiedDients;
-                WantToLostWeight = diagnostic.WantToLostWeight;
-                UsingContraception = diagnostic.UsingContraception;
-                CycleRegular = diagnostic.CycleRegular;
-                SufferingFromCrampsOrNervousBeforeMenstruation = diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation;
-                SufferingFromMenpause = diagnostic.SufferingFromMenpause;
-                HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife = diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
-                WhatChangesDoYouExpectToSeeFromTreatment = diagnostic.WhatChangesDoYouExpectToSeeFromTreatment;
-                CreationDate = diagnostic.CreationDate;
+                _MainComplaint = diagnostic.MainComplaint;
+                _SeconderyComlaint = diagnostic.SeconderyComlaint;
+                _DrugsUsed = diagnostic.DrugsUsed;
+                _TestsMade = diagnostic.TestsMade;
+                _Pain = diagnostic.Pain;
+                _PainPreviousEvaluations = diagnostic.PainPreviousEvaluations;
+                _Scans = diagnostic.Scans;
+                _UnderStress = diagnostic.UnderStress;
+                _TenseMuscles = diagnostic.TenseMuscles;
+                _HighBloodPressureOrColesterol = diagnostic.HighBloodPressureOrColesterol;
+                _GoodSleep = diagnostic.GoodSleep;
+                _FallenToSleepProblem = diagnostic.FallenToSleepProblem;
+                _Palpitations = diagnostic.Palpitations;
+                _DefeationRegularity = diagnostic.DefeationRegularity;
+                _FatigueOrFeelsFulAfterEating = diagnostic.FatigueOrFeelsFulAfterEating;
+                _DesireForSweetsAfterEating = diagnostic.DesireForSweetsAfterEating;
+                _DifficultyConcentating = diagnostic.DifficultyConcentating;
+                _OftenIll = diagnostic.OftenIll;
+                _SufferingFromMucus = diagnostic.SufferingFromMucus;
+                _CoughOrAllergySuffers = diagnostic.CoughOrAllergySuffers;
+                _Smoking = diagnostic.Smoking;
+                _FrequentOrUrgentUrination = diagnostic.FrequentOrUrgentUrination;
+                _PreferColdOrHot = diagnostic.PreferColdOrHot;
+                _SuffersFromColdOrHot = diagnostic.SuffersFromColdOrHot;
+                _SatisfiedDients = diagnostic.SatisfiedDients;
+                _WantToLostWeight = diagnostic.WantToLostWeight;
+                _UsingContraception = diagnostic.UsingContraception;
+                _CycleRegular = diagnostic.CycleRegular;
+                _SufferingFromCrampsOrNervousBeforeMenstruation = diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation;
+                _SufferingFromMenpause = diagnostic.SufferingFromMenpause;
+                _HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife = diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
+                _WhatChangesDoYouExpectToSeeFromTreatment = diagnostic.WhatChangesDoYouExpectToSeeFromTreatment;
+                _CreationDate = diagnostic.CreationDate;
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }
