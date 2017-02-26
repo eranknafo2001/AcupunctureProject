@@ -16,26 +16,36 @@ using AcupunctureProject.database;
 namespace AcupunctureProject.GUI
 {
     /// <summary>
-    /// Interaction logic for DiagnosticList.xaml
+    /// Interaction logic for Diagnostic.xaml
     /// </summary>
     public partial class DiagnosticList : Window
     {
+        private Patient patient;
+
         public DiagnosticList(Patient patient)
         {
             InitializeComponent();
-            data.ItemsSource = Database.Instance.GetAllDiagnosticByPatient(patient);
+            this.patient = patient;
+            var list = Database.Instance.GetAllDiagnosticByPatient(patient);
+            Data.Items.Clear();
+            Data.ItemsSource = list;
         }
 
-        private void data_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
+            new DiagnosticInfo(patient).Show();
         }
 
-        private void data_AddingNewItem(object sender, AddingNewItemEventArgs e)
+        private void Data_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            if (sender.GetType() != typeof(DataGrid))
+                return;
+            Diagnostic item = (Diagnostic)((DataGrid)sender).SelectedItem;
+            new DiagnosticInfo(item).Show();
         }
 
-        relaode
+        //private void Delete_Click(object sender, RoutedEventArgs e)
+        //{
+        //}
     }
 }

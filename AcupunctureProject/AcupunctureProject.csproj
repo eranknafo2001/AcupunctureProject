@@ -118,11 +118,11 @@
     <Compile Include="GUI\ChannelInfo.xaml.cs">
       <DependentUpon>ChannelInfo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\DiagnosticInfo.xaml.cs">
-      <DependentUpon>DiagnosticInfo.xaml</DependentUpon>
-    </Compile>
     <Compile Include="GUI\DiagnosticList.xaml.cs">
       <DependentUpon>DiagnosticList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\DiagnosticInfo.xaml.cs">
+      <DependentUpon>DiagnosticInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\Exceptions\NullValueException.cs" />
     <Compile Include="GUI\MeetingInfoPage.xaml.cs">
@@ -139,11 +139,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GUI\DiagnosticInfo.xaml">
+    <Page Include="GUI\DiagnosticList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GUI\DiagnosticList.xaml">
+    <Page Include="GUI\DiagnosticInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

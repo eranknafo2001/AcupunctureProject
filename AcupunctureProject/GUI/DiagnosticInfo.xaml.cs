@@ -28,6 +28,7 @@ namespace AcupunctureProject.GUI
         public DiagnosticInfo(Patient patient) : this()
         {
             Diagnostic = new Diagnostic() { PatientId = patient.Id };
+            Women.Visibility = patient == null ? Visibility.Visible : patient.Gend == Patient.Gender.FEMALE ? Visibility.Visible : Visibility.Collapsed;
             SetYasNo(PainYas, PainNo, Diagnostic.Pain);
             SetYasNo(PainPreviousEvaluationsYas, PainPreviousEvaluationsNo, Diagnostic.PainPreviousEvaluations);
             SetYasNo(ScansYas, ScansNo, Diagnostic.Scans);
@@ -45,21 +46,24 @@ namespace AcupunctureProject.GUI
             SetYasNo(CoughOrAllergySuffersYas, CoughOrAllergySuffersNo, Diagnostic.CoughOrAllergySuffers);
             SetYasNo(SmokingYas, SmokingNo, Diagnostic.Smoking);
             SetYasNo(FrequentOrUrgentUrinationYas, FrequentOrUrgentUrinationNo, Diagnostic.FrequentOrUrgentUrination);
-            switch (Diagnostic.PreferColdOrHot.Value)
+            if (Diagnostic.PreferColdOrHot != null)
             {
-                case PreferColdOrHotType.COLD:
-                    Cold.IsChecked = true;
-                    Hot.IsChecked = false;
-                    break;
-                case PreferColdOrHotType.HOT:
-                    Hot.IsChecked = true;
-                    Cold.IsChecked = false;
-                    break;
-                case PreferColdOrHotType.NIETHER:
-                default:
-                    Cold.IsChecked = false;
-                    Hot.IsChecked = false;
-                    break;
+                switch (Diagnostic.PreferColdOrHot.Value)
+                {
+                    case PreferColdOrHotType.COLD:
+                        Cold.IsChecked = true;
+                        Hot.IsChecked = false;
+                        break;
+                    case PreferColdOrHotType.HOT:
+                        Hot.IsChecked = true;
+                        Cold.IsChecked = false;
+                        break;
+                    case PreferColdOrHotType.NIETHER:
+                    default:
+                        Cold.IsChecked = false;
+                        Hot.IsChecked = false;
+                        break;
+                }
             }
             SetYasNo(SuffersFromColdOrHotYas, SuffersFromColdOrHotNo, Diagnostic.SuffersFromColdOrHot);
             SetYasNo(SatisfiedDientsYas, SatisfiedDientsNo, Diagnostic.SatisfiedDients);
@@ -72,7 +76,10 @@ namespace AcupunctureProject.GUI
         }
         public DiagnosticInfo(Diagnostic diagnostic) : this()
         {
-            Diagnostic = Diagnostic;
+            Diagnostic = diagnostic;
+            Patient patient = Database.Instance.GetPatientRelativeToDiagnostic(diagnostic);
+            Women.Visibility = patient == null || patient.Gend == Patient.Gender.FEMALE ? Visibility.Visible :
+                                                                                          Visibility.Collapsed;
             SetYasNo(PainYas, PainNo, Diagnostic.Pain);
             SetYasNo(PainPreviousEvaluationsYas, PainPreviousEvaluationsNo, Diagnostic.PainPreviousEvaluations);
             SetYasNo(ScansYas, ScansNo, Diagnostic.Scans);
@@ -113,6 +120,39 @@ namespace AcupunctureProject.GUI
             SetYasNo(CycleRegularYas, CycleRegularNo, Diagnostic.CycleRegular);
             SetYasNo(SufferingFromCrampsOrNervousBeforeMenstruationYas, SufferingFromCrampsOrNervousBeforeMenstruationNo, Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation);
             SetYasNo(SufferingFromMenpauseYas, SufferingFromMenpauseNo, Diagnostic.SufferingFromMenpause);
+            Profession.Text = Diagnostic.Profession;
+            MainComplaint.Text = Diagnostic.MainComplaint;
+            SeconderyComlaint.Text = Diagnostic.SeconderyComlaint;
+            DrugsUsed.Text = Diagnostic.DrugsUsed;
+            TestsMade.Text = Diagnostic.TestsMade;
+            Pain.Text = Diagnostic.Pain.Info;
+            PainPreviousEvaluations.Text = Diagnostic.PainPreviousEvaluations.Info;
+            Scans.Text = Diagnostic.Scans.Info;
+            UnderStress.Text = Diagnostic.UnderStress.Info;
+            TenseMuscles.Text = Diagnostic.TenseMuscles.Info;
+            HighBloodPressureOrColesterol.Text = Diagnostic.HighBloodPressureOrColesterol.Info;
+            GoodSleep.Text = Diagnostic.GoodSleep.Info;
+            FallenToSleepProblem.Text = Diagnostic.FallenToSleepProblem.Info;
+            Palpitations.Text = Diagnostic.Palpitations.Info;
+            DefeationRegularity.Text = Diagnostic.DefeationRegularity;
+            FatigueOrFeelsFulAfterEating.Text = Diagnostic.FatigueOrFeelsFulAfterEating.Info;
+            DesireForSweetsAfterEating.Text = Diagnostic.DesireForSweetsAfterEating.Info;
+            DifficultyConcentating.Text = Diagnostic.DifficultyConcentating.Info;
+            OftenIll.Text = Diagnostic.OftenIll.Info;
+            SufferingFromMucus.Text = Diagnostic.SufferingFromMucus.Info;
+            CoughOrAllergySuffers.Text = Diagnostic.CoughOrAllergySuffers.Info;
+            Smoking.Text = Diagnostic.Smoking.Info;
+            FrequentOrUrgentUrination.Text = Diagnostic.FrequentOrUrgentUrination.Info;
+            PreferColdOrHot.Text = Diagnostic.PreferColdOrHot.Info;
+            SuffersFromColdOrHot.Text = Diagnostic.SuffersFromColdOrHot.Info;
+            SatisfiedDients.Text = Diagnostic.SatisfiedDients.Info;
+            WantToLostWeight.Text = Diagnostic.WantToLostWeight.Info;
+            UsingContraception.Text = Diagnostic.UsingContraception.Info;
+            CycleRegular.Text = Diagnostic.CycleRegular.Info;
+            SufferingFromCrampsOrNervousBeforeMenstruation.Text = Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation.Info;
+            SufferingFromMenpause.Text = Diagnostic.SufferingFromMenpause.Info;
+            HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife.Text = Diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
+            WhatChangesDoYouExpectToSeeFromTreatment.Text = Diagnostic.WhatChangesDoYouExpectToSeeFromTreatment;
         }
 
         private void Enter(object sender, KeyEventArgs e)
@@ -142,7 +182,7 @@ namespace AcupunctureProject.GUI
 
         private void SetYasNo(RadioButton yas, RadioButton no, ValueInfo<bool?> Value)
         {
-            if (Value.Value == null)
+            if (Value == null || Value.Value == null)
             {
                 yas.IsChecked = false;
                 no.IsChecked = false;
@@ -180,9 +220,43 @@ namespace AcupunctureProject.GUI
             Diagnostic.CycleRegular.Value = GetYasNo(CycleRegularYas, CycleRegularNo);
             Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation.Value = GetYasNo(SufferingFromCrampsOrNervousBeforeMenstruationYas, SufferingFromCrampsOrNervousBeforeMenstruationNo);
             Diagnostic.SufferingFromMenpause.Value = GetYasNo(SufferingFromMenpauseYas, SufferingFromMenpauseNo);
-            bool? PreferColdOrHotBool = GetYasNo(Cold, Hot);            Diagnostic.PreferColdOrHot.Value = PreferColdOrHotBool == null ? PreferColdOrHotType.NIETHER :
+            bool? PreferColdOrHotBool = GetYasNo(Cold, Hot);
+            Diagnostic.PreferColdOrHot.Value = PreferColdOrHotBool == null ? PreferColdOrHotType.NIETHER :
                                                PreferColdOrHotBool == true ? PreferColdOrHotType.COLD :
                                                                              PreferColdOrHotType.HOT;
+            Diagnostic.Profession = Profession.Text;
+            Diagnostic.MainComplaint = MainComplaint.Text;
+            Diagnostic.SeconderyComlaint = SeconderyComlaint.Text;
+            Diagnostic.DrugsUsed = DrugsUsed.Text;
+            Diagnostic.TestsMade = TestsMade.Text;
+            Diagnostic.Pain.Info = Pain.Text;
+            Diagnostic.PainPreviousEvaluations.Info = PainPreviousEvaluations.Text;
+            Diagnostic.Scans.Info = Scans.Text;
+            Diagnostic.UnderStress.Info = UnderStress.Text;
+            Diagnostic.TenseMuscles.Info = TenseMuscles.Text;
+            Diagnostic.HighBloodPressureOrColesterol.Info = HighBloodPressureOrColesterol.Text;
+            Diagnostic.GoodSleep.Info = GoodSleep.Text;
+            Diagnostic.FallenToSleepProblem.Info = FallenToSleepProblem.Text;
+            Diagnostic.Palpitations.Info = Palpitations.Text;
+            Diagnostic.DefeationRegularity = DefeationRegularity.Text;
+            Diagnostic.FatigueOrFeelsFulAfterEating.Info = FatigueOrFeelsFulAfterEating.Text;
+            Diagnostic.DesireForSweetsAfterEating.Info = DesireForSweetsAfterEating.Text;
+            Diagnostic.DifficultyConcentating.Info = DifficultyConcentating.Text;
+            Diagnostic.OftenIll.Info = OftenIll.Text;
+            Diagnostic.SufferingFromMucus.Info = SufferingFromMucus.Text;
+            Diagnostic.CoughOrAllergySuffers.Info = CoughOrAllergySuffers.Text;
+            Diagnostic.Smoking.Info = Smoking.Text;
+            Diagnostic.FrequentOrUrgentUrination.Info = FrequentOrUrgentUrination.Text;
+            Diagnostic.PreferColdOrHot.Info = PreferColdOrHot.Text;
+            Diagnostic.SuffersFromColdOrHot.Info = SuffersFromColdOrHot.Text;
+            Diagnostic.SatisfiedDients.Info = SatisfiedDients.Text;
+            Diagnostic.WantToLostWeight.Info = WantToLostWeight.Text;
+            Diagnostic.UsingContraception.Info = UsingContraception.Text;
+            Diagnostic.CycleRegular.Info = CycleRegular.Text;
+            Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation.Info = SufferingFromCrampsOrNervousBeforeMenstruation.Text;
+            Diagnostic.SufferingFromMenpause.Info = SufferingFromMenpause.Text;
+            Diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife = HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife.Text;
+            Diagnostic.WhatChangesDoYouExpectToSeeFromTreatment = WhatChangesDoYouExpectToSeeFromTreatment.Text;
             Diagnostic = Database.Instance.SetDiagnostic(Diagnostic);
         }
 

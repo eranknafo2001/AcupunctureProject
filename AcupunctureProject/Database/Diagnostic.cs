@@ -29,6 +29,7 @@ namespace AcupunctureProject.database
                 OnPropertyChanged("Value");
             }
         }
+
         public ValueInfo(T value, string info)
         {
             _Value = value;
@@ -478,7 +479,7 @@ namespace AcupunctureProject.database
             Id = id;
             if (diagnostic != null)
             {
-                Profession = diagnostic.Profession;
+                _Profession = diagnostic.Profession;
                 _MainComplaint = diagnostic.MainComplaint;
                 _SeconderyComlaint = diagnostic.SeconderyComlaint;
                 _DrugsUsed = diagnostic.DrugsUsed;
@@ -512,6 +513,42 @@ namespace AcupunctureProject.database
                 _HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife = diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
                 _WhatChangesDoYouExpectToSeeFromTreatment = diagnostic.WhatChangesDoYouExpectToSeeFromTreatment;
                 _CreationDate = diagnostic.CreationDate;
+            }
+            else
+            {
+                _Pain = new ValueInfo<bool?>(null, "");
+                _PainPreviousEvaluations = new ValueInfo<bool?>(null, "");
+                _Scans = new ValueInfo<bool?>(null, "");
+                _UnderStress = new ValueInfo<bool?>(null, "");
+                _TenseMuscles = new ValueInfo<bool?>(null, "");
+                _HighBloodPressureOrColesterol = new ValueInfo<bool?>(null, "");
+                _GoodSleep = new ValueInfo<bool?>(null, "");
+                _FallenToSleepProblem = new ValueInfo<bool?>(null, "");
+                _Palpitations = new ValueInfo<bool?>(null, "");
+                _FatigueOrFeelsFulAfterEating = new ValueInfo<bool?>(null, "");
+                _DesireForSweetsAfterEating = new ValueInfo<bool?>(null, "");
+                _DifficultyConcentating = new ValueInfo<bool?>(null, "");
+                _OftenIll = new ValueInfo<bool?>(null, "");
+                _SufferingFromMucus = new ValueInfo<bool?>(null, "");
+                _CoughOrAllergySuffers = new ValueInfo<bool?>(null, "");
+                _Smoking = new ValueInfo<bool?>(null, "");
+                _FrequentOrUrgentUrination = new ValueInfo<bool?>(null, "");
+                _PreferColdOrHot = new ValueInfo<PreferColdOrHotType>(PreferColdOrHotType.NIETHER, "");
+                _SuffersFromColdOrHot = new ValueInfo<bool?>(null, "");
+                _SatisfiedDients = new ValueInfo<bool?>(null, "");
+                _WantToLostWeight = new ValueInfo<bool?>(null, "");
+                _UsingContraception = new ValueInfo<bool?>(null, "");
+                _CycleRegular = new ValueInfo<bool?>(null, "");
+                _SufferingFromCrampsOrNervousBeforeMenstruation = new ValueInfo<bool?>(null, "");
+                _SufferingFromMenpause = new ValueInfo<bool?>(null, "");
+                _Profession = "";
+                _MainComplaint = "";
+                _SeconderyComlaint = "";
+                _DrugsUsed = "";
+                _TestsMade = "";
+                _DefeationRegularity = "";
+                _HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife = "";
+                _WhatChangesDoYouExpectToSeeFromTreatment = "";
             }
         }
 

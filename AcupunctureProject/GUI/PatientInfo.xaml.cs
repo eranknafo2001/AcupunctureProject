@@ -96,7 +96,7 @@ namespace AcupunctureProject.GUI
 
         private void openDiagnostic_Click(object sender, RoutedEventArgs e)
         {
-
+            new DiagnosticList(patient).Show();
         }
     }
 }
