@@ -19,6 +19,8 @@ namespace AcupunctureProject.Database.Treatment
             Text = text;
         }
 
+        public Operation(int id,Operation other) : this(id, other.TreatmentId, other.Text) { }
+
         public Operation(int treatmentId, string text) : this(-1, treatmentId, text) { }
     }
 }

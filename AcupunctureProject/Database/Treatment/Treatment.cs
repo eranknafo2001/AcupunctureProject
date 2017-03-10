@@ -16,6 +16,8 @@ namespace AcupunctureProject.Database.Treatment
             Id = id;
             Name = name;
         }
+        public Treatment(int id, Treatment other) : this(id, other.Name) { }
+            
         public Treatment(string name) : this(-1, name) { }
     }
 }
