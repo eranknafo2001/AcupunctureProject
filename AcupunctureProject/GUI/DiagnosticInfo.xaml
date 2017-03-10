@@ -1,0 +1,557 @@
+﻿<Window x:Class="AcupunctureProject.GUI.DiagnosticInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AcupunctureProject.GUI"
+        mc:Ignorable="d"
+        Title="DiagnosticInfo" Height="300" Width="300" FlowDirection="RightToLeft">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="5"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="5"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7">
+            <StackPanel Margin="10">
+                <GroupBox Header="עבודה">
+                    <TextBox x:Name="Profession"/>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="תלונה עיקרית">
+                    <TextBox x:Name="MainComplaint" Height="100" KeyDown="Enter"/>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="תלונה מישנית">
+                    <TextBox x:Name="SeconderyComlaint" Height="100" KeyDown="Enter"/>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="תרופות בשימוש">
+                    <TextBox x:Name="DrugsUsed" Height="100" KeyDown="Enter"/>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="בדיקות שנעשו">
+                    <TextBox x:Name="TestsMade" Height="100" KeyDown="Enter"/>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם יש כאב ? כן לא מיקום, ממתי כואב">
+                    <StackPanel>
+                        <Border Height="2"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <RadioButton x:Name="PainYas" Content="כן" DataContext="True" GroupName="Pain" Grid.Column="1"/>
+                            <RadioButton x:Name="PainNo" Content="לא" DataContext="False" GroupName="Pain" Grid.Column="3"/>
+                        </Grid>
+                        <Border Height="3"/>
+                        <TextBox x:Name="Pain" Height="100" KeyDown="Enter"/>
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם קיימת אבחנה לגבי מקור הכאב ?">
+                    <StackPanel>
+                        <Border Height="2"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <RadioButton x:Name="PainPreviousEvaluationsYas" Content="כן" DataContext="True" GroupName="PainPreviousEvaluations" Grid.Column="1"/>
+                            <RadioButton x:Name="PainPreviousEvaluationsNo" Content="לא" DataContext="False" GroupName="PainPreviousEvaluations" Grid.Column="3"/>
+                        </Grid>
+                        <Border Height="3"/>
+                        <TextBox x:Name="PainPreviousEvaluations" Height="100" KeyDown="Enter"/>
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם עברת בדיקות כלשהן? פרט:">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="ScansYas" Content="כן" DataContext="True" GroupName="Scans" Grid.Column="1"/>
+                            <RadioButton x:Name="ScansNo" Content="לא" DataContext="False" GroupName="Scans" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="Scans" Height="100" KeyDown="Enter"/>
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם אתה חרד,מתוח או לחוץ ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="UnderStressYas" Content="כן" DataContext="True" GroupName="UnderStress" Grid.Column="1"/>
+                            <RadioButton x:Name="UnderStressNo" Content="לא" DataContext="False" GroupName="UnderStress" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="UnderStress" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם השרירים שלך מתוחים ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="TenseMusclesYas" Content="כן" DataContext="True" GroupName="TenseMuscles" Grid.Column="1"/>
+                            <RadioButton x:Name="TenseMusclesNo" Content="לא" DataContext="False" GroupName="TenseMuscles" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="TenseMuscles" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header='האם אתה סובל מל"ד גבוה או כולסטרול ?'>
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="HighBloodPressureOrColesterolYas" Content="כן" DataContext="True" GroupName="HighBloodPressureOrColesterol" Grid.Column="1"/>
+                            <RadioButton x:Name="HighBloodPressureOrColesterolNo" Content="לא" DataContext="False" GroupName="HighBloodPressureOrColesterol" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="HighBloodPressureOrColesterol" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם השינה שלך טובה ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="GoodSleepYas" Content="כן" DataContext="True" GroupName="GoodSleep" Grid.Column="1"/>
+                            <RadioButton x:Name="GoodSleepNo" Content="לא" DataContext="False" GroupName="GoodSleep" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="GoodSleep" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם יש קושי להירדם ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="FallenToSleepProblemYas" Content="כן" DataContext="True" GroupName="FallenToSleepProblem" Grid.Column="1"/>
+                            <RadioButton x:Name="FallenToSleepProblemNo" Content="לא" DataContext="False" GroupName="FallenToSleepProblem" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="FallenToSleepProblem" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם אתה חש דפיקות לב (פלפיטציות) ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="PalpitationsYas" Content="כן" DataContext="True" GroupName="Palpitations" Grid.Column="1"/>
+                            <RadioButton x:Name="PalpitationsNo" Content="לא" DataContext="False" GroupName="Palpitations" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="Palpitations" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="מהי תדירות היציאות (צואה) ?">
+                    <TextBox x:Name="DefeationRegularity" />
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם אתה חש בעייפות ו/או מלאות אחרי אוכל ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="FatigueOrFeelsFulAfterEatingYas" Content="כן" DataContext="True" GroupName="FatigueOrFeelsFulAfterEating" Grid.Column="1"/>
+                            <RadioButton x:Name="FatigueOrFeelsFulAfterEatingNo" Content="לא" DataContext="False" GroupName="FatigueOrFeelsFulAfterEating" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="FatigueOrFeelsFulAfterEating" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם יש בך רצון למתוק אחרי אוכל ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="DesireForSweetsAfterEatingYas" Content="כן" DataContext="True" GroupName="DesireForSweetsAfterEating" Grid.Column="1"/>
+                            <RadioButton x:Name="DesireForSweetsAfterEatingNo" Content="לא" DataContext="False" GroupName="DesireForSweetsAfterEating" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="DesireForSweetsAfterEating" />
+                        <!--האם יש לך קשיי ריכוז ?-->
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם יש לך קשיי ריכוז ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="DifficultyConcentatingYas" Content="כן" DataContext="True" GroupName="DifficultyConcentating" Grid.Column="1"/>
+                            <RadioButton x:Name="DifficultyConcentatingNo" Content="לא" DataContext="False" GroupName="DifficultyConcentating" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="DifficultyConcentating" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם אתה חולה לעיתים קרובות ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="OftenIllYas" Content="כן" DataContext="True" GroupName="OftenIll" Grid.Column="1"/>
+                            <RadioButton x:Name="OftenIllNo" Content="לא" DataContext="False" GroupName="OftenIll" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="OftenIll" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם אתה סובל מליחה ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="SufferingFromMucusYas" Content="כן" DataContext="True" GroupName="SufferingFromMucus" Grid.Column="1"/>
+                            <RadioButton x:Name="SufferingFromMucusNo" Content="לא" DataContext="False" GroupName="SufferingFromMucus" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="SufferingFromMucus" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+
+                <GroupBox Header="האם אתה סובל משיעול או אלרגיות ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="CoughOrAllergySuffersYas" Content="כן" DataContext="True" GroupName="CoughOrAllergySuffers" Grid.Column="1"/>
+                            <RadioButton x:Name="CoughOrAllergySuffersNo" Content="לא" DataContext="False" GroupName="CoughOrAllergySuffers" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="CoughOrAllergySuffers" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם אתה מעשן ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="SmokingYas" Content="כן" DataContext="True" GroupName="Smoking" Grid.Column="1"/>
+                            <RadioButton x:Name="SmokingNo" Content="לא" DataContext="False" GroupName="Smoking" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="Smoking" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם יש לך תכיפות או דחיפות במתן שתן ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="FrequentOrUrgentUrinationYas" Content="כן" DataContext="True" GroupName="FrequentOrUrgentUrination" Grid.Column="1"/>
+                            <RadioButton x:Name="FrequentOrUrgentUrinationNo" Content="לא" DataContext="False" GroupName="FrequentOrUrgentUrination" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="FrequentOrUrgentUrination" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם אתה מעדיף קור או חום ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="Hot" Content="חום" DataContext="True" GroupName="PreferColdOrHot" Grid.Column="1"/>
+                            <RadioButton x:Name="Cold" Content="קור" DataContext="False" GroupName="PreferColdOrHot" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="PreferColdOrHot" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם אתה סובל מקור או מחום ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="SuffersFromColdOrHotYas" Content="כן" DataContext="True" GroupName="SuffersFromColdOrHot" Grid.Column="1"/>
+                            <RadioButton x:Name="SuffersFromColdOrHotNo" Content="לא" DataContext="False" GroupName="SuffersFromColdOrHot" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="SuffersFromColdOrHot" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם אתה מרוצה מהרגלי התזונה שלך?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="SatisfiedDientsYas" Content="כן" DataContext="True" GroupName="SatisfiedDients" Grid.Column="1"/>
+                            <RadioButton x:Name="SatisfiedDientsNo" Content="לא" DataContext="False" GroupName="SatisfiedDients" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="SatisfiedDients" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox Header="האם אתה רוצה להוריד משקל ?">
+                    <StackPanel Orientation="Vertical">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RadioButton x:Name="WantToLostWeightYas" Content="כן" DataContext="True" GroupName="WantToLostWeight" Grid.Column="1"/>
+                            <RadioButton x:Name="WantToLostWeightNo" Content="לא" DataContext="False" GroupName="WantToLostWeight" Grid.Column="3"/>
+                        </Grid>
+                        <TextBox x:Name="WantToLostWeight" />
+                    </StackPanel>
+                </GroupBox>
+                <Border Height="10"/>
+
+                <GroupBox x:Name="Women" Header="נשים">
+                    <StackPanel>
+                        <GroupBox Header="האם את משתמשת באמצעי מניעה ?">
+                            <StackPanel Orientation="Vertical">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <RadioButton x:Name="UsingContraceptionYas" Content="כן" DataContext="True" GroupName="UsingContraception" Grid.Column="1"/>
+                                    <RadioButton x:Name="UsingContraceptionNo" Content="לא" DataContext="False" GroupName="UsingContraception" Grid.Column="3"/>
+                                </Grid>
+                                <TextBox x:Name="UsingContraception" />
+                            </StackPanel>
+                        </GroupBox>
+                        <Border Height="10"/>
+
+                        <GroupBox Header=" האם המחזור שלך סדיר ?">
+                            <StackPanel Orientation="Vertical">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <RadioButton x:Name="CycleRegularYas" Content="כן" DataContext="True" GroupName="CycleRegular" Grid.Column="1"/>
+                                    <RadioButton x:Name="CycleRegularNo" Content="לא" DataContext="False" GroupName="CycleRegular" Grid.Column="3"/>
+                                </Grid>
+                                <TextBox x:Name="CycleRegular" />
+                            </StackPanel>
+                        </GroupBox>
+                        <Border Height="10"/>
+
+                        <GroupBox Header=" האם את סובלת מכאבי מחזור או עצבנות לפני או בזמן הווסת ?">
+                            <StackPanel Orientation="Vertical">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <RadioButton x:Name="SufferingFromCrampsOrNervousBeforeMenstruationYas" Content="כן" DataContext="True" GroupName="SufferingFromCrampsOrNervousBeforeMenstruation" Grid.Column="1"/>
+                                    <RadioButton x:Name="SufferingFromCrampsOrNervousBeforeMenstruationNo" Content="לא" DataContext="False" GroupName="SufferingFromCrampsOrNervousBeforeMenstruation" Grid.Column="3"/>
+                                </Grid>
+                                <TextBox x:Name="SufferingFromCrampsOrNervousBeforeMenstruation" />
+                            </StackPanel>
+                        </GroupBox>
+                        <Border Height="10"/>
+
+                        <GroupBox Header=" האם את סובלת מתופעות גיל המעבר ?">
+                            <StackPanel Orientation="Vertical">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <RadioButton x:Name="SufferingFromMenpauseYas" Content="כן" DataContext="True" GroupName="SufferingFromMenpause" Grid.Column="1"/>
+                                    <RadioButton x:Name="SufferingFromMenpauseNo" Content="לא" DataContext="False" GroupName="SufferingFromMenpause" Grid.Column="3"/>
+                                </Grid>
+                                <TextBox x:Name="SufferingFromMenpause"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <Border Height="10"/>
+
+                        <GroupBox Header=" כמה שעות בשבוע אתה מוכן להשקיע בשביל לשפר את איכות חייך ?">
+                            <TextBox x:Name="HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife" Height="100" KeyDown="Enter"/>
+                        </GroupBox>
+                        <Border Height="10"/>
+
+                        <GroupBox Header=" איזה שינוי אתה מצפה לראות בעקבות הטיפול">
+                            <TextBox x:Name="WhatChangesDoYouExpectToSeeFromTreatment" Height="100" KeyDown="Enter"/>
+                        </GroupBox>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button x:Name="Censel" Content="ביטול" Grid.Row="2" Grid.Column="1" Click="Censel_Click"/>
+        <Button x:Name="Save" Content="שמור" Grid.Row="2" Grid.Column="3" Click="Save_Click"/>
+        <Button x:Name="SaveClose" Content="שמור וסגור" Grid.Row="2" Grid.Column="5" Click="SaveClose_Click"/>
+    </Grid>
+</Window>

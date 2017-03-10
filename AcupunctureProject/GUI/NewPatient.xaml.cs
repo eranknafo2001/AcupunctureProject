@@ -61,7 +61,7 @@ namespace AcupunctureProject.GUI
             
             if (!secses)
             {
-                return false;
+                throw new NullValueException();
             }
 
             try
@@ -85,7 +85,7 @@ namespace AcupunctureProject.GUI
         {
             try
             {
-                if (SaveData())
+                SaveData();
                     Close();
             }
             catch (Database.Exceptions.UniqueNameException) { }
@@ -95,7 +95,7 @@ namespace AcupunctureProject.GUI
         {
             try
             {
-                if (SaveData())
+                SaveData();
                     ClearAll();
             }
             catch (Database.Exceptions.UniqueNameException) { }
