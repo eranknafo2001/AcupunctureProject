@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using AcupunctureProject.database;
+using AcupunctureProject.Database;
 
 namespace AcupunctureProject.GUI
 {
@@ -26,7 +26,7 @@ namespace AcupunctureProject.GUI
         {
             InitializeComponent();
             this.patient = patient;
-            var list = Database.Instance.GetAllDiagnosticByPatient(patient);
+            var list = DatabaseConnection.Instance.GetAllDiagnosticByPatient(patient);
             Data.Items.Clear();
             Data.ItemsSource = list;
         }

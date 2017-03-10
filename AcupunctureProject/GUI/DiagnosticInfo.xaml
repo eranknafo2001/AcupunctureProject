@@ -27,6 +27,11 @@
         <ScrollViewer  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7">
             <StackPanel Margin="10">
                 <GroupBox Header="עבודה">
+                    <DatePicker x:Name="CreationDate"/>
+                </GroupBox>
+                <Border Height="10"/>
+                
+                <GroupBox Header="עבודה">
                     <TextBox x:Name="Profession"/>
                 </GroupBox>
                 <Border Height="10"/>

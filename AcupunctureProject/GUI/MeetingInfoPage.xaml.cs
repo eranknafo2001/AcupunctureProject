@@ -75,6 +75,8 @@ namespace AcupunctureProject.GUI
             resolt.IsEnabled = true;
             save.IsEnabled = true;
             saveAndExit.IsEnabled = true;
+            TreatmentList.IsEnabled = true;
+            TreatmentSearchTextBox.IsEnabled = true;
             List<Symptom> symptoms = DatabaseConnection.Instance.GetAllSymptomRelativeToMeeting(meeting);
             for (int i = 0; i < symptoms.Count; i++)
                 SddItemToSymptomTree(symptoms[i]);
@@ -517,6 +519,61 @@ namespace AcupunctureProject.GUI
                     return;
             }
             pointThatUsed.Items.Add(new ListBoxItem() { Content = point.ToString(), DataContext = point });
+        }
+
+        private void TreatmentList_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TreatmentList_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TreatmentList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void TreatmentList_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchList_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchList_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchList_KeyDown(object sender, KeyEventArgs e)
+        {
+
         }
     }
 }
