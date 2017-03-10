@@ -93,6 +93,8 @@ namespace AcupunctureProject.GUI
             resolt.IsEnabled = true;
             save.IsEnabled = true;
             saveAndExit.IsEnabled = true;
+            TreatmentList.IsEnabled = true;
+            TreatmentSearchTextBox.IsEnabled = true;
             SetPatientListVisibility(false);
         }
 

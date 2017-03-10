@@ -75,6 +75,8 @@ namespace AcupunctureProject.GUI
             resolt.IsEnabled = true;
             save.IsEnabled = true;
             saveAndExit.IsEnabled = true;
+            TreatmentList.IsEnabled = true;
+            TreatmentSearchTextBox.IsEnabled = true;
             List<Symptom> symptoms = DatabaseConnection.Instance.GetAllSymptomRelativeToMeeting(meeting);
             for (int i = 0; i < symptoms.Count; i++)
                 SddItemToSymptomTree(symptoms[i]);
