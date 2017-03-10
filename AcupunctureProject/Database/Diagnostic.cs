@@ -12,7 +12,10 @@ namespace AcupunctureProject.database
         private T _Value;
         public T Value
         {
-            get => _Value;
+            get
+            {
+                return _Value;
+            }
             set
             {
                 _Value = value;
@@ -22,7 +25,10 @@ namespace AcupunctureProject.database
         private string _Info;
         public string Info
         {
-            get => _Info;
+            get
+            {
+                return _Info;
+            }
             set
             {
                 _Info = value;
@@ -56,7 +62,10 @@ namespace AcupunctureProject.database
         string _Profession;
         public string Profession
         {
-            get => _Profession;
+            get
+            {
+                return _Profession;
+            }
             set
             {
                 _Profession = value;
@@ -66,7 +75,10 @@ namespace AcupunctureProject.database
         private string _MainComplaint;
         public string MainComplaint
         {
-            get => _MainComplaint;
+            get
+            {
+                return _MainComplaint;
+            }
             set
             {
                 _MainComplaint = value;
@@ -76,7 +88,10 @@ namespace AcupunctureProject.database
         private string _SeconderyComlaint;
         public string SeconderyComlaint
         {
-            get => _SeconderyComlaint;
+            get
+            {
+                return _SeconderyComlaint;
+            }
             set
             {
                 _SeconderyComlaint = value;
@@ -86,7 +101,10 @@ namespace AcupunctureProject.database
         private string _DrugsUsed;
         public string DrugsUsed
         {
-            get => _DrugsUsed;
+            get
+            {
+                return _DrugsUsed;
+            }
             set
             {
                 _DrugsUsed = value;
@@ -96,7 +114,10 @@ namespace AcupunctureProject.database
         private string _TestsMade;
         public string TestsMade
         {
-            get => _TestsMade;
+            get
+            {
+                return _TestsMade;
+            }
             set
             {
                 _TestsMade = value;
@@ -106,7 +127,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _Pain;
         public ValueInfo<bool?> Pain
         {
-            get => _Pain;
+            get
+            {
+                return _Pain;
+            }
             set
             {
                 _Pain = value;
@@ -116,7 +140,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _PainPreviousEvaluations;
         public ValueInfo<bool?> PainPreviousEvaluations
         {
-            get => _PainPreviousEvaluations;
+            get
+            {
+                return _PainPreviousEvaluations;
+            }
             set
             {
                 _PainPreviousEvaluations = value;
@@ -126,7 +153,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _Scans;
         public ValueInfo<bool?> Scans
         {
-            get => _Scans;
+            get
+            {
+                return _Scans;
+            }
             set
             {
                 _Scans = value;
@@ -136,7 +166,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _UnderStress;
         public ValueInfo<bool?> UnderStress
         {
-            get => _UnderStress;
+            get
+            {
+                return _UnderStress;
+            }
             set
             {
                 _UnderStress = value;
@@ -146,7 +179,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _TenseMuscles;
         public ValueInfo<bool?> TenseMuscles
         {
-            get => _TenseMuscles;
+            get
+            {
+                return _TenseMuscles;
+            }
             set
             {
                 _TenseMuscles = value;
@@ -156,7 +192,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _HighBloodPressureOrColesterol;
         public ValueInfo<bool?> HighBloodPressureOrColesterol
         {
-            get => _HighBloodPressureOrColesterol;
+            get
+            {
+                return _HighBloodPressureOrColesterol;
+            }
             set
             {
                 _HighBloodPressureOrColesterol = value;
@@ -166,7 +205,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _GoodSleep;
         public ValueInfo<bool?> GoodSleep
         {
-            get => _GoodSleep;
+            get
+            {
+                return _GoodSleep;
+            }
             set
             {
                 _GoodSleep = value;
@@ -176,7 +218,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _FallenToSleepProblem;
         public ValueInfo<bool?> FallenToSleepProblem
         {
-            get => _FallenToSleepProblem;
+            get
+            {
+                return _FallenToSleepProblem;
+            }
             set
             {
                 _FallenToSleepProblem = value;
@@ -186,7 +231,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _Palpitations;
         public ValueInfo<bool?> Palpitations
         {
-            get => _Palpitations;
+            get
+            {
+                return _Palpitations;
+            }
             set
             {
                 _Palpitations = value;
@@ -196,7 +244,10 @@ namespace AcupunctureProject.database
         private string _DefeationRegularity;
         public string DefeationRegularity
         {
-            get => _DefeationRegularity;
+            get
+            {
+                return _DefeationRegularity;
+            }
             set
             {
                 _DefeationRegularity = value;
@@ -206,7 +257,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _FatigueOrFeelsFulAfterEating;
         public ValueInfo<bool?> FatigueOrFeelsFulAfterEating
         {
-            get => _FatigueOrFeelsFulAfterEating;
+            get
+            {
+                return _FatigueOrFeelsFulAfterEating;
+            }
             set
             {
                 _FatigueOrFeelsFulAfterEating = value;
@@ -216,7 +270,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _DesireForSweetsAfterEating;
         public ValueInfo<bool?> DesireForSweetsAfterEating
         {
-            get => _DesireForSweetsAfterEating;
+            get
+            {
+                return _DesireForSweetsAfterEating;
+            }
             set
             {
                 _DesireForSweetsAfterEating = value;
@@ -226,7 +283,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _DifficultyConcentating;
         public ValueInfo<bool?> DifficultyConcentating
         {
-            get => _DifficultyConcentating;
+            get
+            {
+                return _DifficultyConcentating;
+            }
             set
             {
                 _DifficultyConcentating = value;
@@ -236,7 +296,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _OftenIll;
         public ValueInfo<bool?> OftenIll
         {
-            get => _OftenIll;
+            get
+            {
+                return _OftenIll;
+            }
             set
             {
                 _OftenIll = value;
@@ -246,7 +309,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _SufferingFromMucus;
         public ValueInfo<bool?> SufferingFromMucus
         {
-            get => _SufferingFromMucus;
+            get
+            {
+                return _SufferingFromMucus;
+            }
             set
             {
                 _SufferingFromMucus = value;
@@ -256,7 +322,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _CoughOrAllergySuffers;
         public ValueInfo<bool?> CoughOrAllergySuffers
         {
-            get => _CoughOrAllergySuffers;
+            get
+            {
+                return _CoughOrAllergySuffers;
+            }
             set
             {
                 _CoughOrAllergySuffers = value;
@@ -266,7 +335,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _Smoking;
         public ValueInfo<bool?> Smoking
         {
-            get => _Smoking;
+            get
+            {
+                return _Smoking;
+            }
             set
             {
                 _Smoking = value;
@@ -276,7 +348,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _FrequentOrUrgentUrination;
         public ValueInfo<bool?> FrequentOrUrgentUrination
         {
-            get => _FrequentOrUrgentUrination;
+            get
+            {
+                return _FrequentOrUrgentUrination;
+            }
             set
             {
                 _FrequentOrUrgentUrination = value;
@@ -286,7 +361,10 @@ namespace AcupunctureProject.database
         private ValueInfo<PreferColdOrHotType> _PreferColdOrHot;
         public ValueInfo<PreferColdOrHotType> PreferColdOrHot
         {
-            get => _PreferColdOrHot;
+            get
+            {
+                return _PreferColdOrHot;
+            }
             set
             {
                 _PreferColdOrHot = value;
@@ -296,7 +374,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _SuffersFromColdOrHot;
         public ValueInfo<bool?> SuffersFromColdOrHot
         {
-            get => _SuffersFromColdOrHot;
+            get
+            {
+                return _SuffersFromColdOrHot;
+            }
             set
             {
                 _SuffersFromColdOrHot = value;
@@ -306,7 +387,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _SatisfiedDients;
         public ValueInfo<bool?> SatisfiedDients
         {
-            get => _SatisfiedDients;
+            get
+            {
+                return _SatisfiedDients;
+            }
             set
             {
                 _SatisfiedDients = value;
@@ -316,7 +400,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _WantToLostWeight;
         public ValueInfo<bool?> WantToLostWeight
         {
-            get => _WantToLostWeight;
+            get
+            {
+                return _WantToLostWeight;
+            }
             set
             {
                 _WantToLostWeight = value;
@@ -326,7 +413,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _UsingContraception;
         public ValueInfo<bool?> UsingContraception
         {
-            get => _UsingContraception;
+            get
+            {
+                return _UsingContraception;
+            }
             set
             {
                 _UsingContraception = value;
@@ -336,7 +426,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _CycleRegular;
         public ValueInfo<bool?> CycleRegular
         {
-            get => _CycleRegular;
+            get
+            {
+                return _CycleRegular;
+            }
             set
             {
                 _CycleRegular = value;
@@ -346,7 +439,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _SufferingFromCrampsOrNervousBeforeMenstruation;
         public ValueInfo<bool?> SufferingFromCrampsOrNervousBeforeMenstruation
         {
-            get => _SufferingFromCrampsOrNervousBeforeMenstruation;
+            get
+            {
+                return _SufferingFromCrampsOrNervousBeforeMenstruation;
+            }
             set
             {
                 _SufferingFromCrampsOrNervousBeforeMenstruation = value;
@@ -356,7 +452,10 @@ namespace AcupunctureProject.database
         private ValueInfo<bool?> _SufferingFromMenpause;
         public ValueInfo<bool?> SufferingFromMenpause
         {
-            get => _SufferingFromMenpause;
+            get
+            {
+                return _SufferingFromMenpause;
+            }
             set
             {
                 _SufferingFromMenpause = value;
@@ -366,7 +465,10 @@ namespace AcupunctureProject.database
         private string _HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
         public string HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife
         {
-            get => _HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
+            get
+            {
+                return _HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
+            }
             set
             {
                 _HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife = value;
@@ -376,7 +478,10 @@ namespace AcupunctureProject.database
         private string _WhatChangesDoYouExpectToSeeFromTreatment;
         public string WhatChangesDoYouExpectToSeeFromTreatment
         {
-            get => _WhatChangesDoYouExpectToSeeFromTreatment;
+            get
+            {
+                return _WhatChangesDoYouExpectToSeeFromTreatment;
+            }
             set
             {
                 _WhatChangesDoYouExpectToSeeFromTreatment = value;
@@ -386,7 +491,10 @@ namespace AcupunctureProject.database
         private int _PatientId;
         public int PatientId
         {
-            get => _PatientId;
+            get
+            {
+                return _PatientId;
+            }
             set
             {
                 _PatientId = value;
@@ -396,7 +504,10 @@ namespace AcupunctureProject.database
         private DateTime _CreationDate;
         public DateTime CreationDate
         {
-            get => _CreationDate;
+            get
+            {
+                return _CreationDate;
+            }
             set
             {
                 _CreationDate = value;
