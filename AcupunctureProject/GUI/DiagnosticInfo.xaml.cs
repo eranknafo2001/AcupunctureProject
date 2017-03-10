@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using AcupunctureProject.database;
+using AcupunctureProject.Database;
 
 namespace AcupunctureProject.GUI
 {
@@ -29,6 +29,7 @@ namespace AcupunctureProject.GUI
         {
             Diagnostic = new Diagnostic() { PatientId = patient.Id };
             Women.Visibility = patient == null ? Visibility.Visible : patient.Gend == Patient.Gender.FEMALE ? Visibility.Visible : Visibility.Collapsed;
+            CreationDate.SelectedDate = DateTime.Now;
             SetYasNo(PainYas, PainNo, Diagnostic.Pain);
             SetYasNo(PainPreviousEvaluationsYas, PainPreviousEvaluationsNo, Diagnostic.PainPreviousEvaluations);
             SetYasNo(ScansYas, ScansNo, Diagnostic.Scans);
@@ -77,9 +78,10 @@ namespace AcupunctureProject.GUI
         public DiagnosticInfo(Diagnostic diagnostic) : this()
         {
             Diagnostic = diagnostic;
-            Patient patient = Database.Instance.GetPatientRelativeToDiagnostic(diagnostic);
+            Patient patient = DatabaseConnection.Instance.GetPatientRelativeToDiagnostic(diagnostic);
             Women.Visibility = patient == null || patient.Gend == Patient.Gender.FEMALE ? Visibility.Visible :
                                                                                           Visibility.Collapsed;
+            CreationDate.SelectedDate = diagnostic.CreationDate;
             SetYasNo(PainYas, PainNo, Diagnostic.Pain);
             SetYasNo(PainPreviousEvaluationsYas, PainPreviousEvaluationsNo, Diagnostic.PainPreviousEvaluations);
             SetYasNo(ScansYas, ScansNo, Diagnostic.Scans);
@@ -257,7 +259,8 @@ namespace AcupunctureProject.GUI
             Diagnostic.SufferingFromMenpause.Info = SufferingFromMenpause.Text;
             Diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife = HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife.Text;
             Diagnostic.WhatChangesDoYouExpectToSeeFromTreatment = WhatChangesDoYouExpectToSeeFromTreatment.Text;
-            Diagnostic = Database.Instance.SetDiagnostic(Diagnostic);
+            Diagnostic.CreationDate = (DateTime)CreationDate.SelectedDate;
+            Diagnostic = DatabaseConnection.Instance.SetDiagnostic(Diagnostic);
         }
 
         private void Censel_Click(object sender, RoutedEventArgs e)
