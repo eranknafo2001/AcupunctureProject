@@ -574,6 +574,50 @@ namespace AcupunctureProject.GUI
             if (symptomTreeView.SelectedItem != null && e.LeftButton.Equals(MouseButtonState.Pressed))
                 DragDrop.DoDragDrop(symptomTreeView, (TreeViewItem)symptomTreeView.SelectedItem, DragDropEffects.Copy);
         }
-        
+
+        private void TreatmentSearchList_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchList_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TreatmentList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void TreatmentList_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchList_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TreatmentSearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
