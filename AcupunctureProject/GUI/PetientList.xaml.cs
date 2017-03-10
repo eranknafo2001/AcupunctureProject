@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using AcupunctureProject.database;
+using AcupunctureProject.Database;
 
 namespace AcupunctureProject.GUI
 {
@@ -23,12 +23,12 @@ namespace AcupunctureProject.GUI
         public PatientList()
         {
             InitializeComponent();
-            patientDataGrid.ItemsSource = Database.Instance.FindPatient(searchTextBox.Text);
+            patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            patientDataGrid.ItemsSource = Database.Instance.FindPatient(searchTextBox.Text);
+            patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
         }
 
         private void PatientDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -44,24 +44,24 @@ namespace AcupunctureProject.GUI
             Patient patient = (Patient)patientDataGrid.SelectedItem;
             if (patient == null)
                 return;
-            List<Meeting> meetings = Database.Instance.GetAllMeetingsRelativeToPatientOrderByDate(patient);
+            List<Meeting> meetings = DatabaseConnection.Instance.GetAllMeetingsRelativeToPatientOrderByDate(patient);
             for (int i = 0; i < meetings.Count; i++)
             {
-                List<database.Point> points = Database.Instance.GetAllPointsRelativeToMeeting(meetings[i]);
+                List<Database.Point> points = DatabaseConnection.Instance.GetAllPointsRelativeToMeeting(meetings[i]);
                 for (int j = 0; j < points.Count; j++)
-                    Database.Instance.DeleteMeetingPoint(meetings[i], points[j]);
-                List<Symptom> symptoms = Database.Instance.GetAllSymptomRelativeToMeeting(meetings[i]);
+                    DatabaseConnection.Instance.DeleteMeetingPoint(meetings[i], points[j]);
+                List<Symptom> symptoms = DatabaseConnection.Instance.GetAllSymptomRelativeToMeeting(meetings[i]);
                 for (int j = 0; j < symptoms.Count; j++)
-                    Database.Instance.DeleteSymptomMeetingRelation(symptoms[j], meetings[i]);
-                Database.Instance.DeleteMeeting(meetings[i]);
+                    DatabaseConnection.Instance.DeleteSymptomMeetingRelation(symptoms[j], meetings[i]);
+                DatabaseConnection.Instance.DeleteMeeting(meetings[i]);
             }
-            Database.Instance.DeletePatient(patient);
-            patientDataGrid.ItemsSource = Database.Instance.FindPatient(searchTextBox.Text);
+            DatabaseConnection.Instance.DeletePatient(patient);
+            patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
         }
 
         public void UpdateData()
         {
-            patientDataGrid.ItemsSource = Database.Instance.FindPatient(searchTextBox.Text);
+            patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
         }
 
         private void openMeetingsList_Click(object sender, RoutedEventArgs e)

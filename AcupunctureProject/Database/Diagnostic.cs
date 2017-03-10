@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AcupunctureProject.database
+namespace AcupunctureProject.Database
 {
     public struct ValueInfo<T>
     {

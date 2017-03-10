@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using AcupunctureProject.database;
+using AcupunctureProject.Database;
 
 namespace AcupunctureProject.GUI
 {
@@ -24,8 +24,8 @@ namespace AcupunctureProject.GUI
         private Window perent;
         private Patient selectedPatient;
         private Meeting meeting;
-        private List<database.Point> pointsToAdd;
-        private List<database.Point> pointsToRemove;
+        private List<Database.Point> pointsToAdd;
+        private List<Database.Point> pointsToRemove;
         private List<Symptom> symptomsToAdd;
         private List<Symptom> symptomsToRemove;
         private MeetingListByPatient meetingList;
@@ -41,12 +41,12 @@ namespace AcupunctureProject.GUI
             this.meeting = meeting;
             this.meetingList = meetingList;
             if (meetingList != null)
-                perent.Title += Database.Instance.GetPatientRelativeToMeeting(meeting).Name;
-            pointsToAdd = new List<database.Point>();
-            pointsToRemove = new List<database.Point>();
+                perent.Title += DatabaseConnection.Instance.GetPatientRelativeToMeeting(meeting).Name;
+            pointsToAdd = new List<Database.Point>();
+            pointsToRemove = new List<Database.Point>();
             symptomsToAdd = new List<Symptom>();
             symptomsToRemove = new List<Symptom>();
-            selectedPatient = Database.Instance.GetPatientRelativeToMeeting(meeting);
+            selectedPatient = DatabaseConnection.Instance.GetPatientRelativeToMeeting(meeting);
             patientSearchTextBox.Text = selectedPatient.Name;
             date.SelectedDate = meeting.Date;
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.NOT_SET.ToString(), DataContext = Meeting.ResultValue.NOT_SET });
@@ -54,12 +54,12 @@ namespace AcupunctureProject.GUI
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.WORSE.ToString(), DataContext = Meeting.ResultValue.WORSE });
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.NO_CHANGE.ToString(), DataContext = Meeting.ResultValue.NO_CHANGE });
             resolt.SelectedIndex = meeting.Result.Value;
-            level0.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(0) };
-            level1.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(1) };
-            level2.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(2) };
-            level3.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(3) };
-            level4.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(4) };
-            level5.Background = new SolidColorBrush() { Color = Database.Instance.GetLevel(5) };
+            level0.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(0) };
+            level1.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(1) };
+            level2.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(2) };
+            level3.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(3) };
+            level4.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(4) };
+            level5.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(5) };
             patientSearchTextBox.IsEnabled = false;
             openPatientButton.IsEnabled = true;
             date.IsEnabled = true;
@@ -75,11 +75,11 @@ namespace AcupunctureProject.GUI
             resolt.IsEnabled = true;
             save.IsEnabled = true;
             saveAndExit.IsEnabled = true;
-            List<Symptom> symptoms = Database.Instance.GetAllSymptomRelativeToMeeting(meeting);
+            List<Symptom> symptoms = DatabaseConnection.Instance.GetAllSymptomRelativeToMeeting(meeting);
             for (int i = 0; i < symptoms.Count; i++)
                 SddItemToSymptomTree(symptoms[i]);
             FindConnectedPoint();
-            List<database.Point> pointsThatUsed = Database.Instance.GetAllPointsRelativeToMeeting(meeting);
+            List<Database.Point> pointsThatUsed = DatabaseConnection.Instance.GetAllPointsRelativeToMeeting(meeting);
             for (int i = 0; i < pointsThatUsed.Count; i++)
                 pointThatUsed.Items.Add(new ListBoxItem() { Content = pointsThatUsed[i].ToString(), DataContext = pointsThatUsed[i] });
             notes.Text = meeting.Description;
@@ -102,7 +102,7 @@ namespace AcupunctureProject.GUI
         private void RelaodSymptomList()
         {
             symptomSearchList.Items.Clear();
-            List<Symptom> items = Database.Instance.FindSymptom(symptomSearch.Text);
+            List<Symptom> items = DatabaseConnection.Instance.FindSymptom(symptomSearch.Text);
             for (int i = 0; i < items.Count; i++)
                 symptomSearchList.Items.Add(new ListViewItem() { Content = items[i].ToString(), DataContext = items[i] });
         }
@@ -167,9 +167,9 @@ namespace AcupunctureProject.GUI
                 for (int j = 0; j < symItem.Items.Count; j++)
                 {
                     TreeViewItem chItem = (TreeViewItem)symItem.Items[j];
-                    if (chItem.DataContext.GetType() == typeof(ConnectionValue<database.Point>))
+                    if (chItem.DataContext.GetType() == typeof(ConnectionValue<Database.Point>))
                     {
-                        ConnectionValue<database.Point> point = (ConnectionValue<database.Point>)chItem.DataContext;
+                        ConnectionValue<Database.Point> point = (ConnectionValue<Database.Point>)chItem.DataContext;
                         if (!count.ContainsKey(chItem.DataContext.GetType()))
                             count.Add(chItem.DataContext.GetType(), new Dictionary<int, List<TreeViewItem>>());
                         if (!count[chItem.DataContext.GetType()].ContainsKey(point.Value.Id))
@@ -213,7 +213,7 @@ namespace AcupunctureProject.GUI
         private void SddItemToSymptomTree(Symptom symptom)
         {
             TreeViewItem sym = new TreeViewItem() { Header = symptom.ToString(), DataContext = symptom ,IsExpanded=true };
-            List<ConnectionValue<database.Point>> points = Database.Instance.GetAllPointRelativeToSymptom(symptom);
+            List<ConnectionValue<Database.Point>> points = DatabaseConnection.Instance.GetAllPointRelativeToSymptom(symptom);
             for (int i = 0; i < points.Count; i++)
             {
                 sym.Items.Add(new TreeViewItem()
@@ -222,11 +222,11 @@ namespace AcupunctureProject.GUI
                     DataContext = points[i],
                     Foreground = new SolidColorBrush()
                     {
-                        Color = Database.Instance.GetLevel(points[i].Importance)
+                        Color = DatabaseConnection.Instance.GetLevel(points[i].Importance)
                     }
                 });
             }
-            List<ConnectionValue<Channel>> channels = Database.Instance.GetAllChannelRelativeToSymptom(symptom);
+            List<ConnectionValue<Channel>> channels = DatabaseConnection.Instance.GetAllChannelRelativeToSymptom(symptom);
             for (int i = 0; i < channels.Count; i++)
             {
                 sym.Items.Add(new TreeViewItem()
@@ -235,7 +235,7 @@ namespace AcupunctureProject.GUI
                     DataContext = channels[i],
                     Foreground = new SolidColorBrush()
                     {
-                        Color = Database.Instance.GetLevel(channels[i].Importance)
+                        Color = DatabaseConnection.Instance.GetLevel(channels[i].Importance)
                     }
                 });
             }
@@ -285,9 +285,9 @@ namespace AcupunctureProject.GUI
             TreeViewItem item = (TreeViewItem)symptomTreeView.SelectedItem;
             if (item == null)
                 return;
-            if (item.DataContext.GetType() == typeof(ConnectionValue<database.Point>))
+            if (item.DataContext.GetType() == typeof(ConnectionValue<Database.Point>))
             {
-                ConnectionValue<database.Point> con = (ConnectionValue<database.Point>)item.DataContext;
+                ConnectionValue<Database.Point> con = (ConnectionValue<Database.Point>)item.DataContext;
                 new PointInfo(con.Value).Show();
             }
         }
@@ -304,7 +304,7 @@ namespace AcupunctureProject.GUI
             meeting.Summery = summeryTextBox.Text;
             meeting.ResultDescription = resoltSummeryTextBox.Text;
             meeting.Result = Meeting.ResultValue.FromValue(resolt.SelectedIndex);
-            Database.Instance.UpdateMeeting(meeting);
+            DatabaseConnection.Instance.UpdateMeeting(meeting);
 
             for (int i = 0; i < symptomsToAdd.Count; i++)
             {
@@ -322,9 +322,9 @@ namespace AcupunctureProject.GUI
             }
 
             for (int i = 0; i < symptomsToRemove.Count; i++)
-                Database.Instance.DeleteSymptomMeetingRelation(symptomsToRemove[i], meeting);
+                DatabaseConnection.Instance.DeleteSymptomMeetingRelation(symptomsToRemove[i], meeting);
             for (int i = 0; i < symptomsToAdd.Count; i++)
-                Database.Instance.InsertSymptomMeetingRelation(symptomsToAdd[i], meeting);
+                DatabaseConnection.Instance.InsertSymptomMeetingRelation(symptomsToAdd[i], meeting);
             symptomsToAdd.Clear();
             symptomsToRemove.Clear();
 
@@ -344,9 +344,9 @@ namespace AcupunctureProject.GUI
             }
 
             for (int i = 0; i < pointsToRemove.Count; i++)
-                Database.Instance.DeleteMeetingPoint(meeting, pointsToRemove[i]);
+                DatabaseConnection.Instance.DeleteMeetingPoint(meeting, pointsToRemove[i]);
             for (int i = 0; i < pointsToAdd.Count; i++)
-                Database.Instance.InsertMeetingPointRelation(meeting, pointsToAdd[i]);
+                DatabaseConnection.Instance.InsertMeetingPointRelation(meeting, pointsToAdd[i]);
             pointsToAdd.Clear();
             pointsToRemove.Clear();
 
@@ -369,7 +369,7 @@ namespace AcupunctureProject.GUI
         private void ReloadPointThatUsedSearchList()
         {
             pointThatUsedSearchList.Items.Clear();
-            List<database.Point> points = Database.Instance.FindPoint(pointThatUsedSearch.Text);
+            List<Database.Point> points = DatabaseConnection.Instance.FindPoint(pointThatUsedSearch.Text);
             for (int i = 0; i < points.Count; i++)
             {
                 pointThatUsedSearchList.Items.Add(new ListViewItem() { Content = points[i].ToString(), DataContext = points[i] });
@@ -414,7 +414,7 @@ namespace AcupunctureProject.GUI
             ListViewItem item = (ListViewItem)pointThatUsedSearchList.SelectedItem;
             if (item == null)
                 return;
-            AddItemToPointThatUsed((database.Point)item.DataContext);
+            AddItemToPointThatUsed((Database.Point)item.DataContext);
             SetpointThatUsedSearchListViability(false);
         }
 
@@ -435,7 +435,7 @@ namespace AcupunctureProject.GUI
             if (item == null)
                 return;
             pointThatUsed.Items.RemoveAt(pointThatUsed.SelectedIndex);
-            pointsToRemove.Add((database.Point)item.DataContext);
+            pointsToRemove.Add((Database.Point)item.DataContext);
         }
 
         private void SymptomTreeDelete_Click(object sender, RoutedEventArgs e)
@@ -481,7 +481,7 @@ namespace AcupunctureProject.GUI
             if (pointThatUsed.SelectedIndex == -1)
                 return;
             ListBoxItem item = (ListBoxItem)pointThatUsed.SelectedItem;
-            new PointInfo((database.Point)item.DataContext).Show();
+            new PointInfo((Database.Point)item.DataContext).Show();
         }
 
         private void PointThatUsed_Drop(object sender, DragEventArgs e)
@@ -495,9 +495,9 @@ namespace AcupunctureProject.GUI
                 if (data.GetType() == typeof(TreeViewItem))
                 {
                     TreeViewItem item = (TreeViewItem)data;
-                    if (item.DataContext.GetType() == typeof(ConnectionValue<database.Point>))
-                        AddItemToPointThatUsed(((ConnectionValue<database.Point>)item.DataContext).Value);
-                    //else if (item.DataContext.GetType() == typeof(ConnectionValue<database.Point>))) ;
+                    if (item.DataContext.GetType() == typeof(ConnectionValue<Database.Point>))
+                        AddItemToPointThatUsed(((ConnectionValue<Database.Point>)item.DataContext).Value);
+                    //else if (item.DataContext.GetType() == typeof(ConnectionValue<Database.Point>))) ;
                 }
             }
         }
@@ -508,7 +508,7 @@ namespace AcupunctureProject.GUI
                 DragDrop.DoDragDrop(symptomTreeView, (TreeViewItem)symptomTreeView.SelectedItem, DragDropEffects.Copy);
         }
         
-        private void AddItemToPointThatUsed(database.Point point)
+        private void AddItemToPointThatUsed(Database.Point point)
         {
             for (int i = 0; i < pointThatUsed.Items.Count; i++)
             {

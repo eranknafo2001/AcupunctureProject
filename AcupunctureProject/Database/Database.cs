@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
 
-namespace AcupunctureProject.database
+namespace AcupunctureProject.Database
 {
     public static class Extension
     {
@@ -45,17 +45,17 @@ namespace AcupunctureProject.database
         }
     }
 
-    public class Database
+    public class DatabaseConnection
     {
         private static readonly string ID = "ID";
 
-        private static Database database = null;
-        public static Database Instance
+        private static DatabaseConnection database = null;
+        public static DatabaseConnection Instance
         {
             get
             {
                 if (database == null)
-                    database = new Database();
+                    database = new DatabaseConnection();
                 return database;
             }
         }
@@ -125,7 +125,7 @@ namespace AcupunctureProject.database
         private readonly static string SETTING_COLOR_FILE = "setting_color.dat";
         private readonly string folder;
         #endregion
-        private Database()
+        private DatabaseConnection()
         {
             string[] tempFolder = System.Reflection.Assembly.GetEntryAssembly().Location.Split('\\');
             folder = "";
@@ -133,7 +133,7 @@ namespace AcupunctureProject.database
             {
                 folder += tempFolder[i] + "\\";
             }
-            connection = new SQLiteConnection("Data Source=" + folder + "database.db;Version=3;");
+            connection = new SQLiteConnection("Data Source=" + folder + "Database.db;Version=3;");
             connection.Open();
 
             getAllPointRelativeToSymptomSt = new SQLiteCommand("select POINTS.* , SYMPTOM_POINTS.IMPORTENCE , SYMPTOM_POINTS.COMMENT from POINTS INNER JOIN SYMPTOM_POINTS ON POINTS.ID = SYMPTOM_POINTS.POINT_ID and SYMPTOM_POINTS.SYMPTOM_ID = @symptomId order by SYMPTOM_POINTS.IMPORTENCE DESC;", connection);
