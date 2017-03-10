@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AcupunctureProject.database.Exceptions
+namespace AcupunctureProject.Database.Exceptions
 {
     class UniqueNameException : Exception
     {

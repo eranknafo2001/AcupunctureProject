@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using AcupunctureProject.database;
+using AcupunctureProject.Database;
 
 namespace AcupunctureProject.GUI
 {
@@ -53,7 +53,7 @@ namespace AcupunctureProject.GUI
             patient.MedicalDescription = hestory.Text;
             patient.Gend = Patient.Gender.FromValue(gender.SelectedIndex);
             patient.Email = email.Text;
-            Database.Instance.UpdatePatient(patient);
+            DatabaseConnection.Instance.UpdatePatient(patient);
             if (perent != null)
                 perent.UpdateData();
         }

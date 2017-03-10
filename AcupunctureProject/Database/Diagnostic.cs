@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-namespace AcupunctureProject.database
+namespace AcupunctureProject.Database
 {
     public class ValueInfo<T> : INotifyPropertyChanged
     {

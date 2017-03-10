@@ -11,8 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using AcupunctureProject.database;
-using AcupunctureProject.GUI.Exceptions;
+using AcupunctureProject.Database;
 
 namespace AcupunctureProject.GUI
 {
@@ -59,7 +58,7 @@ namespace AcupunctureProject.GUI
                 MessageBox.Show(this, "חייב טלפון או פלפון", "בעיה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
                 secses = false;
             }
-
+            
             if (!secses)
             {
                 throw new NullValueException();
@@ -67,9 +66,9 @@ namespace AcupunctureProject.GUI
 
             try
             {
-                Database.Instance.InsertPatient(new Patient(name.Text, telphone.Text, cellphone.Text, (DateTime)berthday.SelectedDate, Patient.Gender.FromValue(gender.SelectedIndex), address.Text, email.Text, hestory.Text));
+                DatabaseConnection.Instance.InsertPatient(new Patient(name.Text, telphone.Text, cellphone.Text, (DateTime)berthday.SelectedDate, Patient.Gender.FromValue(gender.SelectedIndex), address.Text, email.Text, hestory.Text));
             }
-            catch (database.Exceptions.UniqueNameException e)
+            catch (Database.Exceptions.UniqueNameException e)
             {
                 MessageBox.Show(this, "המטופל קיים", "אזרה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
                 throw e;
@@ -87,9 +86,9 @@ namespace AcupunctureProject.GUI
             try
             {
                 SaveData();
-                Close();
+                    Close();
             }
-            catch (Exception) { }
+            catch (Database.Exceptions.UniqueNameException) { }
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -97,9 +96,9 @@ namespace AcupunctureProject.GUI
             try
             {
                 SaveData();
-                ClearAll();
+                    ClearAll();
             }
-            catch (Exception) { }
+            catch (Database.Exceptions.UniqueNameException) { }
         }
 
         private void ClearAll()

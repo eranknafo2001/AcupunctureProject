@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
 
-namespace AcupunctureProject.database
+namespace AcupunctureProject.Database
 {
     public static class Extension
     {
@@ -48,18 +48,18 @@ namespace AcupunctureProject.database
         }
     }
 
-    public class Database
+    public class DatabaseConnection
     {
         private static readonly string ID = "ID";
 
-        private static Database DatabaseInstance = null;
-        public static Database Instance
+        private static DatabaseConnection database = null;
+        public static DatabaseConnection Instance
         {
             get
             {
-                if (DatabaseInstance == null)
-                    DatabaseInstance = new Database();
-                return DatabaseInstance;
+                if (database == null)
+                    database = new DatabaseConnection();
+                return database;
             }
         }
 
@@ -129,7 +129,7 @@ namespace AcupunctureProject.database
         private readonly static string SETTING_COLOR_FILE = "setting_color.dat";
         private readonly string Folder;
         #endregion
-        private Database()
+        private DatabaseConnection()
         {
             string[] tempFolder = System.Reflection.Assembly.GetEntryAssembly().Location.Split('\\');
             Folder = "";
@@ -737,7 +737,7 @@ namespace AcupunctureProject.database
                     return GetMeeting(rs);
                 else
                     return null;
-
+                
             }
         }
         #endregion
@@ -748,7 +748,7 @@ namespace AcupunctureProject.database
             {
                 return InsertDiagnostic(diagnostic);
             }
-            UpdateDiagnostic(diagnostic);
+                UpdateDiagnostic(diagnostic);
             return diagnostic;
         }
         public Channel InsertChannel(Channel channel)
@@ -826,7 +826,6 @@ namespace AcupunctureProject.database
             InsertDiagnosticSt.Parameters["@HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife"].Value = diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
             InsertDiagnosticSt.Parameters["@WhatChangesDoYouExpectToSeeFromTreatment"].Value = diagnostic.WhatChangesDoYouExpectToSeeFromTreatment;
             InsertDiagnosticSt.Parameters["@patientId"].Value = diagnostic.PatientId;
-            diagnostic.CreationDate = DateTime.Now;
             InsertDiagnosticSt.Parameters["@creationDate"].Value = diagnostic.CreationDate;
             InsertDiagnosticSt.ExecuteNonQuery();
 
