@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AcupunctureProject.Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,58 +11,75 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using AcupunctureProject.Database;
 
 namespace AcupunctureProject.GUI
 {
     /// <summary>
-    /// Interaction logic for MeetingInfoPage.xaml
+    /// Interaction logic for newMeeting.xaml
     /// </summary>
-    public partial class MeetingInfoPage : Page
+    public partial class NewMeeting : Page
     {
         private Window perent;
         private Patient selectedPatient;
-        private Meeting meeting;
-        private List<Database.Point> pointsToAdd;
-        private List<Database.Point> pointsToRemove;
-        private List<Symptom> symptomsToAdd;
-        private List<Symptom> symptomsToRemove;
-        private MeetingListByPatient meetingList;
 
-        private MeetingInfoPage()
+        public NewMeeting(Window perent)
         {
             InitializeComponent();
-        }
-
-        public MeetingInfoPage(Window perent, Meeting meeting, MeetingListByPatient meetingList = null) : this()
-        {
             this.perent = perent;
-            this.meeting = meeting;
-            this.meetingList = meetingList;
-            if (meetingList != null)
-                perent.Title += DatabaseConnection.Instance.GetPatientRelativeToMeeting(meeting).Name;
-            pointsToAdd = new List<Database.Point>();
-            pointsToRemove = new List<Database.Point>();
-            symptomsToAdd = new List<Symptom>();
-            symptomsToRemove = new List<Symptom>();
-            selectedPatient = DatabaseConnection.Instance.GetPatientRelativeToMeeting(meeting);
-            patientSearchTextBox.Text = selectedPatient.Name;
-            date.SelectedDate = meeting.Date;
+            date.SelectedDate = DateTime.Today;
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.NOT_SET.ToString(), DataContext = Meeting.ResultValue.NOT_SET });
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.BETTER.ToString(), DataContext = Meeting.ResultValue.BETTER });
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.WORSE.ToString(), DataContext = Meeting.ResultValue.WORSE });
             resolt.Items.Add(new ComboBoxItem() { Content = Meeting.ResultValue.NO_CHANGE.ToString(), DataContext = Meeting.ResultValue.NO_CHANGE });
-            resolt.SelectedIndex = meeting.Result.Value;
+            resolt.SelectedIndex = 0;
             level0.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(0) };
             level1.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(1) };
             level2.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(2) };
             level3.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(3) };
             level4.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(4) };
             level5.Background = new SolidColorBrush() { Color = DatabaseConnection.Instance.GetLevel(5) };
+        }
+
+        private void SymptomSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            RelaodSymptomList();
+        }
+
+        private void Censel_Click(object sender, RoutedEventArgs e)
+        {
+            perent.Close();
+        }
+
+        private void PatientSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ReloadPatientList();
+        }
+
+        private void ReloadPatientList()
+        {
+            patientSearchList.Items.Clear();
+            List<Patient> p = DatabaseConnection.Instance.FindPatient(patientSearchTextBox.Text);
+            for (int i = 0; i < p.Count; i++)
+                patientSearchList.Items.Add(new ListViewItem() { Content = p[i].ToStringInSearch(), DataContext = p[i] });
+            patientSearchList.SelectedIndex = 0;
+        }
+
+        private void PatientSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            SelectPatient();
+        }
+
+        private void SelectPatient()
+        {
+            ListViewItem item = (ListViewItem)patientSearchList.SelectedItem;
+            if (item == null)
+                return;
+            selectedPatient = (Patient)item.DataContext;
+            patientSearchTextBox.Text = selectedPatient.Name;
             patientSearchTextBox.IsEnabled = false;
             openPatientButton.IsEnabled = true;
+            copyFromLastMeeting.IsEnabled = true;
             date.IsEnabled = true;
             symptomSearch.IsEnabled = true;
             symptomTreeView.IsEnabled = true;
@@ -75,28 +93,12 @@ namespace AcupunctureProject.GUI
             resolt.IsEnabled = true;
             save.IsEnabled = true;
             saveAndExit.IsEnabled = true;
-            List<Symptom> symptoms = DatabaseConnection.Instance.GetAllSymptomRelativeToMeeting(meeting);
-            for (int i = 0; i < symptoms.Count; i++)
-                SddItemToSymptomTree(symptoms[i]);
-            FindConnectedPoint();
-            List<Database.Point> pointsThatUsed = DatabaseConnection.Instance.GetAllPointsRelativeToMeeting(meeting);
-            for (int i = 0; i < pointsThatUsed.Count; i++)
-                pointThatUsed.Items.Add(new ListBoxItem() { Content = pointsThatUsed[i].ToString(), DataContext = pointsThatUsed[i] });
-            notes.Text = meeting.Description;
-            resoltSummeryTextBox.Text = meeting.ResultDescription;
-            resolt.SelectedItem = meeting.Result;
-            summeryTextBox.Text = meeting.Summery;
-
+            SetPatientListVisibility(false);
         }
 
-        private void SymptomSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private void PatientSearchList_GotFocus(object sender, RoutedEventArgs e)
         {
-            RelaodSymptomList();
-        }
-
-        private void Censel_Click(object sender, RoutedEventArgs e)
-        {
-            perent.Close();
+            SetPatientListVisibility(true);
         }
 
         private void RelaodSymptomList()
@@ -137,6 +139,54 @@ namespace AcupunctureProject.GUI
             }
         }
 
+        private void SetPatientListVisibility(bool val)
+        {
+            if (val)
+            {
+                patientSearchList.Margin = new Thickness(symptomSearch.Margin.Left, symptomSearch.Margin.Top + symptomSearch.ExtentHeight, 0, 0);
+                patientSearchList.Visibility = Visibility.Visible;
+                patientSearchList.MaxHeight = 100;
+            }
+            else
+            {
+                patientSearchList.Visibility = Visibility.Hidden;
+                patientSearchList.MaxHeight = 0;
+            }
+        }
+
+        private void PatientSearchTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.Down))
+            {
+                if (patientSearchList.SelectedIndex == patientSearchList.Items.Count - 1)
+                    patientSearchList.SelectedIndex = 0;
+                else
+                    patientSearchList.SelectedIndex = patientSearchList.SelectedIndex + 1;
+            }
+            else if (e.Key.Equals(Key.Up))
+            {
+                if (patientSearchList.SelectedIndex == 0)
+                    patientSearchList.SelectedIndex = patientSearchList.Items.Count - 1;
+                else
+                    patientSearchList.SelectedIndex = patientSearchList.SelectedIndex - 1;
+            }
+            else if (e.Key.Equals(Key.Enter))
+            {
+                SelectPatient();
+            }
+        }
+
+        private void PatientSearchList_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SetPatientListVisibility(false);
+        }
+
+        private void PatientSearchList_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.Enter))
+                SelectPatient();
+        }
+
         private void SelectSymptom()
         {
             ListViewItem item = (ListViewItem)symptomSearchList.SelectedItem;
@@ -150,15 +200,14 @@ namespace AcupunctureProject.GUI
                 if (temps.Id == temps2.Id)
                     return;
             }
-            SddItemToSymptomTree((Symptom)item.DataContext);
-            symptomsToAdd.Add((Symptom)item.DataContext);
-            FindConnectedPoint();
+            AddItemToSymptomTree((Symptom)item.DataContext);
+            RefindConnectedPoint();
             SetSymptomListVisibility(false);
             symptomSearch.Clear();
             RelaodSymptomList();
         }
 
-        private void FindConnectedPoint()
+        private void RefindConnectedPoint()
         {
             Dictionary<Type, Dictionary<int, List<TreeViewItem>>> count = new Dictionary<Type, Dictionary<int, List<TreeViewItem>>>();
             for (int i = 0; i < symptomTreeView.Items.Count; i++)
@@ -167,11 +216,11 @@ namespace AcupunctureProject.GUI
                 for (int j = 0; j < symItem.Items.Count; j++)
                 {
                     TreeViewItem chItem = (TreeViewItem)symItem.Items[j];
+                    if (!count.ContainsKey(chItem.DataContext.GetType()))
+                        count.Add(chItem.DataContext.GetType(), new Dictionary<int, List<TreeViewItem>>());
                     if (chItem.DataContext.GetType() == typeof(ConnectionValue<Database.Point>))
                     {
                         ConnectionValue<Database.Point> point = (ConnectionValue<Database.Point>)chItem.DataContext;
-                        if (!count.ContainsKey(chItem.DataContext.GetType()))
-                            count.Add(chItem.DataContext.GetType(), new Dictionary<int, List<TreeViewItem>>());
                         if (!count[chItem.DataContext.GetType()].ContainsKey(point.Value.Id))
                             count[chItem.DataContext.GetType()].Add(point.Value.Id, new List<TreeViewItem>());
                         count[chItem.DataContext.GetType()][point.Value.Id].Add(chItem);
@@ -179,14 +228,11 @@ namespace AcupunctureProject.GUI
                     else if (chItem.DataContext.GetType() == typeof(ConnectionValue<Channel>))
                     {
                         ConnectionValue<Channel> point = (ConnectionValue<Channel>)chItem.DataContext;
-                        if (!count.ContainsKey(chItem.DataContext.GetType()))
-                            count.Add(chItem.DataContext.GetType(), new Dictionary<int, List<TreeViewItem>>());
                         if (!count[chItem.DataContext.GetType()].ContainsKey(point.Value.Id))
                             count[chItem.DataContext.GetType()].Add(point.Value.Id, new List<TreeViewItem>());
                         count[chItem.DataContext.GetType()][point.Value.Id].Add(chItem);
                     }
                 }
-
             }
 
             List<Type> typeKeys = count.Keys.ToList();
@@ -210,9 +256,9 @@ namespace AcupunctureProject.GUI
             }
         }
 
-        private void SddItemToSymptomTree(Symptom symptom)
+        private void AddItemToSymptomTree(Symptom symptom)
         {
-            TreeViewItem sym = new TreeViewItem() { Header = symptom.ToString(), DataContext = symptom ,IsExpanded=true };
+            TreeViewItem sym = new TreeViewItem() { Header = symptom.ToString(), DataContext = symptom, IsExpanded = true };
             List<ConnectionValue<Database.Point>> points = DatabaseConnection.Instance.GetAllPointRelativeToSymptom(symptom);
             for (int i = 0; i < points.Count; i++)
             {
@@ -263,16 +309,37 @@ namespace AcupunctureProject.GUI
             RelaodSymptomList();
         }
 
+        private void PatientSearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SetPatientListVisibility(true);
+            ReloadPatientList();
+        }
+
+        private void PatientSearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SetPatientListVisibility(false);
+        }
+
         private void SymptomSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key.Equals(Key.Enter))
                 SelectSymptom();
+            else if (e.Key == Key.Escape)
+            {
+                Focus();
+                SetSymptomListVisibility(false);
+            }
         }
 
         private void SymptomSearchList_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key.Equals(Key.Enter))
                 SelectSymptom();
+            else if (e.Key == Key.Escape)
+            {
+                Focus();
+                SetSymptomListVisibility(false);
+            }
         }
 
         private void SymptomSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -288,70 +355,34 @@ namespace AcupunctureProject.GUI
             if (item.DataContext.GetType() == typeof(ConnectionValue<Database.Point>))
             {
                 ConnectionValue<Database.Point> con = (ConnectionValue<Database.Point>)item.DataContext;
-                new PointInfo(con.Value).Show();
+                PointInfo p = new PointInfo(con.Value);
+                p.Show();
             }
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            SaveData();
+            Meeting meeting = SaveData();
+            perent.Content = new MeetingInfoPage(perent, meeting);
         }
 
-        private void SaveData()
+        private Meeting SaveData()
         {
-            meeting.Date = (DateTime)date.SelectedDate;
-            meeting.Description = notes.Text;
-            meeting.Summery = summeryTextBox.Text;
-            meeting.ResultDescription = resoltSummeryTextBox.Text;
-            meeting.Result = Meeting.ResultValue.FromValue(resolt.SelectedIndex);
-            DatabaseConnection.Instance.UpdateMeeting(meeting);
-
-            for (int i = 0; i < symptomsToAdd.Count; i++)
+            ComboBoxItem resoltitem = (ComboBoxItem)resolt.SelectedItem;
+            Meeting meeting = DatabaseConnection.Instance.InsertMeeting(new Meeting(selectedPatient.Id, "", (DateTime)date.SelectedDate, notes.Text, summeryTextBox.Text, resoltSummeryTextBox.Text, (Meeting.ResultValue)resoltitem.DataContext));
+            for (int i = 0; i < symptomTreeView.Items.Count; i++)
             {
-                int j = 0;
-                while (j < symptomsToRemove.Count)
-                {
-                    if (symptomsToAdd[i].Id == symptomsToRemove[j].Id)
-                    {
-                        symptomsToAdd.RemoveAt(i);
-                        symptomsToRemove.RemoveAt(j);
-                        continue;
-                    }
-                    j++;
-                }
+                TreeViewItem item = (TreeViewItem)symptomTreeView.Items[i];
+                DatabaseConnection.Instance.InsertSymptomMeetingRelation((Symptom)item.DataContext, meeting);
             }
 
-            for (int i = 0; i < symptomsToRemove.Count; i++)
-                DatabaseConnection.Instance.DeleteSymptomMeetingRelation(symptomsToRemove[i], meeting);
-            for (int i = 0; i < symptomsToAdd.Count; i++)
-                DatabaseConnection.Instance.InsertSymptomMeetingRelation(symptomsToAdd[i], meeting);
-            symptomsToAdd.Clear();
-            symptomsToRemove.Clear();
-
-            for (int i = 0; i < pointsToAdd.Count; i++)
+            for (int i = 0; i < pointThatUsed.Items.Count; i++)
             {
-                int j = 0;
-                while (j < pointsToRemove.Count)
-                {
-                    if (pointsToAdd[i].Name == pointsToRemove[j].Name)
-                    {
-                        pointsToRemove.RemoveAt(j);
-                        pointsToAdd.RemoveAt(i);
-                        continue;
-                    }
-                    j++;
-                }
+                ListBoxItem item = (ListBoxItem)pointThatUsed.Items[i];
+                DatabaseConnection.Instance.InsertMeetingPointRelation(meeting, (Database.Point)item.DataContext);
             }
 
-            for (int i = 0; i < pointsToRemove.Count; i++)
-                DatabaseConnection.Instance.DeleteMeetingPoint(meeting, pointsToRemove[i]);
-            for (int i = 0; i < pointsToAdd.Count; i++)
-                DatabaseConnection.Instance.InsertMeetingPointRelation(meeting, pointsToAdd[i]);
-            pointsToAdd.Clear();
-            pointsToRemove.Clear();
-
-            if (meetingList != null)
-                meetingList.UpdateData();
+            return meeting;
         }
 
         private void SaveAndExit_Click(object sender, RoutedEventArgs e)
@@ -368,13 +399,13 @@ namespace AcupunctureProject.GUI
 
         private void ReloadPointThatUsedSearchList()
         {
+            pointThatUsedSearchList.SelectedIndex = 0;
             pointThatUsedSearchList.Items.Clear();
             List<Database.Point> points = DatabaseConnection.Instance.FindPoint(pointThatUsedSearch.Text);
             for (int i = 0; i < points.Count; i++)
             {
                 pointThatUsedSearchList.Items.Add(new ListViewItem() { Content = points[i].ToString(), DataContext = points[i] });
             }
-            pointThatUsedSearchList.SelectedIndex = 0;
         }
 
         private void PointThatUsedSearch_GotFocus(object sender, RoutedEventArgs e)
@@ -407,6 +438,11 @@ namespace AcupunctureProject.GUI
         {
             if (e.Key == Key.Enter)
                 SelectPointThatUsed();
+            else if (e.Key == Key.Escape)
+            {
+                Focus();
+                SetPatientListVisibility(false);
+            }
         }
 
         private void SelectPointThatUsed()
@@ -418,10 +454,26 @@ namespace AcupunctureProject.GUI
             SetpointThatUsedSearchListViability(false);
         }
 
+        private void AddItemToPointThatUsed(Database.Point point)
+        {
+            for (int i = 0; i < pointThatUsed.Items.Count; i++)
+            {
+                ListBoxItem tempItem = (ListBoxItem)pointThatUsed.Items[i];
+                if (tempItem.Content.Equals(point.ToString()))
+                    return;
+            }
+            pointThatUsed.Items.Add(new ListBoxItem() { Content = point.ToString(), DataContext = point });
+        }
+
         private void PointThatUsed_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
                 SelectPointThatUsed();
+            else if (e.Key == Key.Escape)
+            {
+                Focus();
+                SetPatientListVisibility(false);
+            }
         }
 
         private void PointThatUsedSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -431,11 +483,8 @@ namespace AcupunctureProject.GUI
 
         private void PointThatUsedDelete_Click(object sender, RoutedEventArgs e)
         {
-            ListBoxItem item = (ListBoxItem)pointThatUsed.SelectedItem;
-            if (item == null)
-                return;
-            pointThatUsed.Items.RemoveAt(pointThatUsed.SelectedIndex);
-            pointsToRemove.Add((Database.Point)item.DataContext);
+            if (pointThatUsed.SelectedIndex != -1)
+                pointThatUsed.Items.RemoveAt(pointThatUsed.SelectedIndex);
         }
 
         private void SymptomTreeDelete_Click(object sender, RoutedEventArgs e)
@@ -447,7 +496,12 @@ namespace AcupunctureProject.GUI
                 item = (TreeViewItem)item.Parent;
             if (symptomTreeView.Items.Contains(item))
                 symptomTreeView.Items.Remove(item);
-            symptomsToRemove.Add((Symptom)item.DataContext);
+        }
+
+        private void ResoltSummeryTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                AddNewLine(resoltSummeryTextBox);
         }
 
         private void AddNewLine(TextBox textBox)
@@ -470,18 +524,31 @@ namespace AcupunctureProject.GUI
                 AddNewLine(summeryTextBox);
         }
 
-        private void ResoltSummeryTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-                AddNewLine(resoltSummeryTextBox);
-        }
-
         private void PointThatUsed_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (pointThatUsed.SelectedIndex == -1)
                 return;
             ListBoxItem item = (ListBoxItem)pointThatUsed.SelectedItem;
             new PointInfo((Database.Point)item.DataContext).Show();
+        }
+
+        private void CopyFromLastMeeting_Click(object sender, RoutedEventArgs e)
+        {
+            Meeting meeting = DatabaseConnection.Instance.GetTheLastMeeting(selectedPatient);
+            if (meeting == null)
+            {
+                MessageBox.Show("אין פגישות", "", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
+                return;
+            }
+            List<Symptom> symL = DatabaseConnection.Instance.GetAllSymptomRelativeToMeeting(meeting);
+            symptomTreeView.Items.Clear();
+            for (int i = 0; i < symL.Count; i++)
+                AddItemToSymptomTree(symL[i]);
+            List<Database.Point> pointsL = DatabaseConnection.Instance.GetAllPointsRelativeToMeeting(meeting);
+            pointThatUsed.Items.Clear();
+            for (int i = 0; i < pointsL.Count; i++)
+                pointThatUsed.Items.Add(new ListBoxItem() { Content = pointsL[i].ToString(), DataContext = pointsL[i] });
+            notes.Text = meeting.Description;
         }
 
         private void PointThatUsed_Drop(object sender, DragEventArgs e)
@@ -498,7 +565,7 @@ namespace AcupunctureProject.GUI
                     if (item.DataContext.GetType() == typeof(ConnectionValue<Database.Point>))
                         AddItemToPointThatUsed(((ConnectionValue<Database.Point>)item.DataContext).Value);
                     //else if (item.DataContext.GetType() == typeof(ConnectionValue<Database.Point>))) ;
-                }
+                } 
             }
         }
 
@@ -507,24 +574,13 @@ namespace AcupunctureProject.GUI
             if (symptomTreeView.SelectedItem != null && e.LeftButton.Equals(MouseButtonState.Pressed))
                 DragDrop.DoDragDrop(symptomTreeView, (TreeViewItem)symptomTreeView.SelectedItem, DragDropEffects.Copy);
         }
-        
-        private void AddItemToPointThatUsed(Database.Point point)
-        {
-            for (int i = 0; i < pointThatUsed.Items.Count; i++)
-            {
-                ListBoxItem tempItem = (ListBoxItem)pointThatUsed.Items[i];
-                if (tempItem.Content.Equals(point.ToString()))
-                    return;
-            }
-            pointThatUsed.Items.Add(new ListBoxItem() { Content = point.ToString(), DataContext = point });
-        }
 
-        private void TreatmentList_GotFocus(object sender, RoutedEventArgs e)
+        private void TreatmentSearchList_GotFocus(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void TreatmentList_LostFocus(object sender, RoutedEventArgs e)
+        private void TreatmentSearchList_LostFocus(object sender, RoutedEventArgs e)
         {
 
         }
@@ -539,12 +595,12 @@ namespace AcupunctureProject.GUI
 
         }
 
-        private void TreatmentSearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        private void TreatmentSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
         }
 
-        private void TreatmentSearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        private void TreatmentSearchList_KeyDown(object sender, KeyEventArgs e)
         {
 
         }
@@ -554,22 +610,12 @@ namespace AcupunctureProject.GUI
 
         }
 
-        private void TreatmentSearchList_GotFocus(object sender, RoutedEventArgs e)
+        private void TreatmentSearchTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void TreatmentSearchList_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void TreatmentSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void TreatmentSearchList_KeyDown(object sender, KeyEventArgs e)
+        private void TreatmentSearchTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
 
         }

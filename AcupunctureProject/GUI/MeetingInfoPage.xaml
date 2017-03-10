@@ -109,8 +109,23 @@
         <!--#endregion-->
         <!--#endregion-->
         <!--#region notes -->
-        <Label Content="הערות" Grid.Row="4" Grid.Column="6" HorizontalAlignment="Center"/>
-        <TextBox x:Name="notes" Grid.Row="6" Grid.Column="6" KeyDown="Notes_KeyDown" IsEnabled="False" TextWrapping="Wrap"/>
+        <Label Content="טיפולים" Grid.Row="4" Grid.Column="6" HorizontalAlignment="Center"/>
+        <Grid Grid.Row="6" Grid.Column="6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="TreatmentSearchTextBox" Grid.Row="0" IsEnabled="False" GotFocus="TreatmentSearchTextBox_GotFocus" LostFocus="TreatmentSearchTextBox_LostFocus" TextChanged="TreatmentSearchTextBox_TextChanged"/>
+            <ListView x:Name="TreatmentSearchList" MaxHeight="100" Grid.Row="0" GotFocus="TreatmentSearchList_GotFocus" LostFocus="TreatmentSearchList_LostFocus" MouseDoubleClick="TreatmentSearchList_MouseDoubleClick" KeyDown="TreatmentSearchList_KeyDown"/>
+            <ListBox x:Name="TreatmentList" Grid.Row="2" Height="80" IsEnabled="False" SelectionMode="Single" MouseDoubleClick="TreatmentList_MouseDoubleClick" KeyDown="TreatmentList_KeyDown"/>
+            <Label Content="הערות" Grid.Row="4" HorizontalAlignment="Center"/>
+            <TextBox x:Name="notes" Grid.Row="6" KeyDown="Notes_KeyDown" IsEnabled="False" TextWrapping="Wrap"/>
+        </Grid>
         <!--#endregion-->
         <!--#region summery block -->
         <Label Content="סיכום" Grid.Row="4" Grid.Column="8" HorizontalAlignment="Center"/>
