@@ -8,6 +8,7 @@ namespace AcupunctureProject.Database.Treatment
 {
     public class Note
     {
+        public readonly static string TEXT = "TEXT";
         public int Id { get; private set; }
         public string Text { get; set; }
 
