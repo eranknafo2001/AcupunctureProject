@@ -1018,7 +1018,7 @@ namespace AcupunctureProject.Database
 
         private Operation GetOperation(SQLiteDataReader rs)
         {
-            return new Operation(rs.GetIntL(ID), rs.GetStringL(Operation.TEXT));
+            return new Operation(rs.GetIntL(ID), rs.GetIntL(Operation.TREATMENT_ID),rs.GetStringL(Operation.TEXT));
         }
 
         public Point GetAllPointByOperation(Treatment.Operation operation)
@@ -1138,7 +1138,7 @@ namespace AcupunctureProject.Database
             }
         }
         #endregion
-            #region inserts
+        #region inserts
         public Diagnostic SetDiagnostic(Diagnostic diagnostic)
         {
             if (diagnostic.Id == -1)
