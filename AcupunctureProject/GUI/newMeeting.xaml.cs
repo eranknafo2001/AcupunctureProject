@@ -93,6 +93,8 @@ namespace AcupunctureProject.GUI
             resolt.IsEnabled = true;
             save.IsEnabled = true;
             saveAndExit.IsEnabled = true;
+            TreatmentList.IsEnabled = true;
+            TreatmentSearchTextBox.IsEnabled = true;
             SetPatientListVisibility(false);
         }
 
@@ -109,7 +111,7 @@ namespace AcupunctureProject.GUI
                 symptomSearchList.Items.Add(new ListViewItem() { Content = items[i].ToString(), DataContext = items[i] });
         }
 
-        private void SetpointThatUsedSearchListViability(bool val)
+        private void SetPointThatUsedSearchListViability(bool val)
         {
             if (val)
             {
@@ -403,30 +405,28 @@ namespace AcupunctureProject.GUI
             pointThatUsedSearchList.Items.Clear();
             List<Database.Point> points = DatabaseConnection.Instance.FindPoint(pointThatUsedSearch.Text);
             for (int i = 0; i < points.Count; i++)
-            {
                 pointThatUsedSearchList.Items.Add(new ListViewItem() { Content = points[i].ToString(), DataContext = points[i] });
-            }
         }
 
         private void PointThatUsedSearch_GotFocus(object sender, RoutedEventArgs e)
         {
-            SetpointThatUsedSearchListViability(true);
+            SetPointThatUsedSearchListViability(true);
             ReloadPointThatUsedSearchList();
         }
 
         private void PointThatUsedSearch_LostFocus(object sender, RoutedEventArgs e)
         {
-            SetpointThatUsedSearchListViability(false);
+            SetPointThatUsedSearchListViability(false);
         }
 
         private void PointThatUsedSearchList_LostFocus(object sender, RoutedEventArgs e)
         {
-            SetpointThatUsedSearchListViability(false);
+            SetPointThatUsedSearchListViability(false);
         }
 
         private void PointThatUsedSearchList_GotFocus(object sender, RoutedEventArgs e)
         {
-            SetpointThatUsedSearchListViability(true);
+            SetPointThatUsedSearchListViability(true);
         }
 
         private void PointThatUsedSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -451,7 +451,7 @@ namespace AcupunctureProject.GUI
             if (item == null)
                 return;
             AddItemToPointThatUsed((Database.Point)item.DataContext);
-            SetpointThatUsedSearchListViability(false);
+            SetPointThatUsedSearchListViability(false);
         }
 
         private void AddItemToPointThatUsed(Database.Point point)
@@ -575,16 +575,6 @@ namespace AcupunctureProject.GUI
                 DragDrop.DoDragDrop(symptomTreeView, (TreeViewItem)symptomTreeView.SelectedItem, DragDropEffects.Copy);
         }
 
-        private void TreatmentSearchList_GotFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void TreatmentSearchList_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void TreatmentList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
@@ -610,14 +600,29 @@ namespace AcupunctureProject.GUI
 
         }
 
-        private void TreatmentSearchTextBox_LostFocus(object sender, RoutedEventArgs e)
+        private void TreatmentSearchVisFalse(object sender, RoutedEventArgs e)
         {
-
+            SetTreatmentSearchListViability(false);
         }
 
-        private void TreatmentSearchTextBox_GotFocus(object sender, RoutedEventArgs e)
+        private void TreatmentSearchVisTrue(object sender, RoutedEventArgs e)
         {
+            SetTreatmentSearchListViability(true);
+        }
 
+        private void SetTreatmentSearchListViability(bool val)
+        {
+            if (val)
+            {
+                TreatmentSearchList.Margin = new Thickness(pointThatUsedSearch.Margin.Left, pointThatUsedSearch.Margin.Top + pointThatUsedSearch.ExtentHeight, 0, 0);
+                TreatmentSearchList.Visibility = Visibility.Visible;
+                TreatmentSearchList.MaxHeight = 100;
+            }
+            else
+            {
+                TreatmentSearchList.Visibility = Visibility.Hidden;
+                TreatmentSearchList.MaxHeight = 0;
+            }
         }
     }
 }
