@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
 using System.IO;
+using AcupunctureProject.Database.Treatment;
 
 namespace AcupunctureProject.Database
 {
@@ -124,6 +125,48 @@ namespace AcupunctureProject.Database
 
         private SQLiteCommand GetAllPointsSt;
 
+        private SQLiteCommand InsertTreatment_TreatmentSt;
+        private SQLiteCommand InsertTreatment_OperationSt;
+        private SQLiteCommand InsertTreatment_SymptomSt;
+        private SQLiteCommand InsertTreatment_NoteSt;
+
+        private SQLiteCommand InsertTreatment_NotePointSt;
+        private SQLiteCommand InsertTreatment_NoteOperationSt;
+        private SQLiteCommand InsertTreatment_NoteTreatmentRelationSt;
+
+        private SQLiteCommand InsertTreatment_SymptomOperationRelationSt;
+        private SQLiteCommand InsertTreatment_SymptomPointRelationSt;
+
+        private SQLiteCommand UpdateTreatment_TreatmentSt;
+        private SQLiteCommand UpdateTreatment_OperationSt;
+        private SQLiteCommand UpdateTreatment_SymptomSt;
+        private SQLiteCommand UpdateTreatment_NoteSt;
+
+        private SQLiteCommand DeleteTreatment_TreatmentSt;
+        private SQLiteCommand DeleteTreatment_OperationSt;
+        private SQLiteCommand DeleteTreatment_SymptomSt;
+        private SQLiteCommand DeleteTreatment_NoteSt;
+
+        private SQLiteCommand DeleteTreatment_NotePointSt;
+        private SQLiteCommand DeleteTreatment_NoteOperationSt;
+        private SQLiteCommand DeleteTreatment_NoteTreatmentRelationSt;
+
+        private SQLiteCommand DeleteTreatment_SymptomOperationRelationSt;
+        private SQLiteCommand DeleteTreatment_SymptomPointRelationSt;
+
+        private SQLiteCommand GetAllTreatmentsSt;
+        private SQLiteCommand GetTreatmentByNameSt;
+        private SQLiteCommand GetAllOperationsByTreatmentSt;
+        private SQLiteCommand GetAllPointByOperationSt;
+        private SQLiteCommand GetNoteByPointSt;
+        private SQLiteCommand GetNoteByTreatmentSt;
+        private SQLiteCommand GetNoteByOperationSt;
+        private SQLiteCommand GetPointsByNoteSt;
+        private SQLiteCommand GetOperationsByNoteSt;
+        private SQLiteCommand GetSymptomByPointSt;
+        private SQLiteCommand GetSymptomByOperationSt;
+        private SQLiteCommand GetPointsBySymptomSt;
+
         private Color[] PriorityColors;
         public readonly static int NUM_OF_PRIORITIES = 6;
         private readonly static string SETTING_COLOR_FILE = "setting_color.dat";
@@ -139,28 +182,7 @@ namespace AcupunctureProject.Database
             }
             Connection = new SQLiteConnection("Data Source=" + Folder + "database.db;Version=3;");
             Connection.Open();
-
-            GetAllPointRelativeToSymptomSt = new SQLiteCommand("select POINTS.* , SYMPTOM_POINTS.IMPORTENCE , SYMPTOM_POINTS.COMMENT from POINTS INNER JOIN SYMPTOM_POINTS ON POINTS.ID = SYMPTOM_POINTS.POINT_ID and SYMPTOM_POINTS.SYMPTOM_ID = @symptomId order by SYMPTOM_POINTS.IMPORTENCE DESC;", Connection);
-            GetAllPointRelativeToSymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
-
-            GetAllSymptomRelativeToPointSt = new SQLiteCommand("select SYMPTOM.* , SYMPTOM_POINTS.IMPORTENCE , SYMPTOM_POINTS.COMMENT from SYMPTOM INNER JOIN SYMPTOM_POINTS ON SYMPTOM.ID = SYMPTOM_POINTS.SYMPTOM_ID where SYMPTOM_POINTS.POINT_ID = @pointId order by SYMPTOM_POINTS.IMPORTENCE DESC;", Connection);
-            GetAllSymptomRelativeToPointSt.Parameters.Add(new SQLiteParameter("@pointId"));
-
-            GetAllChannelRelativeToSymptomSt = new SQLiteCommand("SELECT CHANNEL.* , SYMPTOM_CHANNEL.IMPORTENCE , SYMPTOM_CHANNEL.COMMENT from CHANNEL INNER JOIN SYMPTOM_CHANNEL ON CHANNEL.ID = SYMPTOM_CHANNEL.CHANNEL_ID where SYMPTOM_CHANNEL.SYMPTOM_ID = @symptomId order by SYMPTOM_CHANNEL.IMPORTENCE DESC;", Connection);
-            GetAllChannelRelativeToSymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
-
-            GetAllSymptomRelativeToMeetingSt = new SQLiteCommand("SELECT SYMPTOM.* FROM MEETING_SYMPTOM INNER JOIN MEETING ON MEETING_SYMPTOM.MEETING_ID = MEETING.ID INNER JOIN SYMPTOM ON SYMPTOM.ID = MEETING_SYMPTOM.SYMPTOM_ID WHERE MEETING.ID = @meetingId;", Connection);
-            GetAllSymptomRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
-
-            GetAllPointRelativeToMeetingSt = new SQLiteCommand("SELECT POINTS.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID = MEETING.ID INNER JOIN POINTS ON MEETING_POINTS.POINT_ID = POINTS.ID WHERE MEETING.ID = @meetingId", Connection);
-            GetAllPointRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
-
-            GetPatientRelativeToMeetingSt = new SQLiteCommand("SELECT * FROM PATIENT WHERE ID = @patientId", Connection);
-            GetPatientRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
-
-            GetPatientRelativeToDiagnosticSt = new SQLiteCommand("SELECT * FROM PATIENT WHERE ID=@patientId;", Connection);
-            GetPatientRelativeToDiagnosticSt.Parameters.Add(new SQLiteParameter("@patientId"));
-
+            #region inserts
             InsertSymptomSt = new SQLiteCommand("insert into SYMPTOM(NAME,COMMENT) values(@name,@comment);", Connection);
             InsertSymptomSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@comment") });
 
@@ -190,7 +212,36 @@ namespace AcupunctureProject.Database
 
             InsertDiagnosticSt = new SQLiteCommand("insert into DIAGNOSTIC(PROFESSION,MAIN_COMPLAINT,SECONDERY_COMPLAINT,DRUGS_USED,TESTS_MADE,IN_PAIN,PAIN_INFO,IS_PAIN_PREVIOUS_EVALUATIONS,PAIN_PREVIOUS_EVALUATION_INFO,IS_THERE_ANYSORT_OF_SCANS,THE_SCANS_INFO,IS_UNDER_STRESS,STRESS_INFO,IS_TENSE_MUSCLES,TENSE_MUSCLES_INFO,IS_HIGH_BLOOD_PRESSURE_OR_COLESTEROL,HIGH_BLOOD_PRESSURE_OR_COLESTEROL_INFO,IS_GOOD_SLEEP,GOOD_SLEEP_INFO,IS_FALLEN_TO_SLEEP_PROBLEM,FALLEN_TO_SLEEP_PROBLEM_INFO,IS_PALPITATIONS,PALPITATIONS_INFO,DEFECATION_REGULARITY,IS_FATIGUE_OR_FEELS_FULL_AFTER_EATING,FATIGUE_OR_FEELS_FULL_AFTER_EATING_INFO,IS_DESIRE_FOR_SWEETS_AFTER_EATING,DESIRE_FOR_SWEETS_AFTER_EATING_INFO,IS_DIFFICULTY_CONCENTRATING,DIFFICULTY_CONCENTRATING_INFO,IS_OFTEN_ILL,OFTEN_ILL_INFO,IS_SUFFERING_FROM_MUCUS,SUFFERING_FROM_MUCUS_INFO,IS_COUGH_OR_ALLERGY_SUFFERS,COUGH_OR_ALLERGY_SUFFERS_INFO,IS_SMOKING,SMOKING_INFO,IS_FREQUENT_OR_URGENT_URINATION,FREQUENT_OR_URGENT_URINATION_INFO,PREFER_COLD_OR_HOT,PREFER_COLD_OR_HOT_INFO,IS_SUFFERS_FROM_COLD_OR_HOT,SUFFERS_FROM_COLD_OR_HOT_INFO,IS_SATISFIED_DIETS,SATISFIED_DIETS_INFO,IS_WANT_TO_LOST_WEIGHT,WANT_TO_LOST_WEIGHT_INFO,IS_USING_CONTRACEPTION,USING_CONTRACEPTION_INFO,IS_CYCLE_REGULAR,CYCLE_REGULAR_INFO,IS_SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION,SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION_INFO,IS_SUFFERING_FROM_MENOPAUSE,SUFFERING_FROM_MENOPAUSE_INFO,HOW_MANY_HOURS_A_WEEK_ARE_YOU_WILLING_TO_INVEST_TO_IMPROVE_THE_QUALITY_OF_LIFE,WHAT_CHANGES_DO_YOU_EXPECT_TO_SEE_FROM_TREATMENT,PATIENT_ID,CREATION_DATE) values(@Profession, @MainComplaint, @SeconderyComlaint, @DrugsUsed, @TestsMade, @IsPain, @PainInfo , @IsPainPreviousEvaluations, @PainPreviousEvaluationsInfo, @IsScans, @ScansInfo, @IsUnderStress, @UnderStressInfo, @IsTenseMuscles, @TenseMusclesInfo, @IsHighBloodPressureOrColesterol, @HighBloodPressureOrColesterolInfo, @IsGoodSleep, @GoodSleepInfo, @IsFallenToSleepProblem, @FallenToSleepProblemInfo, @IsPalpitations, @PalpitationsInfo, @DefeationRegularity, @IsFatigueOrFeelsFulAfterEating, @FatigueOrFeelsFulAfterEatingInfo, @IsDesireForSweetsAfterEating, @DesireForSweetsAfterEatingInfo, @IsDifficultyConcentating, @DifficultyConcentatingInfo, @IsOftenIll, @OftenIllInfo, @IsSufferingFromMucus, @SufferingFromMucusInfo, @IsCoughOrAllergySuffers, @CoughOrAllergySuffersInfo, @IsSmoking, @SmokingInfo, @IsFrequentOrUrgentUrination, @FrequentOrUrgentUrinationInfo, @PreferColdOrHot, @PreferColdOrHotInfo, @IsSuffersFromColdOrHot, @SuffersFromColdOrHotInfo, @IsSatisfiedDients, @SatisfiedDientsInfo, @IsWantToLostWeight, @WantToLostWeightInfo, @IsUsingContraception, @UsingContraceptionInfo, @IsCycleRegular, @CycleRegularInfo, @IsSufferingFromCrampsOrNervousBeforeMenstruation, @SufferingFromCrampsOrNervousBeforeMenstruationInfo, @IsSufferingFromMenpause, @SufferingFromMenpauseInfo, @HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife, @WhatChangesDoYouExpectToSeeFromTreatment,@patientId,@creationDate);", Connection);
             InsertDiagnosticSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@Profession"), new SQLiteParameter("@MainComplaint"), new SQLiteParameter("@SeconderyComlaint"), new SQLiteParameter("@DrugsUsed"), new SQLiteParameter("@TestsMade"), new SQLiteParameter("@IsPain"), new SQLiteParameter("@PainInfo"), new SQLiteParameter("@IsPainPreviousEvaluations"), new SQLiteParameter("@PainPreviousEvaluationsInfo"), new SQLiteParameter("@IsScans"), new SQLiteParameter("@ScansInfo"), new SQLiteParameter("@IsUnderStress"), new SQLiteParameter("@UnderStressInfo"), new SQLiteParameter("@IsTenseMuscles"), new SQLiteParameter("@TenseMusclesInfo"), new SQLiteParameter("@IsHighBloodPressureOrColesterol"), new SQLiteParameter("@HighBloodPressureOrColesterolInfo"), new SQLiteParameter("@IsGoodSleep"), new SQLiteParameter("@GoodSleepInfo"), new SQLiteParameter("@IsFallenToSleepProblem"), new SQLiteParameter("@FallenToSleepProblemInfo"), new SQLiteParameter("@IsPalpitations"), new SQLiteParameter("@PalpitationsInfo"), new SQLiteParameter("@DefeationRegularity"), new SQLiteParameter("@IsFatigueOrFeelsFulAfterEating"), new SQLiteParameter("@FatigueOrFeelsFulAfterEatingInfo"), new SQLiteParameter("@IsDesireForSweetsAfterEating"), new SQLiteParameter("@DesireForSweetsAfterEatingInfo"), new SQLiteParameter("@IsDifficultyConcentating"), new SQLiteParameter("@DifficultyConcentatingInfo"), new SQLiteParameter("@IsOftenIll"), new SQLiteParameter("@OftenIllInfo"), new SQLiteParameter("@IsSufferingFromMucus"), new SQLiteParameter("@SufferingFromMucusInfo"), new SQLiteParameter("@IsCoughOrAllergySuffers"), new SQLiteParameter("@CoughOrAllergySuffersInfo"), new SQLiteParameter("@IsSmoking"), new SQLiteParameter("@SmokingInfo"), new SQLiteParameter("@IsFrequentOrUrgentUrination"), new SQLiteParameter("@FrequentOrUrgentUrinationInfo"), new SQLiteParameter("@PreferColdOrHot"), new SQLiteParameter("@PreferColdOrHotInfo"), new SQLiteParameter("@IsSuffersFromColdOrHot"), new SQLiteParameter("@SuffersFromColdOrHotInfo"), new SQLiteParameter("@IsSatisfiedDients"), new SQLiteParameter("@SatisfiedDientsInfo"), new SQLiteParameter("@IsWantToLostWeight"), new SQLiteParameter("@WantToLostWeightInfo"), new SQLiteParameter("@IsUsingContraception"), new SQLiteParameter("@UsingContraceptionInfo"), new SQLiteParameter("@IsCycleRegular"), new SQLiteParameter("@CycleRegularInfo"), new SQLiteParameter("@IsSufferingFromCrampsOrNervousBeforeMenstruation"), new SQLiteParameter("@SufferingFromCrampsOrNervousBeforeMenstruationInfo"), new SQLiteParameter("@IsSufferingFromMenpause"), new SQLiteParameter("@SufferingFromMenpauseInfo"), new SQLiteParameter("@HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife"), new SQLiteParameter("@WhatChangesDoYouExpectToSeeFromTreatment"), new SQLiteParameter("@patientId"), new SQLiteParameter("@creationDate") });
+            #region treatment
+            InsertTreatment_TreatmentSt = new SQLiteCommand("insert into TREATMENT(NAME) values(@name);",Connection);
+            InsertTreatment_TreatmentSt.Parameters.Add(new SQLiteParameter("@name"));
 
+            InsertTreatment_OperationSt = new SQLiteCommand("insert into OPERATION_TREATMENT(TREATMENT_ID,TEXT) values(@treatmentId,@text);", Connection);
+            InsertTreatment_OperationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@treatmentId"), new SQLiteParameter("@test") });
+
+            InsertTreatment_SymptomSt = new SQLiteCommand("insert into SYMPTOM_TREATMENT(TEXT) values(@text);", Connection);
+            InsertTreatment_SymptomSt.Parameters.Add(new SQLiteParameter("@text"));
+
+            InsertTreatment_NoteSt = new SQLiteCommand("insert into NOTE_TREATMENT(TEXT) values(@text);", Connection);
+            InsertTreatment_NoteSt.Parameters.Add(new SQLiteParameter("@text"));
+
+            InsertTreatment_NotePointSt = new SQLiteCommand("insert into NOTE_TREATMENT_POINT values(@noteTreatmentId,@pointId);", Connection);
+            InsertTreatment_NotePointSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@noteTreatmentId"), new SQLiteParameter("@pointId") });
+
+            InsertTreatment_NoteOperationSt = new SQLiteCommand("insert into NOTE_TREATMENT_OPERATION_TREATMENT values(@noteTreatmentId,@operationTreatmentId);", Connection);
+            InsertTreatment_NoteOperationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@noteTreatmentId"), new SQLiteParameter("@operationTreatmentId") });
+
+            InsertTreatment_NoteTreatmentRelationSt = new SQLiteCommand("insert into NOTE_TREATMENT_TREATMENT values(@noteTreatmentId,@treatmentId);", Connection);
+            InsertTreatment_NoteTreatmentRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@noteTreatmentId"), new SQLiteParameter("treatmentId") });
+
+            InsertTreatment_SymptomOperationRelationSt = new SQLiteCommand("insert into SYMPTOM_TREATMENT_OPERATION_TREATMENT values(@symptomId,@operationId);", Connection);
+            InsertTreatment_SymptomOperationRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@symptomId"), new SQLiteParameter("@operationId") });
+
+            InsertTreatment_SymptomPointRelationSt = new SQLiteCommand("insert into SYMPTOM_TREATMENT_POINT values(@symptomId,@pointId);", Connection);
+            InsertTreatment_SymptomPointRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@symptomId"), new SQLiteParameter("@pointId") });
+            #endregion
+            #endregion
+            #region updates
             UpdateSymptomSt = new SQLiteCommand("update SYMPTOM set NAME = @name ,COMMENT = @comment where ID = @symptomId;", Connection);
             UpdateSymptomSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@comment") });
 
@@ -215,6 +266,21 @@ namespace AcupunctureProject.Database
             UpdateDiagnosticSt = new SQLiteCommand("update DIAGNOSTIC set PROFESSION = @Profession, MAIN_COMPLAINT = @MainComplaint, SECONDERY_COMPLAINT = @SeconderyComlaint, DRUGS_USED = @DrugsUsed, TESTS_MADE = @TestsMade, IN_PAIN = @IsPain, PAIN_INFO = @PainInfo , IS_PAIN_PREVIOUS_EVALUATIONS = @IsPainPreviousEvaluations, PAIN_PREVIOUS_EVALUATION_INFO = @PainPreviousEvaluationsInfo, IS_THERE_ANYSORT_OF_SCANS = @IsScans, THE_SCANS_INFO = @ScansInfo, IS_UNDER_STRESS = @IsUnderStress, STRESS_INFO = @UnderStressInfo, IS_TENSE_MUSCLES = @IsTenseMuscles, TENSE_MUSCLES_INFO = @TenseMusclesInfo, IS_HIGH_BLOOD_PRESSURE_OR_COLESTEROL = @IsHighBloodPressureOrColesterol, HIGH_BLOOD_PRESSURE_OR_COLESTEROL_INFO = @HighBloodPressureOrColesterolInfo, IS_GOOD_SLEEP = @IsGoodSleep, GOOD_SLEEP_INFO = @GoodSleepInfo, IS_FALLEN_TO_SLEEP_PROBLEM = @IsFallenToSleepProblem, FALLEN_TO_SLEEP_PROBLEM_INFO = @FallenToSleepProblemInfo, IS_PALPITATIONS = @IsPalpitations, PALPITATIONS_INFO = @PalpitationsInfo, DEFECATION_REGULARITY = @DefeationRegularity, IS_FATIGUE_OR_FEELS_FULL_AFTER_EATING = @IsFatigueOrFeelsFulAfterEating, FATIGUE_OR_FEELS_FULL_AFTER_EATING_INFO = @FatigueOrFeelsFulAfterEatingInfo, IS_DESIRE_FOR_SWEETS_AFTER_EATING = @IsDesireForSweetsAfterEating, DESIRE_FOR_SWEETS_AFTER_EATING_INFO = @DesireForSweetsAfterEatingInfo, IS_DIFFICULTY_CONCENTRATING = @IsDifficultyConcentating, DIFFICULTY_CONCENTRATING_INFO = @DifficultyConcentatingInfo, IS_OFTEN_ILL = @IsOftenIll, OFTEN_ILL_INFO = @OftenIllInfo, IS_SUFFERING_FROM_MUCUS = @IsSufferingFromMucus, SUFFERING_FROM_MUCUS_INFO = @SufferingFromMucusInfo, IS_COUGH_OR_ALLERGY_SUFFERS = @IsCoughOrAllergySuffers, COUGH_OR_ALLERGY_SUFFERS_INFO = @CoughOrAllergySuffersInfo, IS_SMOKING = @IsSmoking, SMOKING_INFO = @SmokingInfo, IS_FREQUENT_OR_URGENT_URINATION = @IsFrequentOrUrgentUrination, FREQUENT_OR_URGENT_URINATION_INFO = @FrequentOrUrgentUrinationInfo, PREFER_COLD_OR_HOT = @PreferColdOrHot, PREFER_COLD_OR_HOT_INFO = @PreferColdOrHotInfo, IS_SUFFERS_FROM_COLD_OR_HOT = @IsSuffersFromColdOrHot, SUFFERS_FROM_COLD_OR_HOT_INFO = @SuffersFromColdOrHotInfo, IS_SATISFIED_DIETS = @IsSatisfiedDients, SATISFIED_DIETS_INFO = @SatisfiedDientsInfo, IS_WANT_TO_LOST_WEIGHT = @IsWantToLostWeight, WANT_TO_LOST_WEIGHT_INFO = @WantToLostWeightInfo, IS_USING_CONTRACEPTION = @IsUsingContraception, USING_CONTRACEPTION_INFO = @UsingContraceptionInfo, IS_CYCLE_REGULAR = @IsCycleRegular, CYCLE_REGULAR_INFO = @CycleRegularInfo, IS_SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION = @IsSufferingFromCrampsOrNervousBeforeMenstruation, SUFFERING_FROM_CRAMPS_OR_NERVOUS_BEFORE_OR_DURING_MENSTRUATION_INFO = @SufferingFromCrampsOrNervousBeforeMenstruationInfo, IS_SUFFERING_FROM_MENOPAUSE = @IsSufferingFromMenpause, SUFFERING_FROM_MENOPAUSE_INFO = @SufferingFromMenpauseInfo, HOW_MANY_HOURS_A_WEEK_ARE_YOU_WILLING_TO_INVEST_TO_IMPROVE_THE_QUALITY_OF_LIFE = @HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife, WHAT_CHANGES_DO_YOU_EXPECT_TO_SEE_FROM_TREATMENT = @WhatChangesDoYouExpectToSeeFromTreatment , PATIENT_ID = @patientId , CREATION_DATE = @creationDate where ID = @Id;", Connection);
             UpdateDiagnosticSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@Profession"), new SQLiteParameter("@MainComplaint"), new SQLiteParameter("@SeconderyComlaint"), new SQLiteParameter("@DrugsUsed"), new SQLiteParameter("@TestsMade"), new SQLiteParameter("@IsPain"), new SQLiteParameter("@PainInfo"), new SQLiteParameter("@IsPainPreviousEvaluations"), new SQLiteParameter("@PainPreviousEvaluationsInfo"), new SQLiteParameter("@IsScans"), new SQLiteParameter("@ScansInfo"), new SQLiteParameter("@IsUnderStress"), new SQLiteParameter("@UnderStressInfo"), new SQLiteParameter("@IsTenseMuscles"), new SQLiteParameter("@TenseMusclesInfo"), new SQLiteParameter("@IsHighBloodPressureOrColesterol"), new SQLiteParameter("@HighBloodPressureOrColesterolInfo"), new SQLiteParameter("@IsGoodSleep"), new SQLiteParameter("@GoodSleepInfo"), new SQLiteParameter("@IsFallenToSleepProblem"), new SQLiteParameter("@FallenToSleepProblemInfo"), new SQLiteParameter("@IsPalpitations"), new SQLiteParameter("@PalpitationsInfo"), new SQLiteParameter("@DefeationRegularity"), new SQLiteParameter("@IsFatigueOrFeelsFulAfterEating"), new SQLiteParameter("@FatigueOrFeelsFulAfterEatingInfo"), new SQLiteParameter("@IsDesireForSweetsAfterEating"), new SQLiteParameter("@DesireForSweetsAfterEatingInfo"), new SQLiteParameter("@IsDifficultyConcentating"), new SQLiteParameter("@DifficultyConcentatingInfo"), new SQLiteParameter("@IsOftenIll"), new SQLiteParameter("@OftenIllInfo"), new SQLiteParameter("@IsSufferingFromMucus"), new SQLiteParameter("@SufferingFromMucusInfo"), new SQLiteParameter("@IsCoughOrAllergySuffers"), new SQLiteParameter("@CoughOrAllergySuffersInfo"), new SQLiteParameter("@IsSmoking"), new SQLiteParameter("@SmokingInfo"), new SQLiteParameter("@IsFrequentOrUrgentUrination"), new SQLiteParameter("@FrequentOrUrgentUrinationInfo"), new SQLiteParameter("@PreferColdOrHot"), new SQLiteParameter("@PreferColdOrHotInfo"), new SQLiteParameter("@IsSuffersFromColdOrHot"), new SQLiteParameter("@SuffersFromColdOrHotInfo"), new SQLiteParameter("@IsSatisfiedDients"), new SQLiteParameter("@SatisfiedDientsInfo"), new SQLiteParameter("@IsWantToLostWeight"), new SQLiteParameter("@WantToLostWeightInfo"), new SQLiteParameter("@IsUsingContraception"), new SQLiteParameter("@UsingContraceptionInfo"), new SQLiteParameter("@IsCycleRegular"), new SQLiteParameter("@CycleRegularInfo"), new SQLiteParameter("@IsSufferingFromCrampsOrNervousBeforeMenstruation"), new SQLiteParameter("@SufferingFromCrampsOrNervousBeforeMenstruationInfo"), new SQLiteParameter("@IsSufferingFromMenpause"), new SQLiteParameter("@SufferingFromMenpauseInfo"), new SQLiteParameter("@HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife"), new SQLiteParameter("@WhatChangesDoYouExpectToSeeFromTreatment"), new SQLiteParameter("@Id"), new SQLiteParameter("@patientId"), new SQLiteParameter("@creationDate") });
 
+            #region treatments
+            UpdateTreatment_TreatmentSt = new SQLiteCommand("update TREATMENT set NAME = @name where ID = @id;", Connection);
+            UpdateTreatment_TreatmentSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@name"), new SQLiteParameter("@id") });
+
+            UpdateTreatment_OperationSt = new SQLiteCommand("update OPERATION_TREATMENT set TREATMENT_ID = @treatmentId , TEXT = @text where ID = @id;", Connection);
+            UpdateTreatment_OperationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@treatmentId"), new SQLiteParameter("@test"),new SQLiteParameter("@id") });
+
+            UpdateTreatment_SymptomSt = new SQLiteCommand("update SYMPTOM_TREATMENT set TEXT = @text where ID = @id;", Connection);
+            UpdateTreatment_SymptomSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@text"),new SQLiteParameter("@id") } );
+
+            UpdateTreatment_NoteSt = new SQLiteCommand("update NOTE_TREATMENT set TEXT = @text where ID = @id;", Connection);
+            UpdateTreatment_NoteSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@text") ,new SQLiteParameter("@id")});
+            #endregion
+            #endregion
+            #region deletes
             DeleteSymptomSt = new SQLiteCommand("delete from SYMPTOM where ID = @symptomId;", Connection);
             DeleteSymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
 
@@ -241,7 +307,36 @@ namespace AcupunctureProject.Database
 
             DeleteMeetingPointSt = new SQLiteCommand("delete from MEETING_POINTS where MEETING_ID = @meetingId and POINT_ID = @pointId;", Connection);
             DeleteMeetingPointSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@meetingId"), new SQLiteParameter("@pointId") });
+            #region treatments
+            DeleteTreatment_TreatmentSt = new SQLiteCommand("delete from TREATMENT where ID = @id;", Connection);
+            DeleteTreatment_TreatmentSt.Parameters.Add(new SQLiteParameter("id"));
 
+            DeleteTreatment_OperationSt = new SQLiteCommand("delete from OPERATION_TREATMENT where ID = @id;", Connection);
+            DeleteTreatment_OperationSt.Parameters.Add(new SQLiteParameter("@id"));
+
+            DeleteTreatment_SymptomSt = new SQLiteCommand("delete from SYMPTOM_TREATMENT where ID = @id;", Connection);
+            DeleteTreatment_SymptomSt.Parameters.Add(new SQLiteParameter("@id"));
+
+            DeleteTreatment_NoteSt = new SQLiteCommand("delete from NOTE_TREATMENT where ID = @id;", Connection);
+            DeleteTreatment_NoteSt.Parameters.Add(new SQLiteParameter("@id"));
+
+            DeleteTreatment_NotePointSt = new SQLiteCommand("delete from NOTE_TREATMENT_POINT where NOTE_TREATMENT_ID = @noteTreatmentId and POINT_ID = @pointId;", Connection);
+            DeleteTreatment_NotePointSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@noteTreatmentId"), new SQLiteParameter("@pointId") });
+
+            DeleteTreatment_NoteOperationSt = new SQLiteCommand("delete from NOTE_TREATMENT_OPERATION_TREATMENT where NOTE_TREATMENT_ID = @noteTreatmentId and OPERATION_TREATMENT_ID = @operationTreatmentId;", Connection);
+            DeleteTreatment_NoteOperationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@noteTreatmentId"), new SQLiteParameter("@operationTreatmentId") });
+
+            DeleteTreatment_NoteTreatmentRelationSt = new SQLiteCommand("delete from NOTE_TREATMENT_TREATMENT NOTE_TREATMENT_ID = @noteTreatmentId and TREATMENT_ID = @treatmentId;", Connection);
+            DeleteTreatment_NoteTreatmentRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@noteTreatmentId"), new SQLiteParameter("treatmentId") });
+
+            DeleteTreatment_SymptomOperationRelationSt = new SQLiteCommand("delete from SYMPTOM_TREATMENT_OPERATION_TREATMENT where SYMPTOM_ID = @symptomId and OPERATION_ID = @operationId;", Connection);
+            DeleteTreatment_SymptomOperationRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@symptomId"), new SQLiteParameter("@operationId") });
+
+            DeleteTreatment_SymptomPointRelationSt = new SQLiteCommand("delete from SYMPTOM_TREATMENT_POINT where SYMPTOM_ID = @symptomId and POINT_ID = @pointId;", Connection);
+            DeleteTreatment_SymptomPointRelationSt.Parameters.AddRange(new SQLiteParameter[] { new SQLiteParameter("@symptomId"), new SQLiteParameter("@pointId") });
+            #endregion
+            #endregion
+            #region finds
             GetSymptomSt = new SQLiteCommand("select * from SYMPTOM where NAME = @name;", Connection);
             GetSymptomSt.Parameters.Add(new SQLiteParameter("@name"));
 
@@ -276,6 +371,63 @@ namespace AcupunctureProject.Database
 
             GetAllMeetingsRelativeToSymptomsSt = new SQLiteCommand(Connection);
 
+            GetAllPointRelativeToSymptomSt = new SQLiteCommand("select POINTS.* , SYMPTOM_POINTS.IMPORTENCE , SYMPTOM_POINTS.COMMENT from POINTS INNER JOIN SYMPTOM_POINTS ON POINTS.ID = SYMPTOM_POINTS.POINT_ID and SYMPTOM_POINTS.SYMPTOM_ID = @symptomId order by SYMPTOM_POINTS.IMPORTENCE DESC;", Connection);
+            GetAllPointRelativeToSymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
+
+            GetAllSymptomRelativeToPointSt = new SQLiteCommand("select SYMPTOM.* , SYMPTOM_POINTS.IMPORTENCE , SYMPTOM_POINTS.COMMENT from SYMPTOM INNER JOIN SYMPTOM_POINTS ON SYMPTOM.ID = SYMPTOM_POINTS.SYMPTOM_ID where SYMPTOM_POINTS.POINT_ID = @pointId order by SYMPTOM_POINTS.IMPORTENCE DESC;", Connection);
+            GetAllSymptomRelativeToPointSt.Parameters.Add(new SQLiteParameter("@pointId"));
+
+            GetAllChannelRelativeToSymptomSt = new SQLiteCommand("SELECT CHANNEL.* , SYMPTOM_CHANNEL.IMPORTENCE , SYMPTOM_CHANNEL.COMMENT from CHANNEL INNER JOIN SYMPTOM_CHANNEL ON CHANNEL.ID = SYMPTOM_CHANNEL.CHANNEL_ID where SYMPTOM_CHANNEL.SYMPTOM_ID = @symptomId order by SYMPTOM_CHANNEL.IMPORTENCE DESC;", Connection);
+            GetAllChannelRelativeToSymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
+
+            GetAllSymptomRelativeToMeetingSt = new SQLiteCommand("SELECT SYMPTOM.* FROM MEETING_SYMPTOM INNER JOIN MEETING ON MEETING_SYMPTOM.MEETING_ID = MEETING.ID INNER JOIN SYMPTOM ON SYMPTOM.ID = MEETING_SYMPTOM.SYMPTOM_ID WHERE MEETING.ID = @meetingId;", Connection);
+            GetAllSymptomRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
+
+            GetAllPointRelativeToMeetingSt = new SQLiteCommand("SELECT POINTS.* FROM MEETING_POINTS INNER JOIN MEETING ON MEETING_POINTS.MEETING_ID = MEETING.ID INNER JOIN POINTS ON MEETING_POINTS.POINT_ID = POINTS.ID WHERE MEETING.ID = @meetingId", Connection);
+            GetAllPointRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
+
+            GetPatientRelativeToMeetingSt = new SQLiteCommand("SELECT * FROM PATIENT WHERE ID = @patientId", Connection);
+            GetPatientRelativeToMeetingSt.Parameters.Add(new SQLiteParameter("@meetingId"));
+
+            GetPatientRelativeToDiagnosticSt = new SQLiteCommand("SELECT * FROM PATIENT WHERE ID=@patientId;", Connection);
+            GetPatientRelativeToDiagnosticSt.Parameters.Add(new SQLiteParameter("@patientId"));
+            #region treatments
+            GetAllTreatmentsSt = new SQLiteCommand("select * from TREATMENT;",Connection);
+
+            GetTreatmentByNameSt = new SQLiteCommand("select * from TREATMENT where NAME like '@name';",Connection);
+            GetTreatmentByNameSt.Parameters.Add(new SQLiteParameter("@name"));
+
+            GetAllOperationsByTreatmentSt = new SQLiteCommand("select * OPERATION_TREATMENT where TREATMENT_ID = @treatmentId;", Connection);
+            GetAllOperationsByTreatmentSt.Parameters.Add(new SQLiteParameter("@treatmentId"));
+
+            GetAllPointByOperationSt = new SQLiteCommand("select POINTS.* from OPERATION_TREATMENT_POINT INNER JOIN POINTS ON POINT_ID = ID where OPERATION_ID = @operationId;", Connection);
+            GetAllPointByOperationSt.Parameters.Add(new SQLiteParameter("@operationId"));
+
+            GetNoteByPointSt = new SQLiteCommand("select NOTE_TREATMENT.* from NOTE_TREATMENT INNER JOIN NOTE_TREATMENT_POINT ON NOTE_TREATMENT_ID = ID where POINT_ID = @pointId;", Connection);
+            GetNoteByPointSt.Parameters.Add(new SQLiteParameter("@pointId"));
+
+            GetNoteByTreatmentSt = new SQLiteCommand("select NOTE_TREATMENT.* from NOTE_TREATMENT INNER JOIN NOTE_TREATMENT_TREATMENT ON NOTE_TREATMENT_ID = ID where TREATMENT_ID = @treatmentId;", Connection);
+            GetNoteByTreatmentSt.Parameters.Add(new SQLiteParameter("@treatmentId"));
+
+            GetNoteByOperationSt = new SQLiteCommand("select NOTE_TREATMENT.* from NOTE_TREATMENT INNER JOIN OPERATION_TREATMENT ON NOTE_TREATMENT_ID = ID where OPEREATION_ID = @operationId;", Connection);
+            GetNoteByOperationSt.Parameters.Add(new SQLiteParameter("@operationId"));
+
+            GetPointsByNoteSt = new SQLiteCommand("select POINTS.* from POINTS INNER JOIN NOTE_TREATMENT_POINT ON ID = POINT_ID where NOTE_TREATMENT_ID = @noteTreatmentId;", Connection);
+            GetPointsByNoteSt.Parameters.Add(new SQLiteParameter("@noteTreatmentId"));
+
+            GetOperationsByNoteSt = new SQLiteCommand("select OPERATION_TREATMENT.* from OPERATION_TREATMENT INNER JOIN NOTE_TREATMENT_OPERATION_TREATMENT ON ID = OPERATION_ID where NOTE_TREATMENT_ID = @noteTreatmentId;", Connection);
+            GetOperationsByNoteSt.Parameters.Add(new SQLiteParameter("@noteTreatmentId"));
+
+            GetSymptomByPointSt = new SQLiteCommand("select SYMPTOM_TREATMENT.* from SYMPTOM_TREATMENT INNER JOIN SYMPTOM_TREATMENT_POINT ON ID = SYMPTOM_ID where POINT_ID = @pointId;", Connection);
+            GetSymptomByPointSt.Parameters.Add(new SQLiteParameter("@pointId"));
+
+            GetSymptomByOperationSt = new SQLiteCommand("select SYMPTOM_TREATMENT.* from SYMPTOM_TREATMENT INNER JOIN SYMPTOM_TREATMENT_OPERATION_TREATMENT ON ID = SYMPTON_ID where OPERATION_ID = @operationId;", Connection);
+            GetSymptomByOperationSt.Parameters.Add(new SQLiteParameter("@operationId"));
+
+            GetPointsBySymptomSt = new SQLiteCommand("select POINTS.* from POINTS INNER JOIN SYMPTOM_TREATMENT_POINT ID = POINT_ID where SYMPTOM_ID = @symptomId;", Connection);
+            GetPointsBySymptomSt.Parameters.Add(new SQLiteParameter("@symptomId"));
+            #endregion
+            #endregion
             InitColors();
         }
 
@@ -473,6 +625,30 @@ namespace AcupunctureProject.Database
             UpdateDiagnosticSt.Parameters["@creationDate"].Value = diagnostic.CreationDate;
             UpdateDiagnosticSt.ExecuteNonQuery();
         }
+        public void UpdateTreatment(Treatment.Treatment treatment)
+        {
+            UpdateTreatment_TreatmentSt.Parameters["@id"].Value = treatment.Id;
+            UpdateTreatment_TreatmentSt.Parameters["@name"].Value = treatment.Name;
+            UpdateTreatment_TreatmentSt.ExecuteNonQuery();
+        }
+        public void UpdateOperation(Treatment.Operation operation)
+        {
+            UpdateTreatment_OperationSt.Parameters["@id"].Value = operation.Id;
+            UpdateTreatment_OperationSt.Parameters["@text"].Value = operation.Text;
+            UpdateTreatment_OperationSt.ExecuteNonQuery();
+        }
+        public void UpdateSymptom(Treatment.Symptom symptom)
+        {
+            UpdateTreatment_SymptomSt.Parameters["@id"].Value = symptom.Id;
+            UpdateTreatment_SymptomSt.Parameters["@text"].Value = symptom.Text;
+            UpdateTreatment_SymptomSt.ExecuteNonQuery();
+        }
+        public void UpdateNote(Treatment.Note note)
+        {
+            UpdateTreatment_NoteSt.Parameters["@id"].Value = note.Id;
+            UpdateTreatment_NoteSt.Parameters["@text"].Value = note.Text;
+            UpdateTreatment_NoteSt.ExecuteNonQuery();
+        }
         #endregion
         #region deletes
         public void DeleteSymptom(Symptom symptom)
@@ -532,6 +708,58 @@ namespace AcupunctureProject.Database
             DeleteMeetingPointSt.Parameters["@pointId"].Value = point.Id;
             DeleteMeetingPointSt.ExecuteNonQuery();
         }
+        #region treatments
+        public void DeleteTreatment(Treatment.Treatment treatment)
+        {
+            DeleteTreatment_TreatmentSt.Parameters["@id"].Value = treatment.Id;
+            DeleteTreatment_TreatmentSt.ExecuteNonQuery();
+        }
+        public void DeleteOperation(Treatment.Operation operation)
+        {
+            DeleteTreatment_OperationSt.Parameters["@id"].Value = operation.Id;
+            DeleteTreatment_OperationSt.ExecuteNonQuery();
+        }
+        public void DeleteSymptom(Treatment.Symptom symptom)
+        {
+            DeleteTreatment_SymptomSt.Parameters["@id"].Value = symptom.Id;
+            DeleteTreatment_SymptomSt.ExecuteNonQuery();
+        }
+        public void DeleteNote(Treatment.Note note)
+        {
+            DeleteTreatment_NoteSt.Parameters["@id"].Value = note.Id;
+            DeleteTreatment_NoteSt.ExecuteNonQuery();
+        }
+        public void DeleteNoteTreatmentRelation(Treatment.Note note,Treatment.Treatment treatment)
+        {
+            DeleteTreatment_NoteTreatmentRelationSt.Parameters["@noteTreatmentId"].Value = note.Id;
+            DeleteTreatment_NoteTreatmentRelationSt.Parameters["@treatmentId"].Value = treatment.Id;
+            DeleteTreatment_NoteTreatmentRelationSt.ExecuteNonQuery();
+        }
+        public void DeleteNotePointRelation(Treatment.Note note , Point point)
+        {
+            DeleteTreatment_NotePointSt.Parameters["@noteTreatmentId"].Value = note.Id;
+            DeleteTreatment_NotePointSt.Parameters["@pointId"].Value = point.Id;
+            DeleteTreatment_NotePointSt.ExecuteNonQuery();
+        }
+        public void DeleteNoteOperationRelation(Treatment.Note note,Treatment.Operation operation)
+        {
+            DeleteTreatment_NoteOperationSt.Parameters["@noteTreatmentId"].Value = note.Id;
+            DeleteTreatment_NoteOperationSt.Parameters["@operationId"].Value = operation.Id;
+            DeleteTreatment_NoteOperationSt.ExecuteNonQuery();
+        }
+        public void DeleteSymptomPointRelation(Treatment.Symptom symptom,Point point)
+        {
+            DeleteTreatment_SymptomPointRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            DeleteTreatment_SymptomPointRelationSt.Parameters["@pointId"].Value = point.Id;
+            DeleteTreatment_SymptomPointRelationSt.ExecuteNonQuery();
+        }
+        public void DelteSymptomOperationRelation(Treatment.Symptom symptom ,Treatment.Operation operation)
+        {
+            DeleteTreatment_SymptomOperationRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            DeleteTreatment_SymptomOperationRelationSt.Parameters["@operationId"].Value = operation.Id;
+            DeleteTreatment_SymptomOperationRelationSt.ExecuteNonQuery();
+        }
+        #endregion
         #endregion
         #region finds objects
         public List<Diagnostic> GetAllDiagnosticByPatient(Patient patient)
@@ -738,6 +966,175 @@ namespace AcupunctureProject.Database
                 else
                     return null;
                 
+            }
+        }
+        public List<Treatment.Treatment> GetAllTreatments()
+        {
+            using (SQLiteDataReader rs = GetAllTreatmentsSt.ExecuteReader())
+            {
+                return GetTreatments(rs);
+            }        }
+
+        private List<Treatment.Treatment> GetTreatments(SQLiteDataReader rs)
+        {
+            List<Treatment.Treatment> o = new List<Treatment.Treatment>();
+            while(rs.Read())
+            {
+                o.Add(GetTreatment(rs));
+            }
+            return o;
+        }
+
+        private Treatment.Treatment GetTreatment(SQLiteDataReader rs)
+        {
+            return new Treatment.Treatment(rs.GetIntL(ID), rs.GetStringL(Treatment.Treatment.NAME));
+        }
+
+        public List<Treatment.Treatment> GetTreatmentsByName(string name)
+        {
+            GetTreatmentByNameSt.Parameters["@name"].Value = name;            using (SQLiteDataReader rs = GetTreatmentByNameSt.ExecuteReader())
+            {
+                return GetTreatments(rs);
+            }
+        }
+
+        public List<Treatment.Operation> GetAllOperationsByTreatment(Treatment.Treatment treatment)
+        {
+            GetAllOperationsByTreatmentSt.Parameters["@treatmentId"].Value = treatment.Id;            using (SQLiteDataReader rs = GetAllOperationsByTreatmentSt.ExecuteReader())
+            {
+                return GetOperations(rs);
+            }
+        }
+
+        private List<Operation> GetOperations(SQLiteDataReader rs)
+        {
+            List<Treatment.Operation> o = new List<Operation>();
+            while(rs.Read())
+            {
+                o.Add(GetOperation(rs));
+            }
+            return o;
+        }
+
+        private Operation GetOperation(SQLiteDataReader rs)
+        {
+            return new Operation(rs.GetIntL(ID), rs.GetIntL(Operation.TREATMENT_ID),rs.GetStringL(Operation.TEXT));
+        }
+
+        public Point GetAllPointByOperation(Treatment.Operation operation)
+        {
+            GetAllPointByOperationSt.Parameters["@operationId"].Value = operation.Id;            using (SQLiteDataReader rs = GetAllPointByOperationSt.ExecuteReader())
+            {
+                if (rs.Read())
+                    return GetPoint(rs);
+                else
+                    return null;
+            }
+        }
+
+        public Note GetNoteByPoint(Point point)
+        {
+            GetNoteByPointSt.Parameters["@pointId"].Value = point.Id;            using (SQLiteDataReader rs = GetNoteByPointSt.ExecuteReader())
+            {
+                if (rs.Read())
+                    return GetNote(rs);
+                else
+                    return null;
+            }
+        }
+
+        private List<Note> GetNotes(SQLiteDataReader rs)
+        {
+            List<Note> o = new List<Note>();
+            while(rs.Read())
+            {
+                o.Add(GetNote(rs));
+            }
+            return o;
+        }
+
+        private Note GetNote(SQLiteDataReader rs)
+        {
+            return new Note(rs.GetIntL(ID), rs.GetStringL(Note.TEXT));
+        }
+
+        public Note GetNoteByTreatment(Treatment.Treatment treatment)
+        {
+            GetNoteByTreatmentSt.Parameters["@treatmentId"].Value = treatment.Id;            using (SQLiteDataReader rs = GetNoteByTreatmentSt.ExecuteReader())
+            {
+                if (rs.Read())
+                    return GetNote(rs);
+                else
+                    return null;
+            }
+        }
+
+        public Note GetNoteByOperation(Treatment.Operation operation)
+        {
+            GetNoteByOperationSt.Parameters["@operationId"].Value = operation.Id;            using (SQLiteDataReader rs = GetNoteByOperationSt.ExecuteReader())
+            {
+                if (rs.Read())
+                    return GetNote(rs);
+                else
+                    return null;
+            }
+        }
+        public List<Point> GetPointsByNote(Treatment.Note note)
+        {
+            GetPointsByNoteSt.Parameters["@noteTreatmentId"].Value = note.Id;            using (SQLiteDataReader rs = GetPointsByNoteSt.ExecuteReader())
+            {
+                return GetPoints(rs);
+            }
+        }
+        public List<Operation> GetOperationsByNote(Treatment.Note note)
+        {
+            GetOperationsByNoteSt.Parameters["@noteTreatmentId"].Value = note.Id;            using (SQLiteDataReader rs = GetOperationsByNoteSt.ExecuteReader())
+            {
+                return GetOperations(rs);
+            }
+        }
+        public Treatment.Symptom GetSymptomByPoint(Point point)
+        {
+            GetSymptomByPointSt.Parameters["@pointId"].Value = point.Id;            using (SQLiteDataReader rs = GetSymptomByPointSt.ExecuteReader())
+            {
+                if (rs.Read())
+                    return GetSymptomTreatment(rs);
+                else
+                    return null;
+            }
+        }
+
+        private List<Treatment.Symptom> GetSymptomsTreatment(SQLiteDataReader rs)
+        {
+            List<Treatment.Symptom> o = new List<Treatment.Symptom>();
+            while(rs.Read())
+            {
+                o.Add(GetSymptomTreatment(rs));
+            }
+            return o;
+        }
+
+        private Treatment.Symptom GetSymptomTreatment(SQLiteDataReader rs)
+        {
+            return new Treatment.Symptom(rs.GetIntL(ID), rs.GetStringL(Treatment.Symptom.TEXT));
+        }
+
+        public Treatment.Symptom GetSymptomByOperation(Treatment.Operation operation)
+        {
+            GetSymptomByOperationSt.Parameters["@operationId"].Value = operation.Id;            using (SQLiteDataReader rs = GetSymptomByOperationSt.ExecuteReader())
+            {
+                if (rs.Read())
+                    return GetSymptomTreatment(rs);
+                else
+                    return null;
+            }
+        }
+
+        public List<Point> GetPointsBySymptom(Treatment.Symptom symptom)
+        {
+            GetPointsBySymptomSt.Parameters["@symptomId"].Value = symptom.Id;            using (SQLiteDataReader rs = GetPointsBySymptomSt.ExecuteReader())
+            {
+                return GetPoints(rs);
             }
         }
         #endregion
@@ -972,6 +1369,93 @@ namespace AcupunctureProject.Database
             }
             throw new Exception("ERORR:insert point did't accure");
         }
+        //TODO delete DIAGNOSTIC
+        #region treatment inserts
+        public Treatment.Treatment InsertTreatment(Treatment.Treatment treatment)
+        {
+            InsertTreatment_TreatmentSt.Parameters["@name"].Value = treatment.Name;
+            InsertTreatment_TreatmentSt.ExecuteNonQuery();
+
+            long rowId = Connection.LastInsertRowId;
+            if (rowId != 0)
+            {
+                int id = (int)new SQLiteCommand("select ID from TREATMENT where rowId = " + rowId, Connection).ExecuteScalar();
+                return new Treatment.Treatment(id, treatment);
+            }
+            throw new Exception("ERORR:insert point did't accure");
+        }
+        public Treatment.Operation InsertOperation(Treatment.Operation operation)
+        {
+            InsertTreatment_OperationSt.Parameters["@treatmentId"].Value = operation.TreatmentId;
+            InsertTreatment_OperationSt.Parameters["@text"].Value = operation.Text;
+            InsertTreatment_OperationSt.ExecuteNonQuery();
+
+            long rowId = Connection.LastInsertRowId;
+            if (rowId != 0)
+            {
+                int id = (int)new SQLiteCommand("select ID from OPERATION_TREATMENT where rowId = " + rowId, Connection).ExecuteScalar();
+                return new Treatment.Operation(id, operation);
+            }
+            throw new Exception("ERORR:insert point did't accure");
+        }
+        public Treatment.Note InsertNote(Treatment.Note note)
+        {
+            InsertTreatment_NoteSt.Parameters["@text"].Value = note.Text;
+            InsertTreatment_NoteSt.ExecuteNonQuery();
+
+            long rowId = Connection.LastInsertRowId;
+            if (rowId != 0)
+            {
+                int id = (int)new SQLiteCommand("select ID from NOTE_TREATMENT where rowId = " + rowId, Connection).ExecuteScalar();
+                return new Treatment.Note(id, note);
+            }
+            throw new Exception("ERORR:insert point did't accure");
+        }
+        public Treatment.Symptom InsertSymptom(Treatment.Symptom symptom)
+        {
+            InsertTreatment_SymptomSt.Parameters["@text"].Value = symptom.Text;
+            InsertTreatment_SymptomSt.ExecuteNonQuery();
+
+            long rowId = Connection.LastInsertRowId;
+            if (rowId != 0)
+            {
+                int id = (int)new SQLiteCommand("select ID from SYMPTOM_TREATMENT where rowId = " + rowId, Connection).ExecuteScalar();
+                return new Treatment.Symptom(id, symptom);
+            }
+            throw new Exception("ERORR:insert point did't accure");
+        }
+        public void InsertNoteTreatmentRelation(Treatment.Note note,Treatment.Treatment treatment)
+        {
+            InsertTreatment_NoteTreatmentRelationSt.Parameters["@noteTreatmentId"].Value = note.Id;
+            InsertTreatment_NoteTreatmentRelationSt.Parameters["@treatmentId"].Value = treatment.Id;
+            InsertTreatment_NoteTreatmentRelationSt.ExecuteNonQuery();
+        }
+        public void InsertNoteOperationRelation(Treatment.Note note,Treatment.Operation operation)
+        {
+            InsertTreatment_NoteOperationSt.Parameters["@noteTreatmentId"].Value = note.Id;
+            InsertTreatment_NoteOperationSt.Parameters["@operationId"].Value = operation.Id;
+            InsertTreatment_NoteOperationSt.ExecuteNonQuery();
+        }
+        public void InsertNoteTreatmentPointRelation(Treatment.Note note,Treatment.Treatment treatment,Point point)
+        {
+            InsertTreatment_NotePointSt.Parameters["@noteTreatmentId"].Value = note.Id;
+            InsertTreatment_NotePointSt.Parameters["@pointId"].Value = point.Id;
+            InsertTreatment_NotePointSt.ExecuteNonQuery();
+        }
+        public void InsertSymptomPointRelation(Treatment.Symptom symptom,Point point)
+        {
+            InsertTreatment_SymptomPointRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            InsertTreatment_SymptomPointRelationSt.Parameters["@pointId"].Value = point.Id;
+            InsertTreatment_SymptomPointRelationSt.ExecuteNonQuery();
+        }
+        public void InsertSymptomOperation(Treatment.Symptom symptom,Treatment.Operation operation)
+        {
+            InsertTreatment_SymptomOperationRelationSt.Parameters["@symptomId"].Value = symptom.Id;
+            InsertTreatment_SymptomOperationRelationSt.Parameters["@operationId"].Value = operation.Id;
+            InsertTreatment_SymptomOperationRelationSt.ExecuteNonQuery();
+        }
+        #endregion
+        
         #endregion
         #region get from SQLiteDataReader the objects
         private Channel GetChannel(SQLiteDataReader rs)

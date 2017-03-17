@@ -8,15 +8,15 @@ namespace AcupunctureProject.Database.Treatment
 {
     public class Note
     {
-        public int RelationId { get; private set; }
-        public TableRelationType TableRelation { get; private set; }
+        public readonly static string TEXT = "TEXT";
+        public int Id { get; private set; }
         public string Text { get; set; }
 
-        public Note(int relationId, TableRelationType tableRelation, string text)
+        public Note(int id, string text)
         {
-            RelationId = relationId;
-            TableRelation = tableRelation;
+            Id = id;
             Text = text;
         }
+        public Note(int id,Note other) : this(id, other.Text) { }
     }
 }

@@ -8,6 +8,7 @@ namespace AcupunctureProject.Database.Treatment
 {
     public class Treatment
     {
+        public readonly static string NAME = "NAME";
         public int Id { get; private set; }
         public string Name { get; set; }
 
@@ -16,6 +17,8 @@ namespace AcupunctureProject.Database.Treatment
             Id = id;
             Name = name;
         }
+        public Treatment(int id, Treatment other) : this(id, other.Name) { }
+            
         public Treatment(string name) : this(-1, name) { }
     }
 }

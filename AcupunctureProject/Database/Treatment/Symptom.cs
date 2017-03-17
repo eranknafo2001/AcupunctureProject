@@ -6,21 +6,17 @@ using System.Threading.Tasks;
 
 namespace AcupunctureProject.Database.Treatment
 {
-    public enum TableRelationType
-    {
-        TREATMENT, OPERATION, POINT,
-    }
     public class Symptom
     {
-        public int RelationId { get; private set; }
-        public TableRelationType TableRelation { get; private set; }
-        public string Note { get; set; }
+        public readonly static string TEXT = "TEXT";
+        public int Id { get; private set; }
+        public string Text { get; set; }
 
-        public Symptom(int relationId, TableRelationType tableRelation, string note)
+        public Symptom(int id, string text)
         {
-            RelationId = relationId;
-            TableRelation = tableRelation;
-            Note = note;
+            Id = id;
+            Text = text;
         }
+        public Symptom(int id,Symptom other) : this(id, other.Text) { }
     }
 }
