@@ -121,8 +121,8 @@
                 <RowDefinition Height="5"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="TreatmentSearchTextBox" Grid.Row="0" IsEnabled="False" GotFocus="TreatmentSearchTextBox_GotFocus" LostFocus="TreatmentSearchTextBox_LostFocus" TextChanged="TreatmentSearchTextBox_TextChanged"/>
-            <ListView x:Name="TreatmentSearchList" MaxHeight="100" Grid.Row="0" GotFocus="TreatmentSearchList_GotFocus" LostFocus="TreatmentSearchList_LostFocus" MouseDoubleClick="TreatmentSearchList_MouseDoubleClick" KeyDown="TreatmentSearchList_KeyDown"/>
+            <TextBox x:Name="TreatmentSearchTextBox" Grid.Row="0" IsEnabled="False" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" TextChanged="TreatmentSearchTextBox_TextChanged"/>
+            <ListView x:Name="TreatmentSearchList" MaxHeight="100" Grid.RowSpan="20" Visibility="Hidden" Grid.Row="0" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" MouseDoubleClick="TreatmentSearchList_MouseDoubleClick" KeyDown="TreatmentSearchList_KeyDown"/>
             <ListBox x:Name="TreatmentList" Height="80" Grid.Row="2" IsEnabled="False" SelectionMode="Single" MouseDoubleClick="TreatmentList_MouseDoubleClick" KeyDown="TreatmentList_KeyDown"/>
             <Label Content="הערות" Grid.Row="4" HorizontalAlignment="Center"/>
             <TextBox x:Name="notes" Grid.Row="6" KeyDown="Notes_KeyDown" IsEnabled="False" TextWrapping="Wrap"/>

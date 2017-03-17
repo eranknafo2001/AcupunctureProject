@@ -541,30 +541,12 @@ namespace AcupunctureProject.GUI
 
         }
 
-        private void TreatmentSearchTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void TreatmentSearchTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void TreatmentSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
 
-        private void TreatmentSearchList_GotFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void TreatmentSearchList_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         private void TreatmentSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -574,6 +556,31 @@ namespace AcupunctureProject.GUI
         private void TreatmentSearchList_KeyDown(object sender, KeyEventArgs e)
         {
 
+        }
+
+        private void TreatmentSearchVisFalse(object sender, RoutedEventArgs e)
+        {
+            SetTreatmentSearchListViability(false);
+        }
+
+        private void TreatmentSearchVisTrue(object sender, RoutedEventArgs e)
+        {
+            SetTreatmentSearchListViability(true);
+        }
+
+        private void SetTreatmentSearchListViability(bool val)
+        {
+            if (val)
+            {
+                TreatmentSearchList.Margin = new Thickness(pointThatUsedSearch.Margin.Left, pointThatUsedSearch.Margin.Top + pointThatUsedSearch.ExtentHeight, 0, 0);
+                TreatmentSearchList.Visibility = Visibility.Visible;
+                TreatmentSearchList.MaxHeight = 100;
+            }
+            else
+            {
+                TreatmentSearchList.Visibility = Visibility.Hidden;
+                TreatmentSearchList.MaxHeight = 0;
+            }
         }
     }
 }

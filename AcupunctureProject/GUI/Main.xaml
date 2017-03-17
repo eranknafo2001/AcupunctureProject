@@ -24,6 +24,6 @@
             <!--<MenuItem x:Name="SettingMI" Header="הגדרות" Padding="5" Click="SettingMI_Click"/>-->
         </Menu>
         <Image x:Name="BackImage" Stretch="UniformToFill" Grid.Row="1"/>
-        <Label x:Name="VersionLab" Content="Version: " Margin="0,10,0,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1" FlowDirection="LeftToRight"/>
+        <Label Style="{StaticResource Ver}" Margin="0,10,0,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1" FlowDirection="LeftToRight"/>
     </Grid>
 </Page>
