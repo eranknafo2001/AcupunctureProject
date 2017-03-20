@@ -32,9 +32,6 @@ namespace AcupunctureProject.GUI
             BackImageSource.UriSource = new Uri(folder + "images\\backpic.jpg");
             BackImageSource.EndInit();
             BackImage.Source = BackImageSource;
-
-            VersionLab.Content += Version.Value;
-            VersionLab.Visibility = Version.ShowVersion ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void NewPatientMI_Click(object sender, RoutedEventArgs e)

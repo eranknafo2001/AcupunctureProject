@@ -184,7 +184,7 @@ namespace AcupunctureProject.GUI
 
         private void SetYasNo(RadioButton yas, RadioButton no, ValueInfo<bool?> Value)
         {
-            if (Value == null || Value.Value == null)
+            if (Value?.Value == null)
             {
                 yas.IsChecked = false;
                 no.IsChecked = false;
