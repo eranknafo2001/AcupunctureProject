@@ -3,33 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
 
 namespace AcupunctureProject.Database
 {
-    public class Symptom
+    public class Symptom : ITable
     {
-        public static readonly string NAME = "NAME";
-        public static readonly string COMMENT = "COMMENT";
-
-        public int Id { get; private set; }
+        [PrimaryKey,AutoIncrement]
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Comment { get; set; }
-
-        public Symptom(int Id, string Name, string Comment)
-        {
-            this.Id = Id;
-            this.Name = Name;
-            this.Comment = Comment;
-        }
-
-        public Symptom(string Name, string Comment) : this(-1, Name, Comment)
-        {
-        }
-
-        public Symptom(int Id, Symptom other) : this(Id, other.Name, other.Comment)
-        {
-        }
-
+        [ManyToMany(typeof(SymptomPoint))]
+        public List<Point> Points { get; set; }
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<SymptomPoint> PointsConnections { get; set; }
+        [ManyToMany(typeof(ChannelSymptom))]
+        public List<Channel> Channels { get; set; }
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<ChannelSymptom> ChannelConnections { get; set; }
+        [ManyToMany(typeof(MeetingSymptom))]
+        public List<Meeting> Meeting { get; set; }
         public override string ToString()
         {
             return Name;

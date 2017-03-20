@@ -3,28 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
 
 namespace AcupunctureProject.Database
 {
-    public class ConnectionValue<V>
+    public class SymptomPoint : ITable
     {
-        public static readonly string IMPORTENCE = "IMPORTENCE";
-        public static readonly string COMMENT = "COMMENT";
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+        [ForeignKey(typeof(Symptom))]
+        public int SymptomId { get; set; }
+        [ForeignKey(typeof(Point))]
+        public int PointId { get; set; }
+        public int Imaportance { get; set; }
+        public string Comment { get; set; }
+    }
+    public class ChannelSymptom : ITable
+    {
+        [PrimaryKey,AutoIncrement]
+        public int Id { get; set; }
+        [ForeignKey(typeof(Symptom))]
+        public int SymptomId { get; set; }
+        [ForeignKey(typeof(Channel))]
+        public int ChannelId { get; set; }
+        public int Imaportance { get; set; }
+        public string Comment { get; set; }
+    }
+    public class MeetingPoint
+    { 
+        [ForeignKey(typeof(Meeting))]
+        public int MeetingId { get; set; }
 
-        public V Value { get; private set; }
-        public int Importance { get; private set; }
-        public string Comment { get; private set; }
+        [ForeignKey(typeof(Point))]
+        public int PointId { get; set; }
+    }
+    public class MeetingSymptom
+    {
+        [ForeignKey(typeof(Meeting))]
+        public int MeetingId { get; set; }
 
-        public ConnectionValue(V value,int importance,string comment)
-        {
-            Value = value;
-            Importance = importance;
-            Comment = comment;
-        }
+        [ForeignKey(typeof(Symptom))]
+        public int SymptomId { get; set; }
+    }
+    public class ChannelMeeting
+    {
+        [ForeignKey(typeof(Channel))]
+        public int ChannelId { get; set; }
 
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
+        [ForeignKey(typeof(Meeting))]
+        public int Meeting { get; set; }
     }
 }
