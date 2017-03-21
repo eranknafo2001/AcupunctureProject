@@ -24,6 +24,7 @@ namespace AcupunctureProject.GUI
         {
             InitializeComponent();
             Content = new Main(this);
+            new Treatment(new Database.Treatment(0,"test", "Treatments\\Test.xlsx")).Show();
         }
     }
 }
