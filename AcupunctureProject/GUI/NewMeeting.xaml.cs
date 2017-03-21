@@ -565,7 +565,7 @@ namespace AcupunctureProject.GUI
                     if (item.DataContext.GetType() == typeof(ConnectionValue<Database.Point>))
                         AddItemToPointThatUsed(((ConnectionValue<Database.Point>)item.DataContext).Value);
                     //else if (item.DataContext.GetType() == typeof(ConnectionValue<Database.Point>))) ;
-                }
+                } 
             }
         }
 
@@ -587,18 +587,17 @@ namespace AcupunctureProject.GUI
 
         private void TreatmentSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SelectTreatmaent();
+
         }
 
         private void TreatmentSearchList_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key.Equals(Key.Enter))
-                SelectTreatmaent();
+
         }
 
         private void TreatmentSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ReloadTreatments();
+
         }
 
         private void TreatmentSearchVisFalse(object sender, RoutedEventArgs e)
@@ -624,28 +623,6 @@ namespace AcupunctureProject.GUI
                 TreatmentSearchList.Visibility = Visibility.Hidden;
                 TreatmentSearchList.MaxHeight = 0;
             }
-        }
-
-        private void ReloadTreatments()
-        {
-            var Treatments = DatabaseConnection.Instance.FindTreatments(TreatmentSearchTextBox.Text);
-            TreatmentSearchList.Items.Clear();
-            for (int i = 0; i < Treatments.Count; i++)
-                TreatmentSearchList.Items.Add(new ListViewItem() { Content = Treatments[i].ToString(), DataContext = Treatments[i] });
-            TreatmentSearchList.SelectedIndex = 0;
-            
-
-        }
-
-        private void SelectTreatmaent()
-        {
-            var item = (Treatment)((ListViewItem)TreatmentSearchList.SelectedItem)?.DataContext;
-            if (item == null)
-                return;
-            TreatmentList.Items.Add(item);
-            TreatmentSearchTextBox.Clear();
-            SetTreatmentSearchListViability(false);
-            ReloadTreatments();
         }
     }
 }
