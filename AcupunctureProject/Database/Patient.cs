@@ -8,6 +8,23 @@ using SQLiteNetExtensions.Attributes;
 
 namespace AcupunctureProject.Database
 {
+    public static partial class Ex
+    {
+        public static string MyToString(this Gender gend)
+        {
+            switch (gend)
+            {
+                case Gender.MALE:
+                    return "זכר";
+                case Gender.FEMALE:
+                    return "נקבה";
+                case Gender.OTHER:
+                    return "אחר";
+                default:
+                    return null;
+            }
+        }
+    }
     public enum Gender
     {
         MALE, FEMALE, OTHER
@@ -28,6 +45,21 @@ namespace AcupunctureProject.Database
         public List<Meeting> Meetings { get; set; }
         [OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Diagnostic> Diagnostics { get; set; }
+        [Ignore]
+        public string BirthdaySort {
+            get
+            {
+                return Birthday.ToShortDateString();
+            }
+        }
+        [Ignore]
+        public string GendString {
+            get
+            {
+                return Gend.MyToString();
+            }
+        }
+
         public string ToStringInSearch()
         {
             return Name + " - " + Birthday.ToShortDateString();

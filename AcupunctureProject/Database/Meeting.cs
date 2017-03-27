@@ -8,6 +8,25 @@ using SQLiteNetExtensions.Attributes;
 
 namespace AcupunctureProject.Database
 {
+    public static partial class Ex
+    {
+        public static string MyToString(this ResultValue r)
+        {
+            switch (r)
+            {
+                case ResultValue.NOT_SET:
+                    return "לא מוגדר";
+                case ResultValue.BETTER:
+                    return "יותר טוב";
+                case ResultValue.NO_CHANGE:
+                    return "אין שינוי";
+                case ResultValue.WORSE:
+                    return "החמיר";
+                default:
+                    return null;
+            }
+        }
+    }
     public enum ResultValue
     {
         NOT_SET, BETTER, WORSE, NO_CHANGE
@@ -36,7 +55,9 @@ namespace AcupunctureProject.Database
         public List<Point> Points { get; set; }
         [ManyToMany(typeof(ChannelMeeting))]
         public List<Channel> Channels { get; set; }
-
+        [ManyToMany(typeof(TreatmentsMeetings))]
+        public List<Treatment> Treatments { get; set; }
+        
         public override int GetHashCode()
         {
             return Id.GetHashCode();

@@ -25,17 +25,9 @@ namespace AcupunctureProject.GUI
         public NewPatient()
         {
             InitializeComponent();
-            gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.MALE.ToString(), DataContext = Patient.Gender.MALE });
-            gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.FEMALE.ToString(), DataContext = Patient.Gender.FEMALE });
-            gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.OTHER.ToString(), DataContext = Patient.Gender.OTHER });
-            //name.BorderBrush = Brushes.Gray;
-            //address.BorderBrush = Brushes.Gray;
-            //email.BorderBrush = Brushes.Gray;
-            //hestory.BorderBrush = Brushes.Gray;
-            //cellphone.BorderBrush = Brushes.Gray;
-            //telphone.BorderBrush = Brushes.Gray;
-            //berthday.BorderBrush = Brushes.Gray;
-            //gender.BorderBrush = Brushes.Gray;
+            gender.Items.Add(new ComboBoxItem() { Content = Gender.MALE.MyToString(), DataContext = Gender.MALE });
+            gender.Items.Add(new ComboBoxItem() { Content = Gender.FEMALE.MyToString(), DataContext = Gender.FEMALE });
+            gender.Items.Add(new ComboBoxItem() { Content = Gender.OTHER.MyToString(), DataContext = Gender.OTHER });
         }
 
         private bool SaveData()
@@ -59,7 +51,7 @@ namespace AcupunctureProject.GUI
                 MessageBox.Show(this, "חייב טלפון או פלפון", "בעיה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
                 secses = false;
             }
-            
+
             if (!secses)
             {
                 throw new NullValueException();
@@ -67,9 +59,19 @@ namespace AcupunctureProject.GUI
 
             try
             {
-                DatabaseConnection.Instance.InsertPatient(new Patient(name.Text, telphone.Text, cellphone.Text, (DateTime)berthday.SelectedDate, Patient.Gender.FromValue(gender.SelectedIndex), address.Text, email.Text, hestory.Text));
+                DatabaseConnection.Instance.Insert(new Patient()
+                {
+                    Name = name.Text,
+                    Telephone = telphone.Text,
+                    Cellphone = cellphone.Text,
+                    Birthday = (DateTime)berthday.SelectedDate,
+                    Gend = (Gender)gender.SelectedIndex,
+                    Address = address.Text,
+                    Email = email.Text,
+                    MedicalDescription = hestory.Text
+                });
             }
-            catch (Database.Exceptions.UniqueNameException e)
+            catch (Exception e)
             {
                 MessageBox.Show(this, "המטופל קיים", "אזרה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
                 throw e;
@@ -87,9 +89,9 @@ namespace AcupunctureProject.GUI
             try
             {
                 SaveData();
-                    Close();
+                Close();
             }
-            catch (Database.Exceptions.UniqueNameException) { }
+            catch (Exception) { }
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -97,9 +99,9 @@ namespace AcupunctureProject.GUI
             try
             {
                 SaveData();
-                    ClearAll();
+                ClearAll();
             }
-            catch (Database.Exceptions.UniqueNameException) { }
+            catch (Exception) { }
         }
 
         private void ClearAll()

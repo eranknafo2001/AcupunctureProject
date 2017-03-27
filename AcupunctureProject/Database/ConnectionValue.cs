@@ -8,26 +8,40 @@ using SQLiteNetExtensions.Attributes;
 
 namespace AcupunctureProject.Database
 {
-    public class SymptomPoint : ITable
+    public interface IConnectionValue : ITable
+    {
+        int Importance { get; set; }
+        string Comment { get; set; }
+    }
+
+    public class SymptomPoint : IConnectionValue
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         [ForeignKey(typeof(Symptom))]
         public int SymptomId { get; set; }
+        [ManyToOne]
+        public Symptom Symptom { get; set; }
         [ForeignKey(typeof(Point))]
         public int PointId { get; set; }
-        public int Imaportance { get; set; }
+        [ManyToOne]
+        public Point Point { get; set; }
+        public int Importance { get; set; }
         public string Comment { get; set; }
     }
-    public class ChannelSymptom : ITable
+    public class ChannelSymptom : IConnectionValue
     {
         [PrimaryKey,AutoIncrement]
         public int Id { get; set; }
         [ForeignKey(typeof(Symptom))]
         public int SymptomId { get; set; }
+        [ManyToOne]
+        public Symptom Symptom { get; set; }
         [ForeignKey(typeof(Channel))]
         public int ChannelId { get; set; }
-        public int Imaportance { get; set; }
+        [ManyToOne]
+        public Channel Channel { get; set; }
+        public int Importance { get; set; }
         public string Comment { get; set; }
     }
     public class MeetingPoint
@@ -52,6 +66,15 @@ namespace AcupunctureProject.Database
         public int ChannelId { get; set; }
 
         [ForeignKey(typeof(Meeting))]
-        public int Meeting { get; set; }
+        public int MeetingId { get; set; }
+    }
+
+    public class TreatmentsMeetings
+    {
+        [ForeignKey(typeof(Treatment))]
+        public int TreatmentId { get; set; }
+
+        [ForeignKey(typeof(Meeting))]
+        public int MeetingId { get; set; }
     }
 }

@@ -36,10 +36,10 @@ namespace AcupunctureProject.GUI
             telphone.Text = patient.Telephone;
             email.Text = patient.Email;
             gender.Items.Clear();
-            gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.MALE });
-            gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.FEMALE });
-            gender.Items.Add(new ComboBoxItem() { Content = Patient.Gender.OTHER });
-            gender.SelectedIndex = patient.Gend.Value;
+            gender.Items.Add(new ComboBoxItem() { Content = Gender.MALE.MyToString(), DataContext = Gender.MALE });
+            gender.Items.Add(new ComboBoxItem() { Content = Gender.FEMALE.MyToString(), DataContext = Gender.FEMALE });
+            gender.Items.Add(new ComboBoxItem() { Content = Gender.OTHER.MyToString(), DataContext = Gender.OTHER });
+            gender.SelectedIndex = (int)patient.Gend;
             hestory.Text = patient.MedicalDescription;
         }
 
@@ -51,11 +51,9 @@ namespace AcupunctureProject.GUI
             patient.Cellphone = cellphone.Text;
             patient.Telephone = telphone.Text;
             patient.MedicalDescription = hestory.Text;
-            patient.Gend = Patient.Gender.FromValue(gender.SelectedIndex);
+            patient.Gend = (Gender)gender.DataContext;
             patient.Email = email.Text;
-            DatabaseConnection.Instance.UpdatePatient(patient);
-            if (perent != null)
-                perent.UpdateData();
+            DatabaseConnection.Instance.Update(patient);
         }
 
         private void Censel_Click(object sender, RoutedEventArgs e)

@@ -22,6 +22,14 @@ namespace AcupunctureProject.Database
         }
     }
 
+    public static partial class Ex 
+    {
+        public static string MyToString(this PreferColdOrHotType p)
+        {
+            return "";
+        }
+    }
+
     public enum PreferColdOrHotType
     {
         HOT, COLD, NIETHER
@@ -94,6 +102,8 @@ namespace AcupunctureProject.Database
         public int PatientId { get; set; }
         [ManyToOne]
         public Patient Patient { get; set; }
+        [OneToMany]
+        public List<Meeting> Meetings { get; set; }
         public DateTime CreationDate { get; set; }
         #endregion
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
 
 namespace AcupunctureProject.Database
 {
@@ -14,5 +15,12 @@ namespace AcupunctureProject.Database
         [Unique, NotNull]
         public string Name { get; set; }
         public string Path { get; set; }
+        [ManyToMany(typeof(TreatmentsMeetings))]
+        public List<Meeting> Treatments { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

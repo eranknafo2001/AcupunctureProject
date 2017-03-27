@@ -25,17 +25,21 @@ namespace AcupunctureProject.GUI
         public MeetingListByPatient(Patient patient)
         {
             InitializeComponent();
+            DatabaseConnection.Instance.GetChildren(patient);
             Title += patient.Name;
             this.patient = patient;
-            meetingsDataGrid.ItemsSource = DatabaseConnection.Instance.GetAllMeetingsRelativeToPatientOrderByDate(patient);
+            meetingsDataGrid.ItemsSource = patient.Meetings;
+            DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(UpdateData);
         }
+
+        ~MeetingListByPatient()=> DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(UpdateData);
 
         private void MeetingsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Meeting item = (Meeting)meetingsDataGrid.SelectedItem;
             if (item == null)
                 return;
-            new MeetingInfoWindow(item,this).Show();
+            new MeetingInfoWindow(item, this).Show();
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -43,19 +47,16 @@ namespace AcupunctureProject.GUI
             Meeting item = (Meeting)meetingsDataGrid.SelectedItem;
             if (item == null)
                 return;
-            List<Database.Point> points = DatabaseConnection.Instance.GetAllPointsRelativeToMeeting(item);
-            for (int i = 0; i < points.Count; i++)
-                DatabaseConnection.Instance.DeleteMeetingPoint(item, points[i]);
-            List<Symptom> symptoms = DatabaseConnection.Instance.GetAllSymptomRelativeToMeeting(item);
-            for (int i = 0; i < symptoms.Count; i++)
-                DatabaseConnection.Instance.DeleteSymptomMeetingRelation(symptoms[i], item);
-            DatabaseConnection.Instance.DeleteMeeting(item);
-            meetingsDataGrid.ItemsSource = DatabaseConnection.Instance.GetAllMeetingsRelativeToPatientOrderByDate(patient);
+            DatabaseConnection.Instance.Delete(item);
+            meetingsDataGrid.ItemsSource = patient.Meetings.OrderBy(m => m.Date).Reverse();
         }
 
-        public void UpdateData()
+        private void UpdateData(Type t, object i)
         {
-            meetingsDataGrid.ItemsSource = DatabaseConnection.Instance.GetAllMeetingsRelativeToPatientOrderByDate(patient);
+            if (t != typeof(Meeting))
+                return;
+            DatabaseConnection.Instance.GetChildren(patient);
+            meetingsDataGrid.ItemsSource = patient.Meetings.OrderBy(m => m.Date).Reverse();
         }
     }
 }

@@ -44,7 +44,7 @@
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="patientSearchTextBox" Grid.Column="0" GotFocus="PatientSearchTextBox_GotFocus" LostFocus="PatientSearchTextBox_LostFocus"/>
+            <TextBox x:Name="patientSearchTextBox" Grid.Column="0" GotFocus="PatientSearchTextBox_GotFocus" LostFocus="PatientSearchTextBox_LostFocus" TextChanged="PatientSearchTextBox_TextChanged"/>
             <Button x:Name="openPatientButton" Content="מידע" IsEnabled="False" Grid.Column="2" Click="OpenPatientButton_Click"/>
         </Grid>
         <ListView x:Name="patientSearchList" Grid.Column="2" Grid.Row="0" Grid.RowSpan="6" Visibility="Hidden" GotFocus="PatientSearchList_GotFocus" LostFocus="PatientSearchList_LostFocus" Panel.ZIndex="20" MouseDoubleClick="PatientSearchList_MouseDoubleClick"/>
@@ -121,8 +121,8 @@
                 <RowDefinition Height="5"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <TextBox x:Name="TreatmentSearchTextBox" Grid.Row="0" IsEnabled="False" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" TextChanged="TreatmentSearchTextBox_TextChanged"/>
-            <ListView x:Name="TreatmentSearchList" MaxHeight="100" Grid.RowSpan="20" Visibility="Hidden" Grid.Row="0" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" MouseDoubleClick="TreatmentSearchList_MouseDoubleClick" KeyDown="TreatmentSearchList_KeyDown"/>
+            <TextBox x:Name="TreatmentSearchTextBox" Grid.Row="0" IsEnabled="False" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" TextChanged="TreatmentSearchTextBox_TextChanged" KeyDown="TreatmentSearchTextBox_KeyDown"/>
+            <ListView x:Name="TreatmentSearchList" Height="0" Grid.RowSpan="20" Visibility="Visible" Grid.Row="0" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" MouseDoubleClick="TreatmentSearchList_MouseDoubleClick" KeyDown="TreatmentSearchList_KeyDown" VerticalAlignment="Top" Panel.ZIndex="20"/>
             <ListBox x:Name="TreatmentList" Height="80" Grid.Row="2" IsEnabled="False" SelectionMode="Single" MouseDoubleClick="TreatmentList_MouseDoubleClick" KeyDown="TreatmentList_KeyDown"/>
             <Label Content="הערות" Grid.Row="4" HorizontalAlignment="Center"/>
             <TextBox x:Name="notes" Grid.Row="6" KeyDown="Notes_KeyDown" IsEnabled="False" TextWrapping="Wrap"/>

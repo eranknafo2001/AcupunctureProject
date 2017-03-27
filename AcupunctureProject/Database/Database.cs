@@ -5,13 +5,23 @@ using Platform = SQLite.Net.Platform;
 using System.Linq;
 using SQLiteNetExtensions.Extensions;
 using System.IO;
+using System;
 
 namespace AcupunctureProject.Database
 {
-    public interface ITable
+    public static partial class Ex
     {
-        int Id { get; set; }
+        public static List<K> MyCast<T, K>(this List<T> i, Func<T, K> f)
+        {
+            var o = new List<K>();
+            foreach (var k in i)
+            {
+                o.Add(f(k));
+            }
+            return o;
+        }
     }
+
     public class DatabaseConnection
     {
         private static DatabaseConnection database = null;
@@ -26,14 +36,17 @@ namespace AcupunctureProject.Database
         }
         private SQLiteConnection Connection;
         public readonly static int NUM_OF_PRIORITIES = 6;
-        private readonly string Folder;
+        public delegate void TableChanged(Type table, object item);
+        public event TableChanged InsertedItemEvent;
+        public event TableChanged UpdatedItemEvent;
+        public event TableChanged TableChangedEvent;
 
-        private DatabaseConnection()
+        private DatabaseConnection(string FileName = "database.db")
         {
-            string Folder = System.Reflection.Assembly.GetEntryAssembly().Location;
+            var Folder = System.Reflection.Assembly.GetEntryAssembly().Location;
             Folder = Folder.Remove(Folder.LastIndexOf('\\') + 1);
-            Folder += "database.db";
-            Platform.Generic.SQLitePlatformGeneric p = new Platform.Generic.SQLitePlatformGeneric();
+            Folder += FileName;
+            var p = new Platform.Win32.SQLitePlatformWin32();
             bool isDatabaseExists = File.Exists(Folder);
             Connection = new SQLiteConnection(p, Folder);
             if (!isDatabaseExists)
@@ -56,7 +69,14 @@ namespace AcupunctureProject.Database
                     InitColors();
                 }
             }
+            InsertedItemEvent += new TableChanged((t, i) => TableChangedEvent?.Invoke(t, i));
+            UpdatedItemEvent += new TableChanged((t, i) => TableChangedEvent?.Invoke(t, i));
+        }
 
+        ~DatabaseConnection()
+        {
+            InsertedItemEvent -= new TableChanged((t, i) => TableChangedEvent?.Invoke(t, i));
+            UpdatedItemEvent -= new TableChanged((t, i) => TableChangedEvent?.Invoke(t, i));
         }
 
         #region colors handler
@@ -73,93 +93,102 @@ namespace AcupunctureProject.Database
 
         public void SetLevel(int level, MColor color) => Connection.Update(new Color() { Id = level, R = color.R, G = color.G, B = color.B });
         #endregion
-        public void Update<T>(T item) => Connection.UpdateWithChildren(item);
-        public void Delete<T>(T item) => Connection.Delete(item);
+        public T Update<T>(T item)
+        {
+            Connection.Update(item);
+            UpdatedItemEvent?.Invoke(typeof(T), item);
+            return item;
+        }
+        public T UpdateWithChildren<T>(T item)
+        {
+            Connection.UpdateWithChildren(item);
+            UpdatedItemEvent?.Invoke(typeof(T), item);
+            return item;
+        }
+        public void Delete<T>(T item)
+        {
+            Connection.Delete(item);
+        }
+        public T GetChildren<T>(T item)
+        {
+            Connection.GetChildren(item);
+            return item;
+        }
+        public List<T> GetChildren<T>(List<T> items)
+        {
+            foreach (var item in items)
+                Connection.GetChildren(item);
+            return items;
+        }
         #region finds objects
-        public Channel GetChannel(int id) => Connection.GetWithChildren<Channel>(id);
+        public Channel GetChannel(int id) => Connection.Get<Channel>(id);
 
-        public Point GetPoint(int id) => Connection.GetWithChildren<Point>(id);
+        public Point GetPoint(int id) => Connection.Get<Point>(id);
 
-        public List<Point> GetAllPoints() => Connection.GetAllWithChildren<Point>();
+        public List<Point> GetAllPoints() => (from s in Connection.Table<Point>() where true select s).ToList();
 
-        public Point GetPoint(string name)
-        {
-            var list = Connection.GetAllWithChildren<Point>(point => point.Name == name);
-            foreach (Point point in list)
-                return point;
-            return null;
-        }
+        public Point GetPoint(string name) => Connection.Find<Point>(point => point.Name == name);
 
-        public Symptom GetSymptom(string name)
-        {
-            var list = Connection.GetAllWithChildren<Symptom>(symptom => symptom.Name == name);
-            foreach (Symptom symptom in list)
-                return symptom;
-            return null;
-        }
+        public Symptom GetSymptom(string name) => Connection.Find<Symptom>(symptom => symptom.Name == name);
 
-        public List<Symptom> FindSymptom(string name)
-        {
-            return Connection.GetAllWithChildren<Symptom>(symptom => symptom.Name.Contains(name));
-        }
+        public List<Symptom> FindSymptom(string name) => (from symptom in Connection.Table<Symptom>() where symptom.Name.ToLower().Contains(name.ToLower()) select symptom).ToList();
 
-        public List<Point> FindPoint(string name)
-        {
-            return Connection.GetAllWithChildren<Point>(point => point.Name.Contains(name));
-        }
+        public List<Patient> FindPatient(string name) => (from patient in Connection.Table<Patient>() where patient.Name.ToLower().Contains(name.ToLower()) select patient).ToList();
 
+        public Meeting GetTheLastMeeting(Patient patient) => (from meeting in Connection.Table<Meeting>() where meeting.PatientId == patient.Id orderby meeting.Date descending select meeting).FirstOrDefault();
 
-        public List<Patient> FindPatient(string name)
-        {
-            return Connection.GetAllWithChildren<Patient>(patient => patient.Name.Contains(name));
-        }
-
-        public List<Meeting> GetAllMeetingsRelativeToSymptoms(List<Symptom> symptoms)
-        {
-            HashSet<Meeting> list = new HashSet<Meeting>();
-            foreach(var sym in symptoms)
-            {
-                var li = Connection.GetAllWithChildren<Meeting>(meeting => meeting.Symptoms.Contains(sym));
-                foreach(var meeting in li)
-                    list.Add(meeting);
-            }
-            return list.ToList();
-        }
-
-        public Meeting GetTheLastMeeting(Patient patient)
-        {
-            var list = Connection.GetAllWithChildren<Meeting>(meeting => meeting.PatientId == patient.Id).OrderBy(name => name.Date).Reverse();
-            foreach (Meeting meeting in list)
-            {
-                return meeting;
-            }
-            return null;
-        }
-
-        public List<Treatment> GetAllTreatments() => Connection.GetAllWithChildren<Treatment>();
-
-        public List<Treatment> GetTreatmentsByName(string name) => Connection.GetAllWithChildren<Treatment>(treatment => treatment.Name.Contains(name));
+        public List<Treatment> GetAllTreatments() => (from t in Connection.Table<Treatment>() where true select t).ToList();
         #endregion
         #region inserts
-        public Diagnostic SetDiagnostic(Diagnostic diagnostic)
+        public T Set<T>(T item) where T : class, ITable
         {
-            if (Connection.Find<Diagnostic>(diagnostic.Id) != null)
+            if (Connection.Find<T>(item.Id) != null)
             {
-                Connection.Update(diagnostic);
+                Connection.Update(item);
+                UpdatedItemEvent?.Invoke(typeof(T), item);
             }
             else
             {
-                diagnostic.Id = Connection.Insert(diagnostic);
-                Update(diagnostic);
+                Connection.Insert(item);
+                InsertedItemEvent?.Invoke(typeof(T), item);
             }
-            return diagnostic;
+            return item;
         }
+
+        public T SetWithChildren<T>(T item) where T : class, ITable
+        {
+            if (Connection.Find<T>(item.Id) != null)
+            {
+                Connection.UpdateWithChildren(item);
+                UpdatedItemEvent?.Invoke(typeof(T), item);
+            }
+            else
+            {
+                Connection.InsertWithChildren(item);
+                InsertedItemEvent?.Invoke(typeof(T), item);
+            }
+            return item;
+        }
+
         public T Insert<T>(T item) where T : ITable
         {
             Connection.Insert(item);
-            Update(item);
+            InsertedItemEvent?.Invoke(typeof(T), item);
+            return item;
+        }
+
+        public T InsertWithChildren<T>(T item) where T : ITable
+        {
+            Connection.InsertWithChildren(item);
+            InsertedItemEvent?.Invoke(typeof(T), item);
             return item;
         }
         #endregion
+    }
+
+    public interface ITable
+    {
+        [SQLite.Net.Attributes.PrimaryKey]
+        int Id { get; set; }
     }
 }

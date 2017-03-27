@@ -24,6 +24,7 @@ namespace AcupunctureProject.GUI
         {
             InitializeComponent();
             patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
+            DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(UpdateData);
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -44,24 +45,19 @@ namespace AcupunctureProject.GUI
             Patient patient = (Patient)patientDataGrid.SelectedItem;
             if (patient == null)
                 return;
-            List<Meeting> meetings = DatabaseConnection.Instance.GetAllMeetingsRelativeToPatientOrderByDate(patient);
-            for (int i = 0; i < meetings.Count; i++)
-            {
-                List<Database.Point> points = DatabaseConnection.Instance.GetAllPointsRelativeToMeeting(meetings[i]);
-                for (int j = 0; j < points.Count; j++)
-                    DatabaseConnection.Instance.DeleteMeetingPoint(meetings[i], points[j]);
-                List<Symptom> symptoms = DatabaseConnection.Instance.GetAllSymptomRelativeToMeeting(meetings[i]);
-                for (int j = 0; j < symptoms.Count; j++)
-                    DatabaseConnection.Instance.DeleteSymptomMeetingRelation(symptoms[j], meetings[i]);
-                DatabaseConnection.Instance.DeleteMeeting(meetings[i]);
-            }
-            DatabaseConnection.Instance.DeletePatient(patient);
+            DatabaseConnection.Instance.GetChildren(patient);
+            foreach (var meeting in patient.Meetings)
+                DatabaseConnection.Instance.Delete(meeting);
+            DatabaseConnection.Instance.Delete(patient);
             patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
         }
 
-        public void UpdateData()
+        ~PatientList() => DatabaseConnection.Instance.TableChangedEvent -= new DatabaseConnection.TableChanged(UpdateData);
+
+        private void UpdateData(Type t, object i)
         {
-            patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
+            if (t == typeof(Patient))
+                patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
         }
 
         private void openMeetingsList_Click(object sender, RoutedEventArgs e)

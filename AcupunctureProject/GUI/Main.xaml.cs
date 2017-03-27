@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.ComponentModel;
+using DPoint = AcupunctureProject.Database.Point;
+using DTreatment = AcupunctureProject.Database.Treatment;
 
 namespace AcupunctureProject.GUI
 {
@@ -14,24 +16,52 @@ namespace AcupunctureProject.GUI
     /// </summary>
     public partial class Main : Page
     {
-        private string folder;
-        private Window perent;
+        private static string Folder { get; set; }
+        private Window Perent { get; set; }
+
+        public delegate void EventHandler();
+
+        private static List<DPoint> _AllPoints;
+        public static List<DPoint> AllPoints
+        {
+            get => _AllPoints;
+            set
+            {
+                _AllPoints = value;
+                UpdatePoints?.Invoke();
+            }
+        }
+        public static event EventHandler UpdatePoints;
+
+        private static List<DTreatment> _AllTreatments;
+        public static List<DTreatment> AllTreatments
+        {
+            get => _AllTreatments;
+            set
+            {
+                _AllTreatments = value;
+                UpdateTreatments?.Invoke();
+            }
+        }
+        public static event EventHandler UpdateTreatments;
 
         public Main(Window perent)
         {
             InitializeComponent();
-            this.perent = perent;
-            string[] tempFolder = System.Reflection.Assembly.GetEntryAssembly().Location.Split('\\');
-            folder = "";
-            for (int i = 0; i < tempFolder.Length - 1; i++)
-            {
-                folder += tempFolder[i] + "\\";
-            }
-            BitmapImage BackImageSource = new BitmapImage();
-            BackImageSource.BeginInit();
-            BackImageSource.UriSource = new Uri(folder + "images\\backpic.jpg");
-            BackImageSource.EndInit();
-            BackImage.Source = BackImageSource;
+            DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(
+                (t, i) =>
+                {
+                    if (t == typeof(DPoint))
+                        AllPoints = DatabaseConnection.Instance.GetAllPoints();
+                    else if (t == typeof(DTreatment))
+                        AllTreatments = DatabaseConnection.Instance.GetAllTreatments();
+                });
+            AllPoints = DatabaseConnection.Instance.GetAllPoints();
+            AllTreatments = DatabaseConnection.Instance.GetAllTreatments();
+            Perent = perent;
+            Folder = System.Reflection.Assembly.GetEntryAssembly().Location;
+            Folder = Folder.Remove(Folder.LastIndexOf('\\') + 1);
+            try { BackImage.Source = new BitmapImage(new Uri(Folder + "images\\backpic.jpg")); } catch (Exception) { }
         }
 
         private void NewPatientMI_Click(object sender, RoutedEventArgs e)
@@ -44,37 +74,36 @@ namespace AcupunctureProject.GUI
             new NewMeetingWindow().Show();
         }
 
-        private void PatientListMI_Click(object sender, RoutedEventArgs e)
-        {
-            new PatientList().Show();
-        }
+        private void PatientListMI_Click(object sender, RoutedEventArgs e) => new PatientList().Show();
 
-        private void PointsListMI_Click(object sender, RoutedEventArgs e)
-        {
-            List<Database.Point> points = DatabaseConnection.Instance.GetAllPoints();
-            new PointInfo(points[new Random().Next(0, points.Count - 1)]).Show();
-        }
+        private void PointsListMI_Click(object sender, RoutedEventArgs e) => new PointInfo(AllPoints[new Random().Next(0, AllPoints.Count - 1)]).Show();
 
         private void SettingMI_Click(object sender, RoutedEventArgs e)
         {
-            new SettingWindow().Show();
+            //new SettingWindow().Show();
         }
 
         private void Updates_Click(object sender, RoutedEventArgs e)
         {
-            ProcessStartInfo i = new ProcessStartInfo(folder + "UpdateApp.exe", folder);
-            i.UseShellExecute = true;
-            i.CreateNoWindow = true;
-            i.Verb = "runas";
             try
             {
-                Process.Start(i);
+                Process.Start(new ProcessStartInfo(Folder + "UpdateApp.exe", Folder)
+                {
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                    Verb = "runas"
+                });
                 Application.Current.Shutdown();
             }
             catch (Win32Exception)
             {
                 MessageBox.Show("לא יכול לגשת לקבצים", "", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.None, MessageBoxOptions.RtlReading);
             }
+        }
+
+        private void NewTreatment_Click(object sender, RoutedEventArgs e)
+        {
+            new NewTreatment().Show();
         }
     }
 }

@@ -25,11 +25,20 @@ namespace AcupunctureProject.GUI
         public DiagnosticList(Patient patient)
         {
             InitializeComponent();
+            DatabaseConnection.Instance.GetChildren(patient);
             this.patient = patient;
-            var list = DatabaseConnection.Instance.GetAllDiagnosticByPatient(patient);
-            Data.Items.Clear();
-            Data.ItemsSource = list;
+            Data.ItemsSource = patient.Diagnostics;
+           
         }
+
+        ~DiagnosticList() => DatabaseConnection.Instance.TableChangedEvent -=
+                new DatabaseConnection.TableChanged((t, I) =>
+                {
+                    if (t != typeof(Diagnostic))
+                        return;
+                    DatabaseConnection.Instance.GetChildren(patient);
+                    Data.ItemsSource = patient.Diagnostics;
+                });
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -41,7 +50,8 @@ namespace AcupunctureProject.GUI
             if (sender.GetType() != typeof(DataGrid))
                 return;
             Diagnostic item = (Diagnostic)((DataGrid)sender).SelectedItem;
-            new DiagnosticInfo(item).Show();
+            if (item != null)
+                new DiagnosticInfo(item).Show();
         }
 
         //private void Delete_Click(object sender, RoutedEventArgs e)
