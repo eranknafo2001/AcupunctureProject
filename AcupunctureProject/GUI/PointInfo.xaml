@@ -62,10 +62,10 @@
                 <Label Content='מ"מ' Grid.Column="6"/>
             </Grid>
             <Label Content="מיקום" Grid.Row="4" Grid.Column="2"/>
-            <TextBox x:Name="place" TextWrapping="Wrap" Grid.Row="4" Grid.Column="4"/>
+            <local:BTextBox x:Name="place" Grid.Row="4" Grid.Column="4"/>
             <TextBox x:Name="note" Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="3"/>
-            <TextBox x:Name="comment1" TextWrapping="Wrap" Grid.Row="2" Grid.RowSpan="3" Grid.Column="6"/>
-            <TextBox x:Name="comment2" TextWrapping="Wrap" Grid.Row="2" Grid.RowSpan="3" Grid.Column="8"/>
+            <local:BTextBox x:Name="comment1" Grid.Row="2" Grid.RowSpan="3" Grid.Column="6"/>
+            <local:BTextBox x:Name="comment2" Grid.Row="2" Grid.RowSpan="3" Grid.Column="8"/>
 
             <Grid Grid.Row="0" Grid.Column="10">
                 <Grid.ColumnDefinitions>

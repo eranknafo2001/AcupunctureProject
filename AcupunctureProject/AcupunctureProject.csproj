@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AcupunctureProject</RootNamespace>
     <AssemblyName>AcupunctureProject</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -31,6 +31,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -155,6 +156,7 @@
     <Compile Include="GUI\DiagnosticInfo.xaml.cs">
       <DependentUpon>DiagnosticInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Ex.cs" />
     <Compile Include="GUI\ExcelGrid.cs" />
     <Compile Include="GUI\Exceptions\NullValueException.cs" />
     <Compile Include="GUI\MeetingInfoPage.xaml.cs">
@@ -169,6 +171,10 @@
     <Compile Include="GUI\Treatment.xaml.cs">
       <DependentUpon>Treatment.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\TreatmentList.xaml.cs">
+      <DependentUpon>TreatmentList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\WTextBox.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
     <Page Include="GUI\Assets\Ver.xaml">
@@ -256,6 +262,10 @@
     <Page Include="GUI\Treatment.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GUI\TreatmentList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

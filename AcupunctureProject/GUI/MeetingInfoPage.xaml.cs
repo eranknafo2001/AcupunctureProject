@@ -110,7 +110,7 @@ namespace AcupunctureProject.GUI
         private void RelaodSymptomList() => 
             symptomSearchList.ItemsSource = 
                 DatabaseConnection.Instance.FindSymptom(symptomSearch.Text)
-                .MyCast(item => new ListViewItem() { Content = item.ToString(), DataContext = item });
+                .ToList(item => new ListViewItem() { Content = item.ToString(), DataContext = item });
 
         private void SetPointThatUsedSearchListViability(bool val)
         {
@@ -373,7 +373,7 @@ namespace AcupunctureProject.GUI
             pointThatUsedSearchList.ItemsSource =
                 Main.AllPoints
                     .FindAll(p => p.Name.ToLower().Contains(pointThatUsedSearch.Text.ToLower()))
-                    .MyCast(point => new ListViewItem()
+                    .ToList(point => new ListViewItem()
                     {
                         Content = point.ToString(),
                         DataContext = point
@@ -556,7 +556,7 @@ namespace AcupunctureProject.GUI
             TreatmentSearchList.ItemsSource =
                 Main.AllTreatments
                 .FindAll(t => t.Name.Contains(((TextBox)sender).Text))
-                .MyCast(i => new ListViewItem()
+                .ToList(i => new ListViewItem()
                 {
                     Content = i.ToString(),
                     DataContext = i

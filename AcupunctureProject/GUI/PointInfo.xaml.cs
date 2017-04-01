@@ -35,7 +35,7 @@ namespace AcupunctureProject.GUI
             SymptomToAdd = new List<SymptomPoint>();
             SymptomToRemove = new List<Symptom>();
             ReloadSymptomSearchList();
-            pointsList.ItemsSource = Main.AllPoints.MyCast(Point => new ListViewItem() { Content = point.ToString(), DataContext = point });
+            pointsList.ItemsSource = Main.AllPoints.ToList(p => new ListViewItem() { Content = p.ToString(), DataContext = p });
             syptomTreeView.Items.Clear();
             DatabaseConnection.Instance.GetChildren(point);
             List<Symptom> symptomList = DatabaseConnection.Instance.GetChildren(point.Symptoms);
@@ -66,14 +66,11 @@ namespace AcupunctureProject.GUI
 
         private void SyptomTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TreeViewItem item = (TreeViewItem)syptomTreeView.SelectedItem;
+            var item = (TreeViewItem)syptomTreeView.SelectedItem;
             if (item == null)
                 return;
             if (item.DataContext.GetType() == typeof(DPoint))
-            {
-                var con = (DPoint)(item.DataContext);
-                SetAll(con);
-            }
+                SetAll((DPoint)item.DataContext);
         }
 
         private void SaveData()
@@ -98,12 +95,10 @@ namespace AcupunctureProject.GUI
                     j++;
                 }
             }
-            foreach (var symcon in SymptomToAdd)
-                point.SymptomConnections.Add(symcon);
+                point.SymptomConnections.AddRange(SymptomToAdd);
             foreach (var sym in SymptomToRemove)
                 point.SymptomConnections.RemoveAll(s => s.SymptomId == sym.Id);
             DatabaseConnection.Instance.Update(point);
-            Main.AllPoints[Main.AllPoints.FindIndex(p => p.Id == point.Id)] = point;
         }
 
         private void Censel_Click(object sender, RoutedEventArgs e) => Close();
@@ -120,10 +115,7 @@ namespace AcupunctureProject.GUI
             new FullWindowPic(pointImage.Source, (int)(pointImage.ActualWidth * 2),
                                                  (int)(pointImage.ActualHeight * 2)).Show();
 
-        private void PointsSearch_TextChanged(object sender, TextChangedEventArgs e) =>
-            pointsList.ItemsSource = Main.AllPoints
-                .FindAll(s => s.Name.ToLower().Contains(pointsSearch.Text.ToLower()))
-                .MyCast(p => new ListViewItem() { Content = p.ToString(), DataContext = p });
+        private void PointsSearch_TextChanged(object sender, TextChangedEventArgs e) => Update();
 
         private void SetSymptomSearchListVisability(bool val)
         {
@@ -143,7 +135,7 @@ namespace AcupunctureProject.GUI
         private void ReloadSymptomSearchList()
         {
             List<Symptom> sl = DatabaseConnection.Instance.FindSymptom(symptomSearch.Text);
-            symptomSearchList.ItemsSource= sl.MyCast(s=> new ListViewItem() { Content = s.ToString(), DataContext = s });
+            symptomSearchList.ItemsSource = sl.ToList(s => new ListViewItem() { Content = s.ToString(), DataContext = s });
         }
 
         private void SelectSymptom()
@@ -222,13 +214,13 @@ namespace AcupunctureProject.GUI
         private void SymptomSearchList_LostFocus(object sender, RoutedEventArgs e) => SetSymptomSearchListVisability(false);
 
         private void Update() =>
-            pointsList.ItemsSource =
-                Main.AllPoints
-                    .FindAll(s => s.Name.ToLower().Contains(pointsSearch.Text.ToLower()))
-                    .MyCast(point => new ListViewItem()
-                        {
-                            Content = point.ToString(),
-                            DataContext = point
-                        });
+                pointsList.ItemsSource = (from s in Main.AllPoints
+                                          where s.Name.ToLower().Contains(pointsSearch.Text.ToLower())
+                                          select s)
+                                          .ToList(p=> new ListViewItem()
+                                          {
+                                              Content = p.ToString(),
+                                              DataContext = p
+                                          });
     }
 }

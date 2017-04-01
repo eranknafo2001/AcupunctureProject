@@ -9,19 +9,6 @@ using System;
 
 namespace AcupunctureProject.Database
 {
-    public static partial class Ex
-    {
-        public static List<K> MyCast<T, K>(this List<T> i, Func<T, K> f)
-        {
-            var o = new List<K>();
-            foreach (var k in i)
-            {
-                o.Add(f(k));
-            }
-            return o;
-        }
-    }
-
     public class DatabaseConnection
     {
         private static DatabaseConnection database = null;
@@ -125,7 +112,16 @@ namespace AcupunctureProject.Database
 
         public Point GetPoint(int id) => Connection.Get<Point>(id);
 
-        public List<Point> GetAllPoints() => (from s in Connection.Table<Point>() where true select s).ToList();
+        public List<Point> GetAllPoints()
+        {
+            if(Connection.Table<Point>() == null)
+            {
+                
+            }
+            return null;
+        }
+            
+            // =>  (from s in Connection.Table<Point>() where true select s).ToList();
 
         public Point GetPoint(string name) => Connection.Find<Point>(point => point.Name == name);
 
@@ -133,9 +129,14 @@ namespace AcupunctureProject.Database
 
         public List<Symptom> FindSymptom(string name) => (from symptom in Connection.Table<Symptom>() where symptom.Name.ToLower().Contains(name.ToLower()) select symptom).ToList();
 
-        public List<Patient> FindPatient(string name) => (from patient in Connection.Table<Patient>() where patient.Name.ToLower().Contains(name.ToLower()) select patient).ToList();
+        public List<Patient> FindPatient(string name) => (from patient in Connection.Table<Patient>()
+                                                          where patient.Name.ToLower().Contains(name.ToLower())
+                                                          select patient).ToList();
 
-        public Meeting GetTheLastMeeting(Patient patient) => (from meeting in Connection.Table<Meeting>() where meeting.PatientId == patient.Id orderby meeting.Date descending select meeting).FirstOrDefault();
+        public Meeting GetTheLastMeeting(Patient patient) => (from meeting in Connection.Table<Meeting>()
+                                                              where meeting.PatientId == patient.Id
+                                                              orderby meeting.Date descending
+                                                              select meeting).FirstOrDefault();
 
         public List<Treatment> GetAllTreatments() => (from t in Connection.Table<Treatment>() where true select t).ToList();
         #endregion
