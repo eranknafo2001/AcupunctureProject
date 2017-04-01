@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using AcupunctureProject.Database;
 using DPoint = AcupunctureProject.Database.Point;
 
@@ -19,15 +21,29 @@ namespace AcupunctureProject.GUI
     /// <summary>
     /// Interaction logic for PointInfo.xaml
     /// </summary>
-    public partial class PointInfo : Window
+    public partial class PointInfo : Window, INotifyPropertyChanged
     {
         private DPoint point;
 
         private List<Symptom> SymptomToRemove { get; set; }
         private List<SymptomPoint> SymptomToAdd { get; set; }
+        private List<ListViewItem> _AllPoints;
+        public List<ListViewItem> AllPoints
+        {
+            get => _AllPoints;
+            set
+            {
+                if (_AllPoints != value)
+                {
+                    _AllPoints = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public PointInfo(DPoint point)
         {
+            DataContext = this;
             InitializeComponent();
             Title += point.Name;
             Main.UpdatePoints += new Main.EventHandler(Update);
@@ -35,14 +51,16 @@ namespace AcupunctureProject.GUI
             SymptomToAdd = new List<SymptomPoint>();
             SymptomToRemove = new List<Symptom>();
             ReloadSymptomSearchList();
-            pointsList.ItemsSource = Main.AllPoints.ToList(p => new ListViewItem() { Content = p.ToString(), DataContext = p });
+            Update();
             syptomTreeView.Items.Clear();
             DatabaseConnection.Instance.GetChildren(point);
             List<Symptom> symptomList = DatabaseConnection.Instance.GetChildren(point.Symptoms);
             foreach (var sym in symptomList)
                 AddItemToSymptomTree(sym);
+            var folder = System.Reflection.Assembly.GetEntryAssembly().Location;
+            folder = folder.Remove(folder.LastIndexOf('\\') + 1);
             if (System.IO.File.Exists(point.Image))
-                pointImage.Source = new BitmapImage(new Uri(point.Image));
+                pointImage.Source = new BitmapImage(new Uri(folder + point.Image));
             name.Content = point.Name;
             minDepth.Text = point.MinNeedleDepth.ToString();
             maxDepth.Text = point.MaxNeedleDepth.ToString();
@@ -56,10 +74,13 @@ namespace AcupunctureProject.GUI
 
         private void Points_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ListViewItem item = (ListViewItem)pointsList.SelectedItem;
-            if (item == null)
-                return;
-            SetAll((DPoint)item.DataContext);
+            if (sender is ListView s)
+            {
+                var item = s.SelectedItem as ListViewItem;
+                if (item == null)
+                    return;
+                SetAll(item.DataContext as DPoint);
+            }
         }
 
         private void SetAll(DPoint point) => new PointInfo(point).Show();
@@ -95,7 +116,7 @@ namespace AcupunctureProject.GUI
                     j++;
                 }
             }
-                point.SymptomConnections.AddRange(SymptomToAdd);
+            point.SymptomConnections.AddRange(SymptomToAdd);
             foreach (var sym in SymptomToRemove)
                 point.SymptomConnections.RemoveAll(s => s.SymptomId == sym.Id);
             DatabaseConnection.Instance.Update(point);
@@ -115,7 +136,12 @@ namespace AcupunctureProject.GUI
             new FullWindowPic(pointImage.Source, (int)(pointImage.ActualWidth * 2),
                                                  (int)(pointImage.ActualHeight * 2)).Show();
 
-        private void PointsSearch_TextChanged(object sender, TextChangedEventArgs e) => Update();
+        private void PointsSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var start = DateTime.Now;
+            Update();
+            Console.WriteLine($"update time: {(DateTime.Now - start).TotalMilliseconds}");
+        }
 
         private void SetSymptomSearchListVisability(bool val)
         {
@@ -213,14 +239,17 @@ namespace AcupunctureProject.GUI
 
         private void SymptomSearchList_LostFocus(object sender, RoutedEventArgs e) => SetSymptomSearchListVisability(false);
 
-        private void Update() =>
-                pointsList.ItemsSource = (from s in Main.AllPoints
-                                          where s.Name.ToLower().Contains(pointsSearch.Text.ToLower())
-                                          select s)
-                                          .ToList(p=> new ListViewItem()
-                                          {
-                                              Content = p.ToString(),
-                                              DataContext = p
-                                          });
+        private void Update()
+        {
+            if (pointsSearch.Text == "")
+                AllPoints = Main.AllPoints.ToList(s => new ListViewItem() { Content = s.ToString(), DataContext = s });
+            else
+                AllPoints = Main.AllPoints.FindAll(s => s.Name.ToLower().Contains(pointsSearch.Text.ToLower())).ToList(s => new ListViewItem() { Content = s.ToString(), DataContext = s });
+
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

@@ -41,7 +41,7 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBox x:Name="pointsSearch" Grid.Column="0" Grid.Row="0" TextChanged="PointsSearch_TextChanged"/>
-            <ListView x:Name="pointsList" Grid.Column="0" Grid.Row="2" Grid.RowSpan="5" Width="100" MouseDoubleClick="Points_MouseDoubleClick"/>
+            <ListView x:Name="pointsList" Grid.Column="0" Grid.Row="2" ItemsSource="{Binding Path=AllPoints,Mode=OneWay}" Grid.RowSpan="5" Width="100" MouseDoubleClick="Points_MouseDoubleClick"/>
             <Label Content="שם" Grid.Row="0" Grid.Column="2"/>
             <Label x:Name="name" Grid.Row="0" Grid.Column="4" />
             <Label Content="עומק מחט" Grid.Row="2" Grid.Column="2"/>
@@ -100,7 +100,7 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Image x:Name="pointImage" Source="C:\Users\magshimim\Documents\Visual Studio 2015\Projects\AcupunctureProject\AcupunctureProject\images\BL 60.jpg" Grid.Column="2" Grid.Row="0" MouseLeftButtonDown="PointImage_MouseLeftButtonDown"/>
+        <Image x:Name="pointImage" Grid.Column="2" Grid.Row="0" MouseLeftButtonDown="PointImage_MouseLeftButtonDown"/>
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>

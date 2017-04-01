@@ -31,7 +31,7 @@ namespace AcupunctureProject.Database
     }
     public class ChannelSymptom : IConnectionValue
     {
-        [PrimaryKey,AutoIncrement]
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         [ForeignKey(typeof(Symptom))]
         public int SymptomId { get; set; }
@@ -45,7 +45,7 @@ namespace AcupunctureProject.Database
         public string Comment { get; set; }
     }
     public class MeetingPoint
-    { 
+    {
         [ForeignKey(typeof(Meeting))]
         public int MeetingId { get; set; }
 
@@ -62,19 +62,19 @@ namespace AcupunctureProject.Database
     }
     public class ChannelMeeting
     {
-        [ForeignKey(typeof(Channel))]
-        public int ChannelId { get; set; }
-
         [ForeignKey(typeof(Meeting))]
         public int MeetingId { get; set; }
+
+        [ForeignKey(typeof(Channel))]
+        public int ChannelId { get; set; }
     }
 
     public class TreatmentsMeetings
     {
-        [ForeignKey(typeof(Treatment))]
-        public int TreatmentId { get; set; }
-
         [ForeignKey(typeof(Meeting))]
         public int MeetingId { get; set; }
+
+        [ForeignKey(typeof(Treatment))]
+        public int TreatmentId { get; set; }
     }
 }

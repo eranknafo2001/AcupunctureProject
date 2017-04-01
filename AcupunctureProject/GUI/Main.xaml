@@ -20,7 +20,10 @@
             </MenuItem>
             <MenuItem x:Name="NewMeetingMI" Header="הוספת טיפול" Click="NewMeetingMI_Click" Padding="5"/>
             <MenuItem x:Name="PointsListMI" Header="רשימת נקודות" Click="PointsListMI_Click" Padding="5"/>
-            <MenuItem x:Name="NewTreatment" Header="טיפול מיוחד חדש" Click="NewTreatment_Click" Padding="5"/>
+            <MenuItem Header="טיפולים מיוחדים" Padding="5">
+                <MenuItem x:Name="NewTreatment" Header="טיפול מיוחד חדש" Click="NewTreatment_Click" Padding="5"/>
+                <MenuItem x:Name="TreatmentList" Header="רשימת טיפולים מיוחדים" Click="TreatmentList_Click" Padding="5"/>
+            </MenuItem>
             <MenuItem x:Name="Updates" Header="עדכן" Click="Updates_Click" Padding="5"/>
             <!--<MenuItem x:Name="SettingMI" Header="הגדרות" Padding="5" Click="SettingMI_Click"/>-->
         </Menu>

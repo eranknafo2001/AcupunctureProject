@@ -26,6 +26,7 @@ namespace AcupunctureProject.Database
         public delegate void TableChanged(Type table, object item);
         public event TableChanged InsertedItemEvent;
         public event TableChanged UpdatedItemEvent;
+        public event TableChanged DeletedItemEvent;
         public event TableChanged TableChangedEvent;
 
         private DatabaseConnection(string FileName = "database.db")
@@ -45,6 +46,7 @@ namespace AcupunctureProject.Database
                     Connection.CreateTable<MeetingSymptom>();
                     Connection.CreateTable<MeetingPoint>();
                     Connection.CreateTable<ChannelMeeting>();
+                    Connection.CreateTable<TreatmentsMeetings>();
                     Connection.CreateTable<Point>();
                     Connection.CreateTable<Channel>();
                     Connection.CreateTable<Symptom>();
@@ -56,14 +58,23 @@ namespace AcupunctureProject.Database
                     InitColors();
                 }
             }
+            //Connection.DropTable<MeetingSymptom>();
+            //Connection.DropTable<MeetingPoint>();
+            //Connection.DropTable<ChannelMeeting>();
+            //Connection.CreateTable<MeetingSymptom>();
+            //Connection.CreateTable<MeetingPoint>();
+            //Connection.CreateTable<ChannelMeeting>();
+            //Connection.CreateTable<TreatmentsMeetings>();
             InsertedItemEvent += new TableChanged((t, i) => TableChangedEvent?.Invoke(t, i));
             UpdatedItemEvent += new TableChanged((t, i) => TableChangedEvent?.Invoke(t, i));
+            DeletedItemEvent += new TableChanged((t, i) => TableChangedEvent?.Invoke(t, i));
         }
 
         ~DatabaseConnection()
         {
             InsertedItemEvent -= new TableChanged((t, i) => TableChangedEvent?.Invoke(t, i));
             UpdatedItemEvent -= new TableChanged((t, i) => TableChangedEvent?.Invoke(t, i));
+            DeletedItemEvent -= new TableChanged((t, i) => TableChangedEvent?.Invoke(t, i));
         }
 
         #region colors handler
@@ -95,6 +106,7 @@ namespace AcupunctureProject.Database
         public void Delete<T>(T item)
         {
             Connection.Delete(item);
+            DeletedItemEvent?.Invoke(typeof(T),null);
         }
         public T GetChildren<T>(T item)
         {
@@ -112,16 +124,7 @@ namespace AcupunctureProject.Database
 
         public Point GetPoint(int id) => Connection.Get<Point>(id);
 
-        public List<Point> GetAllPoints()
-        {
-            if(Connection.Table<Point>() == null)
-            {
-                
-            }
-            return null;
-        }
-            
-            // =>  (from s in Connection.Table<Point>() where true select s).ToList();
+        public List<Point> GetAllPoints() =>  (from s in Connection.Table<Point>() where true select s).ToList();
 
         public Point GetPoint(string name) => Connection.Find<Point>(point => point.Name == name);
 
@@ -180,8 +183,9 @@ namespace AcupunctureProject.Database
 
         public T InsertWithChildren<T>(T item) where T : ITable
         {
-            Connection.InsertWithChildren(item);
-            InsertedItemEvent?.Invoke(typeof(T), item);
+            Connection.Insert(item);
+            Connection.UpdateWithChildren(item);
+            //InsertedItemEvent?.Invoke(typeof(T), item);
             return item;
         }
         #endregion

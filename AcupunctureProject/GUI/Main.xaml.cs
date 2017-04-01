@@ -48,6 +48,16 @@ namespace AcupunctureProject.GUI
         public Main(Window perent)
         {
             InitializeComponent();
+            AllPoints = DatabaseConnection.Instance.GetAllPoints();
+            if (AllPoints[0].Image.EndsWith(".png"))
+            {
+                foreach (var point in AllPoints)
+                {
+                    point.Image = point.Image.Replace(".png", ".jpg");
+                    DatabaseConnection.Instance.Update(point);
+                }
+            }
+            AllTreatments = DatabaseConnection.Instance.GetAllTreatments();
             DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(
                 (t, i) =>
                 {
@@ -56,8 +66,6 @@ namespace AcupunctureProject.GUI
                     else if (t == typeof(DTreatment))
                         AllTreatments = DatabaseConnection.Instance.GetAllTreatments();
                 });
-            AllPoints = DatabaseConnection.Instance.GetAllPoints();
-            AllTreatments = DatabaseConnection.Instance.GetAllTreatments();
             Perent = perent;
             Folder = System.Reflection.Assembly.GetEntryAssembly().Location;
             Folder = Folder.Remove(Folder.LastIndexOf('\\') + 1);
@@ -105,5 +113,7 @@ namespace AcupunctureProject.GUI
         {
             new NewTreatment().Show();
         }
+
+        private void TreatmentList_Click(object sender, RoutedEventArgs e) => new TreatmentList().Show();
     }
 }

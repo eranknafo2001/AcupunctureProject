@@ -64,7 +64,7 @@ namespace AcupunctureProject.GUI
 
         private void ReloadPatientList()
         {
-            patientSearchList.ItemsSource = DatabaseConnection.Instance.FindPatient(patientSearchTextBox.Text).MyCast(t => new ListViewItem() { Content = t.ToStringInSearch(), DataContext = t });
+            patientSearchList.ItemsSource = DatabaseConnection.Instance.FindPatient(patientSearchTextBox.Text).ToList(t => new ListViewItem() { Content = t.ToStringInSearch(), DataContext = t });
             patientSearchList.SelectedIndex = 0;
         }
 
@@ -106,7 +106,7 @@ namespace AcupunctureProject.GUI
             SetPatientListVisibility(true);
         }
 
-        private void RelaodSymptomList() => symptomSearchList.ItemsSource = DatabaseConnection.Instance.FindSymptom(symptomSearch.Text).MyCast(item => new ListViewItem() { Content = item.ToString(), DataContext = item });
+        private void RelaodSymptomList() => symptomSearchList.ItemsSource = DatabaseConnection.Instance.FindSymptom(symptomSearch.Text).ToList(item => new ListViewItem() { Content = item.ToString(), DataContext = item });
 
         private void SetPointThatUsedSearchListViability(bool val)
         {
@@ -361,29 +361,21 @@ namespace AcupunctureProject.GUI
             perent.Content = new MeetingInfoPage(perent, meeting);
         }
 
-        private Meeting SaveData()
-        {
-            var meeting = new Meeting()
-            {
-                Patient = selectedPatient,
-                Date = (DateTime)date.SelectedDate,
-                Description = notes.Text,
-                Summery = summeryTextBox.Text,
-                ResultDescription = resoltSummeryTextBox.Text,
-                Result = (ResultValue)((ComboBoxItem)resolt.SelectedItem).DataContext,
-                Symptoms = new List<Symptom>(),
-                Points = new List<DPoint>()
-            };
-            foreach (var s in symptomTreeView.Items)
-                meeting.Symptoms.Add((Symptom)((TreeViewItem)s).DataContext);
-            foreach (var p in pointThatUsed.Items)
-                meeting.Points.Add((DPoint)((ListBoxItem)p).DataContext);
-            foreach (var t in TreatmentList.Items)
-                meeting.Treatments.Add((DTreatment)((ListBoxItem)t).DataContext);
-            meeting.Diagnostic = selectedPatient.Diagnostics.OrderByDescending(d => d.CreationDate).FirstOrDefault();
-            DatabaseConnection.Instance.InsertWithChildren(meeting);
-            return meeting;
-        }
+        private Meeting SaveData() =>
+            DatabaseConnection.Instance.InsertWithChildren(
+                new Meeting()
+                {
+                    Patient = selectedPatient,
+                    Date = (DateTime)date.SelectedDate,
+                    Description = notes.Text,
+                    Summery = summeryTextBox.Text,
+                    ResultDescription = resoltSummeryTextBox.Text,
+                    Result = (ResultValue)((ComboBoxItem)resolt.SelectedItem).DataContext,
+                    Symptoms = symptomTreeView.Items.ToList(s => (Symptom)((TreeViewItem)s).DataContext),
+                    Points = pointThatUsed.Items.ToList(p => (DPoint)((ListBoxItem)p).DataContext),
+                    Treatments = TreatmentList.Items.ToList(t => (DTreatment)((ListBoxItem)t).DataContext),
+                    Diagnostic = selectedPatient.Diagnostics?.OrderByDescending(d => d.CreationDate).FirstOrDefault()
+                });
 
         private void SaveAndExit_Click(object sender, RoutedEventArgs e)
         {
@@ -391,17 +383,13 @@ namespace AcupunctureProject.GUI
             perent.Close();
         }
 
-        private void OpenPatientButton_Click(object sender, RoutedEventArgs e)
-        {
-            PatientInfo p = new PatientInfo(selectedPatient);
-            p.Show();
-        }
+        private void OpenPatientButton_Click(object sender, RoutedEventArgs e) => new PatientInfo(selectedPatient).Show();
 
         private void ReloadPointThatUsedSearchList()
         {
             pointThatUsedSearchList.ItemsSource =
                 Main.AllPoints.FindAll(p => p.Name.ToLower().Contains(pointThatUsedSearch.Text.ToLower()))
-                .MyCast(point => new ListViewItem() { Content = point.ToString(), DataContext = point });
+                .ToList(point => new ListViewItem() { Content = point.ToString(), DataContext = point });
             pointThatUsedSearchList.SelectedIndex = 0;
         }
 
@@ -524,7 +512,7 @@ namespace AcupunctureProject.GUI
             symptomTreeView.Items.Clear();
             foreach (var sym in meeting.Symptoms)
                 AddItemToSymptomTree(sym);
-            pointThatUsed.ItemsSource = meeting.Points.MyCast(point => new ListBoxItem() { Content = point.ToString(), DataContext = point });
+            pointThatUsed.ItemsSource = meeting.Points.ToList(point => new ListBoxItem() { Content = point.ToString(), DataContext = point });
             notes.Text = meeting.Description;
         }
 
@@ -590,13 +578,14 @@ namespace AcupunctureProject.GUI
                 Content = ((ListViewItem)TreatmentSearchList.SelectedItem).Content,
                 DataContext = ((ListViewItem)TreatmentSearchList.SelectedItem).DataContext
             });
+            SetTreatmentSearchListViability(false);
         }
 
         private void TreatmentSearchTextBox_TextChanged(object sender, TextChangedEventArgs e) =>
             TreatmentSearchList.ItemsSource =
             Main.AllTreatments
             .FindAll(t => t.Name.Contains(TreatmentSearchTextBox.Text))
-            .MyCast(i => new ListViewItem() { Content = i.ToString(), DataContext = i });
+            .ToList(i => new ListViewItem() { Content = i.ToString(), DataContext = i });
 
         private void TreatmentSearchVisFalse(object sender, RoutedEventArgs e) => SetTreatmentSearchListViability(false);
 

@@ -57,10 +57,7 @@ namespace AcupunctureProject.Database
         public List<Channel> Channels { get; set; }
         [ManyToMany(typeof(TreatmentsMeetings))]
         public List<Treatment> Treatments { get; set; }
-        
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+
+        public override int GetHashCode() => Id.GetHashCode();
     }
 }

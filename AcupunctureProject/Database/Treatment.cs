@@ -16,7 +16,7 @@ namespace AcupunctureProject.Database
         public string Name { get; set; }
         public string Path { get; set; }
         [ManyToMany(typeof(TreatmentsMeetings))]
-        public List<Meeting> Treatments { get; set; }
+        public List<Meeting> Meetings { get; set; }
 
         public override string ToString()
         {

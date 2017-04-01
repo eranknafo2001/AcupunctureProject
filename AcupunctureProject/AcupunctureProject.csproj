@@ -159,6 +159,7 @@
     <Compile Include="GUI\Ex.cs" />
     <Compile Include="GUI\ExcelGrid.cs" />
     <Compile Include="GUI\Exceptions\NullValueException.cs" />
+    <Compile Include="GUI\ListViewTV.cs" />
     <Compile Include="GUI\MeetingInfoPage.xaml.cs">
       <DependentUpon>MeetingInfoPage.xaml</DependentUpon>
     </Compile>
