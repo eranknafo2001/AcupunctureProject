@@ -1,33 +1,33 @@
 ﻿<Page x:Class="AcupunctureProject.GUI.Main"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:AcupunctureProject.GUI"
-      mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
-      Title="Main" FlowDirection="RightToLeft" Background="GhostWhite">
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	  xmlns:local="clr-namespace:AcupunctureProject.GUI"
+	  mc:Ignorable="d" 
+	  d:DesignHeight="300" d:DesignWidth="300"
+	  Title="Main" FlowDirection="RightToLeft" Background="GhostWhite">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
-        <Menu Grid.Row="0">
-            <MenuItem Header="מטופל" Padding="5">
-                <MenuItem x:Name="NewPatientMI" Header="הוסף מטופל" Click="NewPatientMI_Click"/>
-                <MenuItem x:Name="PatientListMI" Header="רשימת מטופלים" Click="PatientListMI_Click"/>
-            </MenuItem>
-            <MenuItem x:Name="NewMeetingMI" Header="הוספת טיפול" Click="NewMeetingMI_Click" Padding="5"/>
-            <MenuItem x:Name="PointsListMI" Header="רשימת נקודות" Click="PointsListMI_Click" Padding="5"/>
-            <MenuItem Header="טיפולים מיוחדים" Padding="5">
-                <MenuItem x:Name="NewTreatment" Header="טיפול מיוחד חדש" Click="NewTreatment_Click" Padding="5"/>
-                <MenuItem x:Name="TreatmentList" Header="רשימת טיפולים מיוחדים" Click="TreatmentList_Click" Padding="5"/>
-            </MenuItem>
-            <MenuItem x:Name="Updates" Header="עדכן" Click="Updates_Click" Padding="5"/>
-            <!--<MenuItem x:Name="SettingMI" Header="הגדרות" Padding="5" Click="SettingMI_Click"/>-->
-        </Menu>
-        <Image x:Name="BackImage" Stretch="UniformToFill" Grid.Row="1"/>
-        <Label Style="{StaticResource Ver}" Margin="0,10,0,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1" FlowDirection="LeftToRight"/>
-    </Grid>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="1*"/>
+		</Grid.RowDefinitions>
+		<Menu Grid.Row="0">
+			<MenuItem Header="מטופל" Padding="5">
+				<MenuItem x:Name="NewPatientMI" Header="הוסף מטופל" Click="NewPatientMI_Click"/>
+				<MenuItem x:Name="PatientListMI" Header="רשימת מטופלים" Click="PatientListMI_Click"/>
+			</MenuItem>
+			<MenuItem x:Name="NewMeetingMI" Header="הוספת טיפול" Click="NewMeetingMI_Click" Padding="5"/>
+			<MenuItem x:Name="PointsListMI" Header="רשימת נקודות" Click="PointsListMI_Click" Padding="5"/>
+			<MenuItem Header="טיפולים מיוחדים" Padding="5">
+				<MenuItem x:Name="NewTreatment" Header="טיפול מיוחד חדש" Click="NewTreatment_Click" Padding="5"/>
+				<MenuItem x:Name="TreatmentList" Header="רשימת טיפולים מיוחדים" Click="TreatmentList_Click" Padding="5"/>
+			</MenuItem>
+			<MenuItem x:Name="Updates" Header="עדכן" Click="Updates_Click" Padding="5"/>
+			<!--<MenuItem x:Name="SettingMI" Header="הגדרות" Padding="5" Click="SettingMI_Click"/>-->
+		</Menu>
+		<Image x:Name="BackImage" Stretch="UniformToFill" Grid.Row="1"/>
+		<Label Style="{StaticResource Ver}" Margin="0,10,0,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Row="1" FlowDirection="LeftToRight"/>
+	</Grid>
 </Page>

@@ -14,17 +14,17 @@ using System.Windows.Shapes;
 
 namespace AcupunctureProject.GUI
 {
-    /// <summary>
-    /// Interaction logic for FullWindowPic.xaml
-    /// </summary>
-    public partial class FullWindowPic : Window
-    {
-        public FullWindowPic(ImageSource source, int width, int height)
-        {
-            InitializeComponent();
-            image.Source = source;
-            Width = width;
-            Height = height;
-        }
-    }
+	/// <summary>
+	/// Interaction logic for FullWindowPic.xaml
+	/// </summary>
+	public partial class FullWindowPic : Window
+	{
+		public FullWindowPic(ImageSource source, int width, int height)
+		{
+			InitializeComponent();
+			image.Source = source;
+			Width = width;
+			Height = height;
+		}
+	}
 }

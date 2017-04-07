@@ -15,48 +15,48 @@ using AcupunctureProject.Database;
 
 namespace AcupunctureProject.GUI
 {
-    /// <summary>
-    /// Interaction logic for MeetingListByPatient.xaml
-    /// </summary>
-    public partial class MeetingListByPatient : Window
-    {
-        private Patient patient;
+	/// <summary>
+	/// Interaction logic for MeetingListByPatient.xaml
+	/// </summary>
+	public partial class MeetingListByPatient : Window
+	{
+		private Patient patient;
 
-        public MeetingListByPatient(Patient patient)
-        {
-            InitializeComponent();
-            DatabaseConnection.Instance.GetChildren(patient);
-            Title += patient.Name;
-            this.patient = patient;
-            meetingsDataGrid.ItemsSource = patient.Meetings;
-            DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(UpdateData);
-        }
+		public MeetingListByPatient(Patient patient)
+		{
+			InitializeComponent();
+			DatabaseConnection.Instance.GetChildren(patient);
+			Title += patient.Name;
+			this.patient = patient;
+			meetingsDataGrid.ItemsSource = patient.Meetings;
+			DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(UpdateData);
+		}
 
-        ~MeetingListByPatient()=> DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(UpdateData);
+		~MeetingListByPatient()=> DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(UpdateData);
 
-        private void MeetingsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            Meeting item = (Meeting)meetingsDataGrid.SelectedItem;
-            if (item == null)
-                return;
-            new MeetingInfoWindow(item, this).Show();
-        }
+		private void MeetingsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			Meeting item = (Meeting)meetingsDataGrid.SelectedItem;
+			if (item == null)
+				return;
+			new MeetingInfoWindow(item, this).Show();
+		}
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
-        {
-            Meeting item = (Meeting)meetingsDataGrid.SelectedItem;
-            if (item == null)
-                return;
-            DatabaseConnection.Instance.Delete(item);
-            meetingsDataGrid.ItemsSource = patient.Meetings.OrderBy(m => m.Date).Reverse();
-        }
+		private void Delete_Click(object sender, RoutedEventArgs e)
+		{
+			Meeting item = (Meeting)meetingsDataGrid.SelectedItem;
+			if (item == null)
+				return;
+			DatabaseConnection.Instance.Delete(item);
+			meetingsDataGrid.ItemsSource = patient.Meetings.OrderBy(m => m.Date).Reverse();
+		}
 
-        private void UpdateData(Type t, object i)
-        {
-            if (t != typeof(Meeting))
-                return;
-            DatabaseConnection.Instance.GetChildren(patient);
-            meetingsDataGrid.ItemsSource = patient.Meetings.OrderBy(m => m.Date).Reverse();
-        }
-    }
+		private void UpdateData(Type t, object i)
+		{
+			if (t != typeof(Meeting))
+				return;
+			DatabaseConnection.Instance.GetChildren(patient);
+			meetingsDataGrid.ItemsSource = patient.Meetings.OrderBy(m => m.Date).Reverse();
+		}
+	}
 }

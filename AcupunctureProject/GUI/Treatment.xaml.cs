@@ -18,17 +18,17 @@ using AcupunctureProject.Database;
 
 namespace AcupunctureProject.GUI
 {
-    /// <summary>
-    /// Interaction logic for Treatment.xaml
-    /// </summary>
-    public partial class Treatment : Window
-    {
-        public DTreatment TreatmentItem { get; set; }
-        public Treatment(DTreatment treatment)
-        {
-            TreatmentItem = treatment;
-            InitializeComponent();
-            Excel.Path = TreatmentItem.Path;
-        }
-    }
+	/// <summary>
+	/// Interaction logic for Treatment.xaml
+	/// </summary>
+	public partial class Treatment : Window
+	{
+		public DTreatment TreatmentItem { get; set; }
+		public Treatment(DTreatment treatment)
+		{
+			TreatmentItem = treatment;
+			InitializeComponent();
+			Excel.Path = TreatmentItem.Path;
+		}
+	}
 }

@@ -1,50 +1,50 @@
 ﻿<Window x:Class="AcupunctureProject.GUI.NewTreatment"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AcupunctureProject.GUI"
-        mc:Ignorable="d"
-        Title="NewTreatment" Height="300" Width="300" FlowDirection="RightToLeft">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="5"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="5"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="0"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="5"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0">שם</Label>
-            <TextBox Grid.Column="2" Grid.Row="0" x:Name="Name"/>
-            <Label Grid.Column="0" Grid.Row="2">מיקום קובץ</Label>
-            <Grid Grid.Column="2" Grid.Row="2" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="5"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" x:Name="Path" IsReadOnly="True"/>
-                <Button Grid.Column="2" Click="SelectFile_Click">בחר קובץ</Button>
-            </Grid>
-        </Grid>
-        <Button Grid.Row="2" Grid.Column="0" Click="Censel_Click">ביטול</Button>
-        <Button Grid.Row="2" Grid.Column="2" Click="Save_Click">שמור</Button>
-        <Button Grid.Row="2" Grid.Column="4" Click="SaveAndClose_Click">שמור וסגור</Button>
-    </Grid>
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:AcupunctureProject.GUI"
+		mc:Ignorable="d"
+		Title="NewTreatment" Height="300" Width="300" FlowDirection="RightToLeft">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="5"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="5"/>
+			<ColumnDefinition Width="auto"/>
+		</Grid.ColumnDefinitions>
+		<Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="0"/>
+				<ColumnDefinition Width="1*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="5"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+			<Label Grid.Column="0" Grid.Row="0">שם</Label>
+            <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding Path=TreatmentItem.Name,Mode=TwoWay}"/>
+			<Label Grid.Column="0" Grid.Row="2">מיקום קובץ</Label>
+			<Grid Grid.Column="2" Grid.Row="2" >
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="1*"/>
+					<ColumnDefinition Width="5"/>
+					<ColumnDefinition Width="auto"/>
+				</Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Text="{Binding Path=TreatmentItem.Path,Mode=TwoWay}" IsReadOnly="True"/>
+				<Button Grid.Column="2" Click="SelectFile_Click">בחר קובץ</Button>
+			</Grid>
+		</Grid>
+		<Button Grid.Row="2" Grid.Column="0" Click="Censel_Click">ביטול</Button>
+		<Button Grid.Row="2" Grid.Column="2" Click="Save_Click">שמור</Button>
+		<Button Grid.Row="2" Grid.Column="4" Click="SaveAndClose_Click">שמור וסגור</Button>
+	</Grid>
 </Window>

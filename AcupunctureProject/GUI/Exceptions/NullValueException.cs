@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AcupunctureProject.GUI.Exceptions
 {
-    class NullValueException : Exception
-    {
+	class NullValueException : Exception
+	{
 
-    }
+	}
 }

@@ -10,23 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AcupunctureProject.GUI
+namespace AcupunctureProject.Database
 {
 	/// <summary>
-	/// Interaction logic for ChannelInfo.xaml
+	/// Interaction logic for UserControl1.xaml
 	/// </summary>
-	public partial class ChannelInfo : Window
+	public partial class UserControl1 : UserControl
 	{
-		public ChannelInfo()
+		public UserControl1()
 		{
 			InitializeComponent();
-		}
-
-		private void PlaceTextbox_KeyDown(object sender, KeyEventArgs e)
-		{
-
 		}
 	}
 }

@@ -1,38 +1,38 @@
 ﻿<Window x:Class="AcupunctureProject.GUI.ChannelInfo"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AcupunctureProject.GUI"
-        mc:Ignorable="d"
-        Title="ChannelInfo" Height="300" Width="300" FlowDirection="RightToLeft">
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <Label Content="מספר" Grid.Row="0" Grid.Column="0"/>
-        <Label x:Name="IdLabel" Grid.Row="0" Grid.Column="2"/>
-        
-        <Label Content='ר"ת' Grid.Row="2" Grid.Column="0"/>
-        <Label x:Name="RtLabel" Grid.Row="2" Grid.Column="2"/>
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:AcupunctureProject.GUI"
+		mc:Ignorable="d"
+		Title="ChannelInfo" Height="300" Width="300" FlowDirection="RightToLeft">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="10"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="10"/>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="10"/>
+			<RowDefinition Height="1*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto"/>
+			<ColumnDefinition Width="10"/>
+			<ColumnDefinition Width="1*"/>
+		</Grid.ColumnDefinitions>
+		<Label Content="מספר" Grid.Row="0" Grid.Column="0"/>
+		<Label x:Name="IdLabel" Grid.Row="0" Grid.Column="2"/>
+		
+		<Label Content='ר"ת' Grid.Row="2" Grid.Column="0"/>
+		<Label x:Name="RtLabel" Grid.Row="2" Grid.Column="2"/>
 
-        <Label Content="שם" Grid.Row="4" Grid.Column="0"/>
-        <Label x:Name="NameLabel" Grid.Row="4" Grid.Column="2"/>
-        
-        <Label Content="מיקום" Grid.Row="6" Grid.Column="0"/>
-        <RichTextBox x:Name="PlaceLabel" Grid.Row="6" Grid.Column="2"/>
-        
-        
-    </Grid>
+		<Label Content="שם" Grid.Row="4" Grid.Column="0"/>
+		<Label x:Name="NameLabel" Grid.Row="4" Grid.Column="2"/>
+		
+		<Label Content="מיקום" Grid.Row="6" Grid.Column="0"/>
+		<RichTextBox x:Name="PlaceLabel" Grid.Row="6" Grid.Column="2"/>
+		
+		
+	</Grid>
 </Window>

@@ -15,15 +15,15 @@ using AcupunctureProject.Database;
 
 namespace AcupunctureProject.GUI
 {
-    /// <summary>
-    /// Interaction logic for MeetingInfoWindow.xaml
-    /// </summary>
-    public partial class MeetingInfoWindow : Window
-    {
-        public MeetingInfoWindow(Meeting meeting, MeetingListByPatient meetingList)
-        {
-            InitializeComponent();
-            Content = new MeetingInfoPage(this, meeting, meetingList);
-        }
-    }
+	/// <summary>
+	/// Interaction logic for MeetingInfoWindow.xaml
+	/// </summary>
+	public partial class MeetingInfoWindow : Window
+	{
+		public MeetingInfoWindow(Meeting meeting, MeetingListByPatient meetingList)
+		{
+			InitializeComponent();
+			Content = new MeetingInfoPage(this, meeting, meetingList);
+		}
+	}
 }

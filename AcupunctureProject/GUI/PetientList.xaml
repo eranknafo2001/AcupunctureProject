@@ -1,40 +1,40 @@
 ﻿<Window x:Class="AcupunctureProject.GUI.PatientList"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AcupunctureProject.GUI"
-        mc:Ignorable="d"
-        Title="רשימת מטופלים" Height="300" Width="300" FlowDirection="RightToLeft" Background="GhostWhite">
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <TextBox x:Name="searchTextBox" Grid.Row="0" Grid.Column="0" TextChanged="SearchTextBox_TextChanged"/>
-        <DataGrid x:Name="patientDataGrid" Grid.Row="2" Grid.Column="0" FlowDirection="RightToLeft" AutoGenerateColumns="False" MouseDoubleClick="PatientDataGrid_MouseDoubleClick" CanUserAddRows="False" CanUserDeleteRows="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name}" Header="שם" IsReadOnly="True" Width="1*" SortDirection="Ascending"/>
-                <DataGridTextColumn Binding="{Binding BirthdaySort}" Header="תאריך לידה" IsReadOnly="True" Width="auto" CanUserSort="False"/>
-                <DataGridTextColumn Binding="{Binding GendString}" Header="מין" IsReadOnly="True" Width="auto"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Grid Grid.Row="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="openMeetingsList" Content="פתח רשימת פגישות" Width="130" Height="25" Grid.Column="2" Click="openMeetingsList_Click"/>
-            <Button x:Name="delete" Content="מחק" Grid.Column="4" Width="50" Height="25" Click="Delete_Click"/>
-        </Grid>
-    </Grid>
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:AcupunctureProject.GUI"
+		mc:Ignorable="d"
+		Title="רשימת מטופלים" Height="300" Width="300" FlowDirection="RightToLeft" Background="GhostWhite">
+	<Grid Margin="10">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="10"/>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="10"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*"/>
+		</Grid.ColumnDefinitions>
+		<TextBox x:Name="searchTextBox" Grid.Row="0" Grid.Column="0" TextChanged="SearchTextBox_TextChanged"/>
+		<DataGrid x:Name="patientDataGrid" Grid.Row="2" Grid.Column="0" FlowDirection="RightToLeft" AutoGenerateColumns="False" MouseDoubleClick="PatientDataGrid_MouseDoubleClick" CanUserAddRows="False" CanUserDeleteRows="False">
+			<DataGrid.Columns>
+				<DataGridTextColumn Binding="{Binding Name}" Header="שם" IsReadOnly="True" Width="1*" SortDirection="Ascending"/>
+				<DataGridTextColumn Binding="{Binding BirthdaySort}" Header="תאריך לידה" IsReadOnly="True" Width="auto" CanUserSort="False"/>
+				<DataGridTextColumn Binding="{Binding GendString}" Header="מין" IsReadOnly="True" Width="auto"/>
+			</DataGrid.Columns>
+		</DataGrid>
+		<Grid Grid.Row="4">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="1*"/>
+				<ColumnDefinition Width="10"/>
+				<ColumnDefinition Width="auto"/>
+				<ColumnDefinition Width="10"/>
+				<ColumnDefinition Width="auto"/>
+			</Grid.ColumnDefinitions>
+			<Button x:Name="openMeetingsList" Content="פתח רשימת פגישות" Width="130" Height="25" Grid.Column="2" Click="openMeetingsList_Click"/>
+			<Button x:Name="delete" Content="מחק" Grid.Column="4" Width="50" Height="25" Click="Delete_Click"/>
+		</Grid>
+	</Grid>
 </Window>

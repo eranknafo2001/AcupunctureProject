@@ -14,15 +14,15 @@ using System.Windows.Shapes;
 
 namespace AcupunctureProject.GUI
 {
-    /// <summary>
-    /// Interaction logic for newMeetingWindow.xaml
-    /// </summary>
-    public partial class NewMeetingWindow : Window
-    {
-        public NewMeetingWindow()
-        {
-            InitializeComponent();
-            Content = new NewMeeting(this);
-        }
-    }
+	/// <summary>
+	/// Interaction logic for newMeetingWindow.xaml
+	/// </summary>
+	public partial class NewMeetingWindow : Window
+	{
+		public NewMeetingWindow()
+		{
+			InitializeComponent();
+			Content = new NewMeeting(this);
+		}
+	}
 }

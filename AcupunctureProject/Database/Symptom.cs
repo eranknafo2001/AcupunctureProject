@@ -8,25 +8,25 @@ using SQLiteNetExtensions.Attributes;
 
 namespace AcupunctureProject.Database
 {
-    public class Symptom : ITable
-    {
-        [PrimaryKey,AutoIncrement]
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Comment { get; set; }
-        [ManyToMany(typeof(SymptomPoint))]
-        public List<Point> Points { get; set; }
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<SymptomPoint> PointsConnections { get; set; }
-        [ManyToMany(typeof(ChannelSymptom))]
-        public List<Channel> Channels { get; set; }
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<ChannelSymptom> ChannelConnections { get; set; }
-        [ManyToMany(typeof(MeetingSymptom))]
-        public List<Meeting> Meeting { get; set; }
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
+	public class Symptom : ITable
+	{
+		[PrimaryKey,AutoIncrement]
+		public int Id { get; set; }
+		public string Name { get; set; }
+		public string Comment { get; set; }
+		[ManyToMany(typeof(SymptomPoint))]
+		public List<Point> Points { get; set; }
+		[OneToMany(CascadeOperations = CascadeOperation.All)]
+		public List<SymptomPoint> PointsConnections { get; set; }
+		[ManyToMany(typeof(ChannelSymptom))]
+		public List<Channel> Channels { get; set; }
+		[OneToMany(CascadeOperations = CascadeOperation.All)]
+		public List<ChannelSymptom> ChannelConnections { get; set; }
+		[ManyToMany(typeof(MeetingSymptom))]
+		public List<Meeting> Meeting { get; set; }
+		public override string ToString()
+		{
+			return Name;
+		}
+	}
 }

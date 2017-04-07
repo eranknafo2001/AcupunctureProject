@@ -17,34 +17,34 @@ using System.Runtime.CompilerServices;
 
 namespace TestProject
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
-    {
-        public MainWindow()
-        {
-            DataContext = this;
-            InitializeComponent();
-        }
+	/// <summary>
+	/// Interaction logic for MainWindow.xaml
+	/// </summary>
+	public partial class MainWindow : Window, INotifyPropertyChanged
+	{
+		public MainWindow()
+		{
+			Test = new E();
+			DataContext = this;
+			InitializeComponent();
+		}
 
-        private int _test;
-        public int Test
-        {
-            get => _test;
-            set
-            {
-                if(_test!=value)
-                {
-                    _test = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+		private E _Test;
+		public E Test
+		{
+			get => _Test;
+			set
+			{
+				if(_Test!=value)
+				{
+					_Test = value;
+					OnPropertyChanged();
+				}
+			}
+		}
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+	}
 }

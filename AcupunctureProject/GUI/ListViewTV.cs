@@ -7,13 +7,13 @@ using System.Windows.Controls;
 
 namespace AcupunctureProject.GUI
 {
-    public class ListViewTV : ListView
-    {
-        
+	public class ListViewTV : ListView
+	{
+		
 
-        public ListViewTV()
-        {
-            
-        }
-    }
+		public ListViewTV()
+		{
+			
+		}
+	}
 }
