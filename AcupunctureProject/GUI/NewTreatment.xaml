@@ -6,7 +6,7 @@
 		xmlns:local="clr-namespace:AcupunctureProject.GUI"
 		mc:Ignorable="d"
 		Title="NewTreatment" Height="300" Width="300" FlowDirection="RightToLeft">
-	<Grid>
+	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="5"/>

@@ -106,7 +106,7 @@ namespace AcupunctureProject.Database
 		public void Delete<T>(T item)
 		{
 			Connection.Delete(item);
-			DeletedItemEvent?.Invoke(typeof(T),null);
+			DeletedItemEvent?.Invoke(typeof(T), null);
 		}
 		public T GetChildren<T>(T item)
 		{
@@ -120,11 +120,12 @@ namespace AcupunctureProject.Database
 			return items;
 		}
 		#region finds objects
+
 		public Channel GetChannel(int id) => Connection.Get<Channel>(id);
 
 		public Point GetPoint(int id) => Connection.Get<Point>(id);
 
-		public List<Point> GetAllPoints() =>  (from s in Connection.Table<Point>() where true select s).ToList();
+		public List<Point> GetAllPoints() => (from s in Connection.Table<Point>() where true select s).ToList();
 
 		public Point GetPoint(string name) => Connection.Find<Point>(point => point.Name == name);
 
@@ -138,7 +139,7 @@ namespace AcupunctureProject.Database
 
 		public Meeting GetTheLastMeeting(Patient patient) => (from meeting in Connection.Table<Meeting>()
 															  where meeting.PatientId == patient.Id
-															  orderby meeting.Date descending
+															  orderby meeting.Id descending
 															  select meeting).FirstOrDefault();
 
 		public List<Treatment> GetAllTreatments() => (from t in Connection.Table<Treatment>() where true select t).ToList();
@@ -153,7 +154,14 @@ namespace AcupunctureProject.Database
 			}
 			else
 			{
-				Connection.Insert(item);
+				try
+				{
+					Connection.Insert(item);
+				}
+				catch (SQLite.Net.SQLiteException e)
+				{
+					throw e;
+				}
 				InsertedItemEvent?.Invoke(typeof(T), item);
 			}
 			return item;
@@ -185,7 +193,7 @@ namespace AcupunctureProject.Database
 		{
 			Connection.Insert(item);
 			Connection.UpdateWithChildren(item);
-			//InsertedItemEvent?.Invoke(typeof(T), item);
+			InsertedItemEvent?.Invoke(typeof(T), item);
 			return item;
 		}
 		#endregion

@@ -147,9 +147,6 @@
     <Compile Include="Database\Point.cs" />
     <Compile Include="Database\Symptom.cs" />
     <Compile Include="Database\Treatment.cs" />
-    <Compile Include="Database\UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="GUI\ChannelInfo.xaml.cs">
       <DependentUpon>ChannelInfo.xaml</DependentUpon>
     </Compile>
@@ -181,10 +178,6 @@
     <Compile Include="GUI\WTextBox.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
-    <Page Include="Database\UserControl1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="GUI\Assets\Ver.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

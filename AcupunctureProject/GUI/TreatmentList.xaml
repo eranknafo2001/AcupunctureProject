@@ -22,13 +22,11 @@
 		</Grid.ColumnDefinitions>
 		<DataGrid x:Name="dataGrid" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" AutoGenerateColumns="False" ColumnHeaderHeight="0" ItemsSource="{Binding Path=AllTreatments,Mode=OneWay}" CanUserAddRows="False" CanUserDeleteRows="False">
 			<DataGrid.Columns>
-				<DataGridTemplateColumn>
+				<DataGridTemplateColumn Width="1*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<StackPanel Orientation="Vertical">
 								<Label Content="{Binding Path=Name,Mode=OneWay}"/>
-								<Separator/>
-								<Label Content="{Binding Path=Path,Mode=OneWay}" Foreground="Gray"/>
 							</StackPanel>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>

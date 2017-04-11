@@ -53,7 +53,24 @@ namespace AcupunctureProject.GUI
 			InitializeComponent();
 		}
 
-		private void SaveData() => DatabaseConnection.Instance.Set(TreatmentItem);
+		private void SaveData()
+		{
+			try
+			{
+				DatabaseConnection.Instance.Set(TreatmentItem);
+			}
+			catch (SQLite.Net.SQLiteException e)
+			{
+				if (e.Message != "Constraint")
+					throw e;
+				MessageBox.Show("הטיפול המיוחד קיים",
+								"",
+								MessageBoxButton.OK,
+								MessageBoxImage.Warning,
+								MessageBoxResult.None,
+								MessageBoxOptions.RtlReading);
+			}
+		}
 
 
 		private void Censel_Click(object sender, RoutedEventArgs e) => Close();
@@ -80,7 +97,7 @@ namespace AcupunctureProject.GUI
 				if (TreatmentItem.Name == null || TreatmentItem.Name == "")
 				{
 					var file = FileDialog.FileName;
-					file = file.Remove(0, file.LastIndexOf('\\')+1);
+					file = file.Remove(0, file.LastIndexOf('\\') + 1);
 					file = file.Remove(file.LastIndexOf('.'));
 					TreatmentItem.Name = file;
 				}

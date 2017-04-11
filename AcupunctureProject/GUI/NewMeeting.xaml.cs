@@ -514,6 +514,10 @@ namespace AcupunctureProject.GUI
 			foreach (var sym in meeting.Symptoms)
 				AddItemToSymptomTree(sym);
 			pointThatUsed.ItemsSource = meeting.Points.ToList(point => new ListBoxItem() { Content = point.ToString(), DataContext = point });
+			var ts = meeting.Treatments;
+			TreatmentList.Items.Clear();
+			foreach (var t in ts)
+				TreatmentList.Items.Add(new ListBoxItem() { Content = t.ToString(), DataContext = t }); 
 			notes.Text = meeting.Description;
 		}
 
