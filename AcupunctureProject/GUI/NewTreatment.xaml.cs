@@ -77,6 +77,13 @@ namespace AcupunctureProject.GUI
 			{
 				var Folder = System.Reflection.Assembly.GetEntryAssembly().Location;
 				Folder = Folder.Remove(Folder.LastIndexOf('\\') + 1);
+				if (TreatmentItem.Name == null || TreatmentItem.Name == "")
+				{
+					var file = FileDialog.FileName;
+					file = file.Remove(0, file.LastIndexOf('\\')+1);
+					file = file.Remove(file.LastIndexOf('.'));
+					TreatmentItem.Name = file;
+				}
 				TreatmentItem.Path = FileDialog.FileName.Replace(Folder, "");
 			}
 		}

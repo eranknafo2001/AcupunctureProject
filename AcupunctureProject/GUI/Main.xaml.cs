@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using System.ComponentModel;
 using DPoint = AcupunctureProject.Database.Point;
 using DTreatment = AcupunctureProject.Database.Treatment;
+using System.Runtime.InteropServices;
 
 namespace AcupunctureProject.GUI
 {
@@ -16,6 +17,9 @@ namespace AcupunctureProject.GUI
 	/// </summary>
 	public partial class Main : Page
 	{
+		[DllImport("Kernel32")]
+		public static extern void AllocConsole();
+
 		private static string Folder { get; set; }
 		private Window Perent { get; set; }
 
@@ -47,6 +51,7 @@ namespace AcupunctureProject.GUI
 
 		public Main(Window perent)
 		{
+			//AllocConsole();
 			InitializeComponent();
 			AllPoints = DatabaseConnection.Instance.GetAllPoints();
 			if (!AllPoints[0].Image.EndsWith(".jpg") || AllPoints[0].Image.EndsWith("..jpg"))

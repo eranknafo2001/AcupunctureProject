@@ -510,6 +510,7 @@ namespace AcupunctureProject.GUI
 				return;
 			}
 			symptomTreeView.Items.Clear();
+			DatabaseConnection.Instance.GetChildren(meeting);
 			foreach (var sym in meeting.Symptoms)
 				AddItemToSymptomTree(sym);
 			pointThatUsed.ItemsSource = meeting.Points.ToList(point => new ListBoxItem() { Content = point.ToString(), DataContext = point });
