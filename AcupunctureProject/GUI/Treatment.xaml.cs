@@ -28,6 +28,7 @@ namespace AcupunctureProject.GUI
 		{
 			TreatmentItem = treatment;
 			InitializeComponent();
+			Title = treatment.Name;
 			Excel.Path = TreatmentItem.Path;
 		}
 	}
