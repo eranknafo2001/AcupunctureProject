@@ -513,11 +513,14 @@ namespace AcupunctureProject.GUI
 			DatabaseConnection.Instance.GetChildren(meeting);
 			foreach (var sym in meeting.Symptoms)
 				AddItemToSymptomTree(sym);
-			pointThatUsed.ItemsSource = meeting.Points.ToList(point => new ListBoxItem() { Content = point.ToString(), DataContext = point });
+			var points = meeting.Points;
+			pointThatUsed.Items.Clear();
+			foreach (var point in points)
+				pointThatUsed.Items.Add(new ListBoxItem() { Content = point.ToString(), DataContext = point });
 			var ts = meeting.Treatments;
 			TreatmentList.Items.Clear();
 			foreach (var t in ts)
-				TreatmentList.Items.Add(new ListBoxItem() { Content = t.ToString(), DataContext = t }); 
+				TreatmentList.Items.Add(new ListBoxItem() { Content = t.ToString(), DataContext = t });
 			notes.Text = meeting.Description;
 		}
 
