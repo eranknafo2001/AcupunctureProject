@@ -74,7 +74,7 @@ namespace AcupunctureProject.GUI
 						var cell = w.Cell(i, j);
 						if (!cell.Merged)
 						{
-							var l = new BTextBox()
+							var l = new WTextBox()
 							{
 								IsReadOnly = true,
 								TextAlignment = TextAlignment.Center
@@ -92,7 +92,7 @@ namespace AcupunctureProject.GUI
 									done[k, d] = true;
 							if (cell.Value != null)
 							{
-								var l = new BTextBox()
+								var l = new WTextBox()
 								{
 									IsReadOnly = true,
 									TextAlignment = TextAlignment.Center

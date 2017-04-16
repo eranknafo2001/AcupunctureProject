@@ -9,21 +9,12 @@ using System.Windows.Input;
 
 namespace AcupunctureProject.GUI
 {
-	class BTextBox : TextBox
+	class WTextBox : TextBox
 	{
-		public BTextBox()
+		public WTextBox()
 		{
 			TextWrapping = TextWrapping.WrapWithOverflow;
-			KeyDown += new KeyEventHandler((i, e) =>
-			  {
-				  if (e.Key.Equals(Key.Enter))
-				  {
-					  int temp = SelectionStart;
-					  Text = Text.Remove(temp, SelectionLength);
-					  Text = Text.Insert(temp, "\n");
-					  SelectionStart = temp + 1;
-				  }
-			  });
+			AcceptsReturn = true;
 		}
 	}
 }

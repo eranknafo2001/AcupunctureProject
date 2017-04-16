@@ -37,12 +37,12 @@
 				<Border Height="10"/>
 
 				<GroupBox Header="תלונה עיקרית">
-					<local:BTextBox x:Name="MainComplaint" Height="100"/>
+					<local:WTextBox x:Name="MainComplaint" Height="100"/>
 				</GroupBox>
 				<Border Height="10"/>
 
 				<GroupBox Header="תלונה מישנית">
-					<local:BTextBox x:Name="SeconderyComlaint" Height="100"/>
+					<local:WTextBox x:Name="SeconderyComlaint" Height="100"/>
 				</GroupBox>
 				<Border Height="10"/>
 
