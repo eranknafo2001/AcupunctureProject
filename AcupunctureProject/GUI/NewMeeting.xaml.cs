@@ -16,19 +16,40 @@ using System.Windows.Media;
 using Color = System.Windows.Media.Color;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Runtime.CompilerServices;
+using System.ComponentModel;
 
 namespace AcupunctureProject.GUI
 {
 	/// <summary>
 	/// Interaction logic for newMeeting.xaml
 	/// </summary>
-	public partial class NewMeeting : Page
+	public partial class NewMeeting : Page, INotifyPropertyChanged
 	{
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void PropertyChangedEvent([CallerMemberName] string name = null) =>
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
 		private Window perent;
 		private Patient selectedPatient;
 
+		private bool _Enable = false;
+		public bool Enable
+		{
+			get => _Enable;
+			set
+			{
+				if (value != _Enable)
+				{
+					_Enable = value;
+					PropertyChangedEvent();
+				}
+			}
+		}
+
 		public NewMeeting(Window perent)
 		{
+			DataContext = this;
 			InitializeComponent();
 			this.perent = perent;
 			date.SelectedDate = DateTime.Today;
@@ -81,23 +102,7 @@ namespace AcupunctureProject.GUI
 			selectedPatient = (Patient)item.DataContext;
 			patientSearchTextBox.Text = selectedPatient.Name;
 			patientSearchTextBox.IsEnabled = false;
-			openPatientButton.IsEnabled = true;
-			copyFromLastMeeting.IsEnabled = true;
-			date.IsEnabled = true;
-			symptomSearch.IsEnabled = true;
-			symptomTreeView.IsEnabled = true;
-			symptomTreeDelete.IsEnabled = true;
-			pointThatUsedSearch.IsEnabled = true;
-			pointThatUsed.IsEnabled = true;
-			notes.IsEnabled = true;
-			summeryTextBox.IsEnabled = true;
-			resoltSummeryTextBox.IsEnabled = true;
-			pointThatUsedDelete.IsEnabled = true;
-			resolt.IsEnabled = true;
-			save.IsEnabled = true;
-			saveAndExit.IsEnabled = true;
-			TreatmentList.IsEnabled = true;
-			TreatmentSearchTextBox.IsEnabled = true;
+			Enable = true;
 			SetPatientListVisibility(false);
 		}
 
@@ -167,7 +172,7 @@ namespace AcupunctureProject.GUI
 				if (patientSearchList.SelectedIndex == 0)
 					patientSearchList.SelectedIndex = patientSearchList.Items.Count - 1;
 				else
-					patientSearchList.SelectedIndex = patientSearchList.SelectedIndex - 1;
+					patientSearchList.SelectedIndex -= 1;
 			}
 			else if (e.Key.Equals(Key.Enter))
 			{
@@ -615,5 +620,7 @@ namespace AcupunctureProject.GUI
 		}
 
 		private void TreatmentSearchTextBox_KeyDown(object sender, KeyEventArgs e) => SelectTreatment();
+
+		private void DeleteTreatment_Click(object sender, RoutedEventArgs e) => TreatmentList.Items.RemoveAt(TreatmentList.SelectedIndex);
 	}
 }

@@ -45,20 +45,20 @@
 				<ColumnDefinition Width="auto"/>
 			</Grid.ColumnDefinitions>
 			<TextBox x:Name="patientSearchTextBox" Grid.Column="0" GotFocus="PatientSearchTextBox_GotFocus" LostFocus="PatientSearchTextBox_LostFocus" TextChanged="PatientSearchTextBox_TextChanged"/>
-			<Button x:Name="openPatientButton" Content="מידע" IsEnabled="False" Grid.Column="2" Click="OpenPatientButton_Click"/>
+			<Button x:Name="openPatientButton" Content="מידע" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" Grid.Column="2" Click="OpenPatientButton_Click"/>
 		</Grid>
 		<ListView x:Name="patientSearchList" Grid.Column="2" Grid.Row="0" Grid.RowSpan="6" Visibility="Hidden" GotFocus="PatientSearchList_GotFocus" LostFocus="PatientSearchList_LostFocus" Panel.ZIndex="20" MouseDoubleClick="PatientSearchList_MouseDoubleClick"/>
-		<Button x:Name="copyFromLastMeeting" Content="טען פגישה אחרונה" Grid.Column="4" Grid.Row="0" IsEnabled="False" Click="CopyFromLastMeeting_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+		<Button x:Name="copyFromLastMeeting" Content="טען פגישה אחרונה" Grid.Column="4" Grid.Row="0" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" Click="CopyFromLastMeeting_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 		<!--#endregion-->
 		<!--#region date -->
 		<Label  Content="תאריך" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center"/>
-		<DatePicker x:Name="date" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" Height="25" HorizontalAlignment="Left" Width="110" IsEnabled="False"/>
+		<DatePicker x:Name="date" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" Height="25" HorizontalAlignment="Left" Width="110" IsEnabled="{Binding Path=Enable,Mode=TwoWay}"/>
 		<!--#endregion-->
 		<!--#region symptoms -->
 		<Label Content="סימפטומים" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center"/>
-		<TextBox x:Name="symptomSearch" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Height="25" TextChanged="SymptomSearch_TextChanged" IsEnabled="False" LostFocus="SymptomSearch_LostFocus" GotFocus="SymptomSearch_GotFocus" KeyDown="SymptomSearch_KeyDown"/>
+		<TextBox x:Name="symptomSearch" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Height="25" TextChanged="SymptomSearch_TextChanged" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" LostFocus="SymptomSearch_LostFocus" GotFocus="SymptomSearch_GotFocus" KeyDown="SymptomSearch_KeyDown"/>
 		<ListView x:Name="symptomSearchList" MaxHeight="100" SelectionMode="Single" Visibility="Hidden" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" LostFocus="SymptomSearchList_LostFocus" GotFocus="SymptomSearchList_GotFocus" KeyDown="SymptomSearchList_KeyDown" MouseDoubleClick="SymptomSearchList_MouseDoubleClick" Grid.RowSpan="3" Panel.ZIndex="20"/>
-		<TreeView x:Name="symptomTreeView" Grid.Row="6" Grid.Column="2" Margin="0,0,0,0" IsEnabled="False" MouseDoubleClick="SymptomTreeView_MouseDoubleClick" MouseMove="SymptomTreeView_MouseMove" />
+		<TreeView x:Name="symptomTreeView" Grid.Row="6" Grid.Column="2" Margin="0,0,0,0" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" MouseDoubleClick="SymptomTreeView_MouseDoubleClick" MouseMove="SymptomTreeView_MouseMove" />
 		<!--#region levels and delete for symptom tree -->
 		<Grid Grid.Row="8" Grid.Column="2">
 			<Grid.ColumnDefinitions>
@@ -90,22 +90,22 @@
 				<Label Content="5" HorizontalAlignment="Center"/>
 			</Border>
 			<!--#endregion-->
-			<Button x:Name="symptomTreeDelete" Content="מחק" Grid.Column="6" IsEnabled="False" Width="45" Click="SymptomTreeDelete_Click"/>
+			<Button x:Name="symptomTreeDelete" Grid.Column="6" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" Width="45" Click="SymptomTreeDelete_Click">מחק</Button>
 		</Grid>
 		<!--#endregion-->
 		<!--#endregion-->
 		<!--#region points that used -->
 		<Label Content="נקודות שטופלו" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center"/>
-		<TextBox x:Name="pointThatUsedSearch" Grid.Column="4" Grid.Row="4" IsEnabled="False" GotFocus="PointThatUsedSearch_GotFocus" LostFocus="PointThatUsedSearch_LostFocus" FlowDirection="LeftToRight" TextChanged="PointThatUsedSearch_TextChanged"/>
+		<TextBox x:Name="pointThatUsedSearch" Grid.Column="4" Grid.Row="4" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" GotFocus="PointThatUsedSearch_GotFocus" LostFocus="PointThatUsedSearch_LostFocus" FlowDirection="LeftToRight" TextChanged="PointThatUsedSearch_TextChanged"/>
 		<ListView x:Name="pointThatUsedSearchList" MaxHeight="100" SelectionMode="Single" VerticalAlignment="Top" Panel.ZIndex="20" Visibility="Hidden" Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" LostFocus="PointThatUsedSearchList_LostFocus" GotFocus="PointThatUsedSearchList_GotFocus" FlowDirection="LeftToRight" KeyDown="PointThatUsedSearchList_KeyDown" MouseDoubleClick="PointThatUsedSearchList_MouseDoubleClick"/>
-		<ListBox x:Name="pointThatUsed" Grid.Row="6" Grid.Column="4" IsEnabled="False" MouseDoubleClick="PointThatUsed_MouseDoubleClick" KeyDown="PointThatUsed_KeyDown" FlowDirection="LeftToRight" DragDrop.Drop="PointThatUsed_Drop" AllowDrop="True"/>
+		<ListBox x:Name="pointThatUsed" Grid.Row="6" Grid.Column="4" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" MouseDoubleClick="PointThatUsed_MouseDoubleClick" KeyDown="PointThatUsed_KeyDown" FlowDirection="LeftToRight" DragDrop.Drop="PointThatUsed_Drop" AllowDrop="True"/>
 		<!--#region points that used delete button -->
 		<Grid Grid.Column="4" Grid.Row="8">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="1*"/>
 				<ColumnDefinition Width="auto"/>
 			</Grid.ColumnDefinitions>
-			<Button x:Name="pointThatUsedDelete" Content="מחק" Grid.Column="2" IsEnabled="False" Click="PointThatUsedDelete_Click" Width="45"/>
+			<Button x:Name="pointThatUsedDelete" Grid.Column="2" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" Click="PointThatUsedDelete_Click" Width="45">מחק</Button>
 		</Grid>
 		<!--#endregion-->
 		<!--#endregion-->
@@ -121,11 +121,18 @@
 				<RowDefinition Height="5"/>
 				<RowDefinition Height="1*"/>
 			</Grid.RowDefinitions>
-			<TextBox x:Name="TreatmentSearchTextBox" Grid.Row="0" IsEnabled="False" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" TextChanged="TreatmentSearchTextBox_TextChanged" KeyDown="TreatmentSearchTextBox_KeyDown"/>
+			<TextBox x:Name="TreatmentSearchTextBox" Grid.Row="0" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" TextChanged="TreatmentSearchTextBox_TextChanged" KeyDown="TreatmentSearchTextBox_KeyDown"/>
 			<ListView x:Name="TreatmentSearchList" Height="0" Grid.RowSpan="20" Visibility="Visible" Grid.Row="0" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" MouseDoubleClick="TreatmentSearchList_MouseDoubleClick" KeyDown="TreatmentSearchList_KeyDown" VerticalAlignment="Top" Panel.ZIndex="20"/>
-			<ListBox x:Name="TreatmentList" Height="80" Grid.Row="2" IsEnabled="False" SelectionMode="Single" MouseDoubleClick="TreatmentList_MouseDoubleClick" KeyDown="TreatmentList_KeyDown"/>
+			<ListBox x:Name="TreatmentList" Height="80" Grid.Row="2" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" SelectionMode="Single" MouseDoubleClick="TreatmentList_MouseDoubleClick" KeyDown="TreatmentList_KeyDown"/>
 			<Label Content="הערות" Grid.Row="4" HorizontalAlignment="Center"/>
-			<TextBox x:Name="notes" Grid.Row="6" KeyDown="Notes_KeyDown" IsEnabled="False" TextWrapping="Wrap"/>
+			<TextBox x:Name="notes" Grid.Row="6" KeyDown="Notes_KeyDown" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" TextWrapping="Wrap"/>
+		</Grid>
+		<Grid Grid.Row="8" Grid.Column="6">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="1*"/>
+				<ColumnDefinition Width="auto"/>
+			</Grid.ColumnDefinitions>
+			<Button x:Name="DeleteTreatment" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" Grid.Column="1" Click="DeleteTreatment_Click" Width="45">מחק</Button>
 		</Grid>
 		<!--#endregion-->
 		<!--#region summery block -->
@@ -140,13 +147,13 @@
 				<RowDefinition Height="10"/>
 				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
-			<TextBox x:Name="summeryTextBox" Grid.Row="0" IsEnabled="False" TextWrapping="Wrap" KeyDown="SummeryTextBox_KeyDown"/>
+			<TextBox x:Name="summeryTextBox" Grid.Row="0" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" TextWrapping="Wrap" KeyDown="SummeryTextBox_KeyDown"/>
 			<Label Content="פרוט התוצאה" Grid.Row="2" HorizontalAlignment="Center"/>
-			<TextBox x:Name="resoltSummeryTextBox" Grid.Row="4" IsEnabled="False" TextWrapping="Wrap" KeyDown="ResoltSummeryTextBox_KeyDown"/>
+			<TextBox x:Name="resoltSummeryTextBox" Grid.Row="4" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" TextWrapping="Wrap" KeyDown="ResoltSummeryTextBox_KeyDown"/>
 			<StackPanel Orientation="Horizontal" Grid.Row="6">
 				<Label Content="תוצאה"/>
 				<Border Width="5"/>
-				<ComboBox x:Name="resolt" IsEnabled="False"/>
+				<ComboBox x:Name="resolt" IsEnabled="{Binding Path=Enable,Mode=TwoWay}"/>
 			</StackPanel>
 		</Grid>
 		<!--#endregion-->
@@ -159,8 +166,8 @@
 				<ColumnDefinition Width="10"/>
 				<ColumnDefinition Width="auto"/>
 			</Grid.ColumnDefinitions>
-			<Button x:Name="save" Content="שמור" Grid.Column="1" IsEnabled="False" Click="Save_Click" Width="50" Height="29"/>
-			<Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="3" IsEnabled="False" Click="SaveAndExit_Click" Width="80" Height="29"/>
+			<Button x:Name="save" Content="שמור" Grid.Column="1" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" Click="Save_Click" Width="50" Height="29"/>
+			<Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="3" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" Click="SaveAndExit_Click" Width="80" Height="29"/>
 		</Grid>
 		<!--#endregion-->
 	</Grid>

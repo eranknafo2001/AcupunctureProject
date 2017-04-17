@@ -25,6 +25,8 @@ namespace AcupunctureProject.GUI
 	/// </summary>
 	public partial class MeetingInfoPage : Page
 	{
+		//public bool 
+
 		private Window Perent;
 		private Patient SelectedPatient;
 		private Meeting Meeting;
