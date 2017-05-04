@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,25 +26,23 @@ namespace AcupunctureProject.GUI
 		public DiagnosticList(Patient patient)
 		{
 			InitializeComponent();
-			DatabaseConnection.Instance.GetChildren(patient);
+			DatabaseConnection.GetChildren(patient);
 			this.patient = patient;
 			Data.ItemsSource = patient.Diagnostics;
-		   
+
 		}
 
-		~DiagnosticList() => DatabaseConnection.Instance.TableChangedEvent -=
-				new DatabaseConnection.TableChanged((t, I) =>
+		~DiagnosticList() => DatabaseConnection.TableChangedEvent -=
+				new TableChangedEventHendler((t, I) =>
 				{
 					if (t != typeof(Diagnostic))
 						return;
-					DatabaseConnection.Instance.GetChildren(patient);
+					DatabaseConnection.GetChildren(patient);
 					Data.ItemsSource = patient.Diagnostics;
 				});
 
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
+		private void Button_Click(object sender, RoutedEventArgs e) =>
 			new DiagnosticInfo(patient).Show();
-		}
 
 		private void Data_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{

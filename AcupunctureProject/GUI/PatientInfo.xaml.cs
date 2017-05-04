@@ -53,7 +53,7 @@ namespace AcupunctureProject.GUI
 			patient.MedicalDescription = hestory.Text;
 			patient.Gend = (Gender)gender.DataContext;
 			patient.Email = email.Text;
-			DatabaseConnection.Instance.Update(patient);
+			DatabaseConnection.Update(patient);
 		}
 
 		private void Censel_Click(object sender, RoutedEventArgs e)
@@ -78,21 +78,7 @@ namespace AcupunctureProject.GUI
 			m.Show();
 		}
 
-		private void Hestory_KeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.Key == Key.Enter)
-				AddNewLine(hestory);
-		}
-
-		private void AddNewLine(TextBox textBox)
-		{
-			int temp = textBox.SelectionStart;
-			textBox.Text = textBox.Text.Remove(temp, textBox.SelectionLength);
-			textBox.Text = textBox.Text.Insert(temp, "\n");
-			textBox.SelectionStart = temp + 1;
-		}
-
-		private void openDiagnostic_Click(object sender, RoutedEventArgs e)
+		private void OpenDiagnostic_Click(object sender, RoutedEventArgs e)
 		{
 			new DiagnosticList(patient).Show();
 		}

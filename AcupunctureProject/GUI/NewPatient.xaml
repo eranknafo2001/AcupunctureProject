@@ -3,7 +3,7 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:AcupunctureProject"
+		xmlns:local="clr-namespace:AcupunctureProject.GUI"
 		mc:Ignorable="d"
 		Title="יצירת מטופל" WindowStartupLocation="CenterOwner" FlowDirection="RightToLeft" ResizeMode="NoResize" Width="400" Height="544" Background="GhostWhite">
 	<Grid FlowDirection="RightToLeft" Margin="10,10,20,10">
@@ -32,21 +32,21 @@
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 		<Label Content="שם" Grid.Row="0" Grid.Column="0"/>
-		<TextBox x:Name="name" Grid.Row="0" Grid.Column="2"/>
+		<TextBox Grid.Row="0" Text="{Binding Path=PatientItem.Name,Mode=TwoWay}" Grid.Column="2"/>
 		<Label Content="תאריך לידה" Grid.Row="2" Grid.Column="0"/>
-		<DatePicker x:Name="berthday" Grid.Row="2" Grid.Column="2" Width="100" HorizontalAlignment="Left"/>
+		<DatePicker SelectedDate="{Binding Path=PatientItem.Birthday,Mode=TwoWay}" Grid.Row="2" Grid.Column="2" Width="100" HorizontalAlignment="Left"/>
 		<Label Content="כתובת" Grid.Row="4" Grid.Column="0"/>
-		<TextBox x:Name="address" Grid.Row="4" Grid.Column="2"/>
+		<TextBox Grid.Row="4" Text="{Binding Path=PatientItem.Address,Mode=TwoWay}" Grid.Column="2"/>
 		<Label Content="סלולרי" Grid.Row="6" Grid.Column="0"/>
-		<TextBox x:Name="cellphone" Grid.Row="6" Grid.Column="2" Width="100" HorizontalAlignment="Left"/>
+		<TextBox Text="{Binding Path=PatientItem.Cellphone,Mode=TwoWay}" Grid.Row="6" Grid.Column="2" Width="100" HorizontalAlignment="Left"/>
 		<Label Content="טלפון" Grid.Row="8" Grid.Column="0" />
-		<TextBox x:Name="telphone" Grid.Row="8" Grid.Column="2" Width="100" HorizontalAlignment="Left"/>
+		<TextBox Text="{Binding Path=PatientItem.Telephone,Mode=TwoWay}" Grid.Row="8" Grid.Column="2" Width="100" HorizontalAlignment="Left"/>
 		<Label Content='דא"ל' Grid.Row="10" Grid.Column="0" />
-		<TextBox x:Name="email" Grid.Row="10" Grid.Column="2" />
+		<TextBox Text="{Binding Path=PatientItem.Email,Mode=TwoWay}" Grid.Row="10" Grid.Column="2" />
 		<Label Content="מין" Grid.Row="12" Grid.Column="0"/>
-		<ComboBox x:Name="gender" Grid.Row="12" Grid.Column="2" Width="100" HorizontalAlignment="Left" BorderBrush="Red" BorderThickness="1"/>
+		<ComboBox x:Name="gender" SelectedIndex="{Binding Path=PatientItem.Gend,Mode=TwoWay}" Grid.Row="12" Grid.Column="2" Width="100" HorizontalAlignment="Left" BorderBrush="Red" BorderThickness="1"/>
 		<Label Content="תיאור רפואי" Grid.Row="14" Grid.Column="0"/>
-		<TextBox x:Name="hestory" TextWrapping="Wrap" KeyDown="Hestory_KeyDown" Grid.Row="14" Grid.Column="2" Height="200"/>
+		<local:WTextBox Text="{Binding Path=PatientItem.MedicalDescription,Mode=TwoWay}" Grid.Row="14" Grid.Column="2" Height="200"/>
 		<Grid Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="3">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
@@ -58,9 +58,9 @@
 				<ColumnDefinition Width="5"/>
 				<ColumnDefinition Width="auto"/>
 			</Grid.ColumnDefinitions>
-			<Button x:Name="censel" Content="ביטול" Grid.Column="0" Grid.Row="0" Click="Censel_Click"/>
-			<Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="2" Grid.Row="0" Click="SaveAndExit_Click"/>
-			<Button x:Name="save" Content="שמור" Grid.Column="4" Grid.Row="0" Click="Save_Click"/>
+			<Button Content="ביטול" Grid.Column="0" Grid.Row="0" Click="Censel_Click"/>
+			<Button Content="שמור וסגור" Grid.Column="2" Grid.Row="0" Click="SaveAndExit_Click"/>
+			<Button Content="שמור" Grid.Column="4" Grid.Row="0" Click="Save_Click"/>
 		</Grid>
 	</Grid>
 </Window>

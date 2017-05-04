@@ -57,7 +57,7 @@ namespace AcupunctureProject.GUI
 		{
 			try
 			{
-				DatabaseConnection.Instance.Set(TreatmentItem);
+				DatabaseConnection.Set(TreatmentItem);
 			}
 			catch (SQLite.Net.SQLiteException e)
 			{
@@ -75,7 +75,13 @@ namespace AcupunctureProject.GUI
 
 		private void Censel_Click(object sender, RoutedEventArgs e) => Close();
 
-		private void Save_Click(object sender, RoutedEventArgs e) => SaveData();
+		private void Save_Click(object sender, RoutedEventArgs e)
+		{
+			var existed = DatabaseConnection.Exist(TreatmentItem);
+			SaveData();
+			if (!existed)
+				TreatmentItem = new DTreatment() { Name = "", Path = "" };
+		}
 
 		private void SaveAndClose_Click(object sender, RoutedEventArgs e)
 		{

@@ -149,10 +149,10 @@ namespace SQLite
 		/// <summary>
 		/// Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
 		/// </summary>
-		/// <param name="databasePath">
+		/// <param Name="databasePath">
 		/// Specifies the path to the database file.
 		/// </param>
-		/// <param name="storeDateTimeAsTicks">
+		/// <param Name="storeDateTimeAsTicks">
 		/// Specifies whether to store DateTime properties as ticks (true) or strings (false). You
 		/// absolutely do want to store them as Ticks in all new projects. The default of false is
 		/// only here for backwards compatibility. There is a *significant* speed advantage, with no
@@ -166,10 +166,10 @@ namespace SQLite
 		/// <summary>
 		/// Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
 		/// </summary>
-		/// <param name="databasePath">
+		/// <param Name="databasePath">
 		/// Specifies the path to the database file.
 		/// </param>
-		/// <param name="storeDateTimeAsTicks">
+		/// <param Name="storeDateTimeAsTicks">
 		/// Specifies whether to store DateTime properties as ticks (true) or strings (false). You
 		/// absolutely do want to store them as Ticks in all new projects. The default of false is
 		/// only here for backwards compatibility. There is a *significant* speed advantage, with no
@@ -267,10 +267,10 @@ namespace SQLite
 		/// <summary>
 		/// Retrieves the mapping that is automatically generated for the given type.
 		/// </summary>
-		/// <param name="type">
+		/// <param Name="type">
 		/// The type whose mapping to the database is returned.
 		/// </param>		 
-		/// <param name="createFlags">
+		/// <param Name="createFlags">
 		/// Optional flags allowing implicit PK and indexes based on naming conventions
 		/// </param>	 
 		/// <returns>
@@ -348,8 +348,8 @@ namespace SQLite
 		/// a schema automatically generated from the specified type. You can
 		/// later access this schema by calling GetMapping.
 		/// </summary>
-		/// <param name="ty">Type to reflect to a database table.</param>
-		/// <param name="createFlags">Optional flags allowing implicit PK and indexes based on naming conventions.</param>  
+		/// <param Name="ty">Type to reflect to a database table.</param>
+		/// <param Name="createFlags">Optional flags allowing implicit PK and indexes based on naming conventions.</param>  
 		/// <returns>
 		/// The number of entries added to the database schema.
 		/// </returns>
@@ -414,10 +414,10 @@ namespace SQLite
 		/// <summary>
 		/// Creates an index for the specified table and columns.
 		/// </summary>
-		/// <param name="indexName">Name of the index to create</param>
-		/// <param name="tableName">Name of the database table</param>
-		/// <param name="columnNames">An array of column names to index</param>
-		/// <param name="unique">Whether the index should be unique</param>
+		/// <param Name="indexName">Name of the index to create</param>
+		/// <param Name="tableName">Name of the database table</param>
+		/// <param Name="columnNames">An array of column names to index</param>
+		/// <param Name="unique">Whether the index should be unique</param>
 		public int CreateIndex(string indexName, string tableName, string[] columnNames, bool unique = false)
 		{
 			const string sqlFormat = "create {2} index if not exists \"{3}\" on \"{0}\"(\"{1}\")";
@@ -428,10 +428,10 @@ namespace SQLite
 		/// <summary>
 		/// Creates an index for the specified table and column.
 		/// </summary>
-		/// <param name="indexName">Name of the index to create</param>
-		/// <param name="tableName">Name of the database table</param>
-		/// <param name="columnName">Name of the column to index</param>
-		/// <param name="unique">Whether the index should be unique</param>
+		/// <param Name="indexName">Name of the index to create</param>
+		/// <param Name="tableName">Name of the database table</param>
+		/// <param Name="columnName">Name of the column to index</param>
+		/// <param Name="unique">Whether the index should be unique</param>
 		public int CreateIndex(string indexName, string tableName, string columnName, bool unique = false)
 		{
 			return CreateIndex(indexName, tableName, new string[] { columnName }, unique);
@@ -440,9 +440,9 @@ namespace SQLite
 		/// <summary>
 		/// Creates an index for the specified table and column.
 		/// </summary>
-		/// <param name="tableName">Name of the database table</param>
-		/// <param name="columnName">Name of the column to index</param>
-		/// <param name="unique">Whether the index should be unique</param>
+		/// <param Name="tableName">Name of the database table</param>
+		/// <param Name="columnName">Name of the column to index</param>
+		/// <param Name="unique">Whether the index should be unique</param>
 		public int CreateIndex(string tableName, string columnName, bool unique = false)
 		{
 			return CreateIndex(tableName + "_" + columnName, tableName, columnName, unique);
@@ -451,9 +451,9 @@ namespace SQLite
 		/// <summary>
 		/// Creates an index for the specified table and columns.
 		/// </summary>
-		/// <param name="tableName">Name of the database table</param>
-		/// <param name="columnNames">An array of column names to index</param>
-		/// <param name="unique">Whether the index should be unique</param>
+		/// <param Name="tableName">Name of the database table</param>
+		/// <param Name="columnNames">An array of column names to index</param>
+		/// <param Name="unique">Whether the index should be unique</param>
 		public int CreateIndex(string tableName, string[] columnNames, bool unique = false)
 		{
 			return CreateIndex(tableName + "_" + string.Join ("_", columnNames), tableName, columnNames, unique);
@@ -463,9 +463,9 @@ namespace SQLite
 		/// Creates an index for the specified object property.
 		/// e.g. CreateIndex<Client>(c => c.Name);
 		/// </summary>
-		/// <typeparam name="T">Type to reflect to a database table.</typeparam>
-		/// <param name="property">Property to index</param>
-		/// <param name="unique">Whether the index should be unique</param>
+		/// <typeparam Name="T">Type to reflect to a database table.</typeparam>
+		/// <param Name="property">Property to index</param>
+		/// <param Name="unique">Whether the index should be unique</param>
 		public void CreateIndex<T>(Expression<Func<T, object>> property, bool unique = false)
 		{
 			MemberExpression mx;
@@ -556,10 +556,10 @@ namespace SQLite
 		/// Creates a new SQLiteCommand given the command text with arguments. Place a '?'
 		/// in the command text for each of the arguments.
 		/// </summary>
-		/// <param name="cmdText">
+		/// <param Name="cmdText">
 		/// The fully escaped SQL.
 		/// </param>
-		/// <param name="args">
+		/// <param Name="args">
 		/// Arguments to substitute for the occurences of '?' in the command text.
 		/// </param>
 		/// <returns>
@@ -586,10 +586,10 @@ namespace SQLite
 		/// You can set the Trace or TimeExecution properties of the connection
 		/// to profile execution.
 		/// </summary>
-		/// <param name="query">
+		/// <param Name="query">
 		/// The fully escaped SQL.
 		/// </param>
-		/// <param name="args">
+		/// <param Name="args">
 		/// Arguments to substitute for the occurences of '?' in the query.
 		/// </param>
 		/// <returns>
@@ -647,10 +647,10 @@ namespace SQLite
 		/// It returns each row of the result using the mapping automatically generated for
 		/// the given type.
 		/// </summary>
-		/// <param name="query">
+		/// <param Name="query">
 		/// The fully escaped SQL.
 		/// </param>
-		/// <param name="args">
+		/// <param Name="args">
 		/// Arguments to substitute for the occurences of '?' in the query.
 		/// </param>
 		/// <returns>
@@ -668,10 +668,10 @@ namespace SQLite
 		/// It returns each row of the result using the mapping automatically generated for
 		/// the given type.
 		/// </summary>
-		/// <param name="query">
+		/// <param Name="query">
 		/// The fully escaped SQL.
 		/// </param>
-		/// <param name="args">
+		/// <param Name="args">
 		/// Arguments to substitute for the occurences of '?' in the query.
 		/// </param>
 		/// <returns>
@@ -692,14 +692,14 @@ namespace SQLite
 		/// only used by libraries in order to query the database via introspection. It is
 		/// normally not used.
 		/// </summary>
-		/// <param name="map">
+		/// <param Name="map">
 		/// A <see cref="TableMapping"/> to use to convert the resulting rows
 		/// into objects.
 		/// </param>
-		/// <param name="query">
+		/// <param Name="query">
 		/// The fully escaped SQL.
 		/// </param>
-		/// <param name="args">
+		/// <param Name="args">
 		/// Arguments to substitute for the occurences of '?' in the query.
 		/// </param>
 		/// <returns>
@@ -718,14 +718,14 @@ namespace SQLite
 		/// only used by libraries in order to query the database via introspection. It is
 		/// normally not used.
 		/// </summary>
-		/// <param name="map">
+		/// <param Name="map">
 		/// A <see cref="TableMapping"/> to use to convert the resulting rows
 		/// into objects.
 		/// </param>
-		/// <param name="query">
+		/// <param Name="query">
 		/// The fully escaped SQL.
 		/// </param>
-		/// <param name="args">
+		/// <param Name="args">
 		/// Arguments to substitute for the occurences of '?' in the query.
 		/// </param>
 		/// <returns>
@@ -756,7 +756,7 @@ namespace SQLite
 		/// associated with the specified type. Use of this method requires that
 		/// the given type have a designated PrimaryKey (using the PrimaryKeyAttribute).
 		/// </summary>
-		/// <param name="pk">
+		/// <param Name="pk">
 		/// The primary key.
 		/// </param>
 		/// <returns>
@@ -773,7 +773,7 @@ namespace SQLite
 		/// Attempts to retrieve the first object that matches the predicate from the table
 		/// associated with the specified type. 
 		/// </summary>
-		/// <param name="predicate">
+		/// <param Name="predicate">
 		/// A predicate for which object to find.
 		/// </param>
 		/// <returns>
@@ -790,7 +790,7 @@ namespace SQLite
 		/// associated with the specified type. Use of this method requires that
 		/// the given type have a designated PrimaryKey (using the PrimaryKeyAttribute).
 		/// </summary>
-		/// <param name="pk">
+		/// <param Name="pk">
 		/// The primary key.
 		/// </param>
 		/// <returns>
@@ -808,10 +808,10 @@ namespace SQLite
 		/// associated with the specified type. Use of this method requires that
 		/// the given type have a designated PrimaryKey (using the PrimaryKeyAttribute).
 		/// </summary>
-		/// <param name="pk">
+		/// <param Name="pk">
 		/// The primary key.
 		/// </param>
-		/// <param name="map">
+		/// <param Name="map">
 		/// The TableMapping used to identify the object type.
 		/// </param>
 		/// <returns>
@@ -827,7 +827,7 @@ namespace SQLite
 		/// Attempts to retrieve the first object that matches the predicate from the table
 		/// associated with the specified type. 
 		/// </summary>
-		/// <param name="predicate">
+		/// <param Name="predicate">
 		/// A predicate for which object to find.
 		/// </param>
 		/// <returns>
@@ -942,7 +942,7 @@ namespace SQLite
 		/// <summary>
 		/// Rolls back the savepoint created by <see cref="BeginTransaction"/> or SaveTransactionPoint.
 		/// </summary>
-		/// <param name="savepoint">The name of the savepoint to roll back to, as returned by <see cref="SaveTransactionPoint"/>.  If savepoint is null or empty, this method is equivalent to a call to <see cref="Rollback"/></param>
+		/// <param Name="savepoint">The name of the savepoint to roll back to, as returned by <see cref="SaveTransactionPoint"/>.  If savepoint is null or empty, this method is equivalent to a call to <see cref="Rollback"/></param>
 		public void RollbackTo (string savepoint)
 		{
 			RollbackTo (savepoint, false);
@@ -951,7 +951,7 @@ namespace SQLite
 		/// <summary>
 		/// Rolls back the transaction that was begun by <see cref="BeginTransaction"/>.
 		/// </summary>
-		/// <param name="noThrow">true to avoid throwing exceptions, false otherwise</param>
+		/// <param Name="noThrow">true to avoid throwing exceptions, false otherwise</param>
 		void RollbackTo (string savepoint, bool noThrow)
 		{
 			// Rolling back without a TO clause rolls backs all transactions 
@@ -979,7 +979,7 @@ namespace SQLite
 		/// 
 		/// The RELEASE command is like a COMMIT for a SAVEPOINT.
 		/// </summary>
-		/// <param name="savepoint">The name of the savepoint to release.  The string should be the result of a call to <see cref="SaveTransactionPoint"/></param>
+		/// <param Name="savepoint">The name of the savepoint to release.  The string should be the result of a call to <see cref="SaveTransactionPoint"/></param>
 		public void Release (string savepoint)
 		{
 			DoSavePointExecute (savepoint, "release ");
@@ -1022,12 +1022,12 @@ namespace SQLite
 		}
 
 		/// <summary>
-		/// Executes <param name="action"> within a (possibly nested) transaction by wrapping it in a SAVEPOINT. If an
+		/// Executes <param Name="action"> within a (possibly nested) transaction by wrapping it in a SAVEPOINT. If an
 		/// exception occurs the whole transaction is rolled back, not just the current savepoint. The exception
 		/// is rethrown.
 		/// </summary>
-		/// <param name="action">
-		/// The <see cref="Action"/> to perform within a transaction. <param name="action"> can contain any number
+		/// <param Name="action">
+		/// The <see cref="Action"/> to perform within a transaction. <param Name="action"> can contain any number
 		/// of operations on the connection but should never call <see cref="BeginTransaction"/> or
 		/// <see cref="Commit"/>.
 		/// </param>
@@ -1046,7 +1046,7 @@ namespace SQLite
 		/// <summary>
 		/// Inserts all specified objects.
 		/// </summary>
-		/// <param name="objects">
+		/// <param Name="objects">
 		/// An <see cref="IEnumerable"/> of the objects to insert.
 		/// </param>
 		/// <returns>
@@ -1066,10 +1066,10 @@ namespace SQLite
 		/// <summary>
 		/// Inserts all specified objects.
 		/// </summary>
-		/// <param name="objects">
+		/// <param Name="objects">
 		/// An <see cref="IEnumerable"/> of the objects to insert.
 		/// </param>
-		/// <param name="extra">
+		/// <param Name="extra">
 		/// Literal SQL code that gets placed into the command. INSERT {extra} INTO ...
 		/// </param>
 		/// <returns>
@@ -1089,10 +1089,10 @@ namespace SQLite
 		/// <summary>
 		/// Inserts all specified objects.
 		/// </summary>
-		/// <param name="objects">
+		/// <param Name="objects">
 		/// An <see cref="IEnumerable"/> of the objects to insert.
 		/// </param>
-		/// <param name="objType">
+		/// <param Name="objType">
 		/// The type of object to insert.
 		/// </param>
 		/// <returns>
@@ -1113,7 +1113,7 @@ namespace SQLite
 		/// Inserts the given object and retrieves its
 		/// auto incremented primary key if it has one.
 		/// </summary>
-		/// <param name="obj">
+		/// <param Name="obj">
 		/// The object to insert.
 		/// </param>
 		/// <returns>
@@ -1134,7 +1134,7 @@ namespace SQLite
 		/// some pre-existing object, this function deletes
 		/// the old object.
 		/// </summary>
-		/// <param name="obj">
+		/// <param Name="obj">
 		/// The object to insert.
 		/// </param>
 		/// <returns>
@@ -1152,10 +1152,10 @@ namespace SQLite
 		/// Inserts the given object and retrieves its
 		/// auto incremented primary key if it has one.
 		/// </summary>
-		/// <param name="obj">
+		/// <param Name="obj">
 		/// The object to insert.
 		/// </param>
-		/// <param name="objType">
+		/// <param Name="objType">
 		/// The type of object to insert.
 		/// </param>
 		/// <returns>
@@ -1173,10 +1173,10 @@ namespace SQLite
 		/// some pre-existing object, this function deletes
 		/// the old object.
 		/// </summary>
-		/// <param name="obj">
+		/// <param Name="obj">
 		/// The object to insert.
 		/// </param>
-		/// <param name="objType">
+		/// <param Name="objType">
 		/// The type of object to insert.
 		/// </param>
 		/// <returns>
@@ -1191,10 +1191,10 @@ namespace SQLite
 		/// Inserts the given object and retrieves its
 		/// auto incremented primary key if it has one.
 		/// </summary>
-		/// <param name="obj">
+		/// <param Name="obj">
 		/// The object to insert.
 		/// </param>
-		/// <param name="extra">
+		/// <param Name="extra">
 		/// Literal SQL code that gets placed into the command. INSERT {extra} INTO ...
 		/// </param>
 		/// <returns>
@@ -1212,13 +1212,13 @@ namespace SQLite
 		/// Inserts the given object and retrieves its
 		/// auto incremented primary key if it has one.
 		/// </summary>
-		/// <param name="obj">
+		/// <param Name="obj">
 		/// The object to insert.
 		/// </param>
-		/// <param name="extra">
+		/// <param Name="extra">
 		/// Literal SQL code that gets placed into the command. INSERT {extra} INTO ...
 		/// </param>
-		/// <param name="objType">
+		/// <param Name="objType">
 		/// The type of object to insert.
 		/// </param>
 		/// <returns>
@@ -1302,7 +1302,7 @@ namespace SQLite
 		/// except for its primary key.
 		/// The object is required to have a primary key.
 		/// </summary>
-		/// <param name="obj">
+		/// <param Name="obj">
 		/// The object to update. It must have a primary key designated using the PrimaryKeyAttribute.
 		/// </param>
 		/// <returns>
@@ -1321,10 +1321,10 @@ namespace SQLite
 		/// except for its primary key.
 		/// The object is required to have a primary key.
 		/// </summary>
-		/// <param name="obj">
+		/// <param Name="obj">
 		/// The object to update. It must have a primary key designated using the PrimaryKeyAttribute.
 		/// </param>
-		/// <param name="objType">
+		/// <param Name="objType">
 		/// The type of object to insert.
 		/// </param>
 		/// <returns>
@@ -1373,7 +1373,7 @@ namespace SQLite
 		/// <summary>
 		/// Updates all specified objects.
 		/// </summary>
-		/// <param name="objects">
+		/// <param Name="objects">
 		/// An <see cref="IEnumerable"/> of the objects to insert.
 		/// </param>
 		/// <returns>
@@ -1393,7 +1393,7 @@ namespace SQLite
 		/// <summary>
 		/// Deletes the given object from the database using its primary key.
 		/// </summary>
-		/// <param name="objectToDelete">
+		/// <param Name="objectToDelete">
 		/// The object to delete. It must have a primary key designated using the PrimaryKeyAttribute.
 		/// </param>
 		/// <returns>
@@ -1413,7 +1413,7 @@ namespace SQLite
 		/// <summary>
 		/// Deletes the object with the specified primary key.
 		/// </summary>
-		/// <param name="primaryKey">
+		/// <param Name="primaryKey">
 		/// The primary key of the object to delete.
 		/// </param>
 		/// <returns>
@@ -2751,7 +2751,7 @@ namespace SQLite
 		/// <summary>
 		/// Compiles a BinaryExpression where one of the parameters is null.
 		/// </summary>
-		/// <param name="parameter">The non-null parameter</param>
+		/// <param Name="parameter">The non-null parameter</param>
 		private string CompileNullBinaryExpression(BinaryExpression expression, CompileResult parameter)
 		{
 			if (expression.NodeType == ExpressionType.Equal)

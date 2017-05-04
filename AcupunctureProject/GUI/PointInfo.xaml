@@ -83,7 +83,7 @@
 					<ComboBoxItem Content="5" DataContext="5"/>
 				</ComboBox>
 			</Grid>
-			<ListView x:Name="symptomSearchList" Grid.Row="0" Grid.Column="10" Grid.RowSpan="6" Width="200" Visibility="Hidden" KeyDown="SymptomSearchList_KeyDown" MouseDoubleClick="SymptomSearchList_MouseDoubleClick" GotFocus="SymptomSearchList_GotFocus" LostFocus="SymptomSearchList_LostFocus" Panel.ZIndex="20" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+			<ListView x:Name="symptomSearchList" ItemsSource="{Binding Path=SymptomSearchListItems,Mode=OneWay}" Grid.Row="0" Grid.Column="10" Grid.RowSpan="6" Width="200" Visibility="Hidden" KeyDown="SymptomSearchList_KeyDown" MouseDoubleClick="SymptomSearchList_MouseDoubleClick" GotFocus="SymptomSearchList_GotFocus" LostFocus="SymptomSearchList_LostFocus" Panel.ZIndex="20" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 			<Grid Grid.Row="2" Grid.RowSpan="3" Grid.Column="10">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="1*"/>

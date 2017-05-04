@@ -23,13 +23,13 @@ namespace AcupunctureProject.GUI
 		public PatientList()
 		{
 			InitializeComponent();
-			patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
-			DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(UpdateData);
+			patientDataGrid.ItemsSource = DatabaseConnection.FindPatient(searchTextBox.Text);
+			DatabaseConnection.TableChangedEvent += new TableChangedEventHendler(UpdateData);
 		}
 
 		private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
+			patientDataGrid.ItemsSource = DatabaseConnection.FindPatient(searchTextBox.Text);
 		}
 
 		private void PatientDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -45,19 +45,19 @@ namespace AcupunctureProject.GUI
 			Patient patient = (Patient)patientDataGrid.SelectedItem;
 			if (patient == null)
 				return;
-			DatabaseConnection.Instance.GetChildren(patient);
+			DatabaseConnection.GetChildren(patient);
 			foreach (var meeting in patient.Meetings)
-				DatabaseConnection.Instance.Delete(meeting);
-			DatabaseConnection.Instance.Delete(patient);
-			patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
+				DatabaseConnection.Delete(meeting);
+			DatabaseConnection.Delete(patient);
+			patientDataGrid.ItemsSource = DatabaseConnection.FindPatient(searchTextBox.Text);
 		}
 
-		~PatientList() => DatabaseConnection.Instance.TableChangedEvent -= new DatabaseConnection.TableChanged(UpdateData);
+		~PatientList() => DatabaseConnection.TableChangedEvent -= new TableChangedEventHendler(UpdateData);
 
 		private void UpdateData(Type t, object i)
 		{
 			if (t == typeof(Patient))
-				patientDataGrid.ItemsSource = DatabaseConnection.Instance.FindPatient(searchTextBox.Text);
+				patientDataGrid.ItemsSource = DatabaseConnection.FindPatient(searchTextBox.Text);
 		}
 
 		private void openMeetingsList_Click(object sender, RoutedEventArgs e)

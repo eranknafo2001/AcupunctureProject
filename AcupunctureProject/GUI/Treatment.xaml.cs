@@ -24,6 +24,7 @@ namespace AcupunctureProject.GUI
 	public partial class Treatment : Window
 	{
 		public DTreatment TreatmentItem { get; set; }
+
 		public Treatment(DTreatment treatment)
 		{
 			TreatmentItem = treatment;

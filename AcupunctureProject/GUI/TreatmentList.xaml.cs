@@ -69,7 +69,7 @@ namespace AcupunctureProject.GUI
 		private void Delete_Click(object sender, RoutedEventArgs e)
 		{
 			if (dataGrid.SelectedItem != null)
-				Database.DatabaseConnection.Instance.Delete(dataGrid.SelectedItem as DTreatment);
+				Database.DatabaseConnection.Delete(dataGrid.SelectedItem as DTreatment);
 		}
 	}
 }

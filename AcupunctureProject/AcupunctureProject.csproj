@@ -140,10 +140,10 @@
     <Compile Include="Database\Channel.cs" />
     <Compile Include="Database\Color.cs" />
     <Compile Include="Database\ConnectionValue.cs" />
-    <Compile Include="Database\Database.cs" />
     <Compile Include="Database\Diagnostic.cs" />
     <Compile Include="Database\Meeting.cs" />
     <Compile Include="Database\Patient.cs" />
+    <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\Point.cs" />
     <Compile Include="Database\Symptom.cs" />
     <Compile Include="Database\Treatment.cs" />
@@ -159,7 +159,6 @@
     <Compile Include="GUI\Ex.cs" />
     <Compile Include="GUI\ExcelGrid.cs" />
     <Compile Include="GUI\Exceptions\NullValueException.cs" />
-    <Compile Include="GUI\ListViewTV.cs" />
     <Compile Include="GUI\MeetingInfoPage.xaml.cs">
       <DependentUpon>MeetingInfoPage.xaml</DependentUpon>
     </Compile>
@@ -176,6 +175,11 @@
       <DependentUpon>TreatmentList.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\WTextBox.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
     <Page Include="GUI\Assets\Ver.xaml">
@@ -293,11 +297,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

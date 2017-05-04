@@ -3,7 +3,7 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:AcupunctureProject"
+		xmlns:local="clr-namespace:AcupunctureProject.GUI"
 		mc:Ignorable="d"
 		Title="עריכת " WindowStartupLocation="CenterOwner" FlowDirection="RightToLeft" ResizeMode="NoResize" Width="400" Height="544" Background="GhostWhite">
 	<Grid FlowDirection="RightToLeft" Margin="10,10,20,10">
@@ -50,7 +50,7 @@
 			<ComboBoxItem Content="אחר"/>
 		</ComboBox>
 		<Label Content="תיאור רפואי" Grid.Row="14" Grid.Column="0"/>
-		<TextBox x:Name="hestory" TextWrapping="Wrap" KeyDown="Hestory_KeyDown" Grid.Row="14" Grid.Column="2" Height="200"/>
+		<local:WTextBox x:Name="hestory" Grid.Row="14" Grid.Column="2" Height="200"/>
 		<Grid Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="3">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="auto"/>
@@ -67,7 +67,7 @@
 				<ColumnDefinition Width="auto"/>
 			</Grid.ColumnDefinitions>
 			<Button x:Name="censel" Content="ביטול" Grid.Column="0" Grid.Row="0" Click="Censel_Click"/>
-			<Button x:Name="openDiagnostic" Content="פתח איבחונים" Grid.Row="0" Grid.Column="2" Click="openDiagnostic_Click"/>
+			<Button x:Name="openDiagnostic" Content="פתח איבחונים" Grid.Row="0" Grid.Column="2" Click="OpenDiagnostic_Click"/>
 			<Button x:Name="openMeetings" Content="פתח פגישות אחרונות" Grid.Column="4" Grid.Row="0" Click="OpenMeetings_Click"/>
 			<Button x:Name="saveAndExit" Content="שמור וסגור" Grid.Column="6" Grid.Row="0" Click="SaveAndExit_Click"/>
 			<Button x:Name="save" Content="שמור" Grid.Column="8" Grid.Row="0" Click="Save_Click"/>

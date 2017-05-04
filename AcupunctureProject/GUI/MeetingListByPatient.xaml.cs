@@ -25,14 +25,14 @@ namespace AcupunctureProject.GUI
 		public MeetingListByPatient(Patient patient)
 		{
 			InitializeComponent();
-			DatabaseConnection.Instance.GetChildren(patient);
+			DatabaseConnection.GetChildren(patient);
 			Title += patient.Name;
 			this.patient = patient;
 			meetingsDataGrid.ItemsSource = patient.Meetings;
-			DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(UpdateData);
+			DatabaseConnection.TableChangedEvent += new TableChangedEventHendler(UpdateData);
 		}
 
-		~MeetingListByPatient()=> DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(UpdateData);
+		~MeetingListByPatient()=> DatabaseConnection.TableChangedEvent += new TableChangedEventHendler(UpdateData);
 
 		private void MeetingsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
@@ -47,7 +47,7 @@ namespace AcupunctureProject.GUI
 			Meeting item = (Meeting)meetingsDataGrid.SelectedItem;
 			if (item == null)
 				return;
-			DatabaseConnection.Instance.Delete(item);
+			DatabaseConnection.Delete(item);
 			meetingsDataGrid.ItemsSource = patient.Meetings.OrderBy(m => m.Date).Reverse();
 		}
 
@@ -55,7 +55,7 @@ namespace AcupunctureProject.GUI
 		{
 			if (t != typeof(Meeting))
 				return;
-			DatabaseConnection.Instance.GetChildren(patient);
+			DatabaseConnection.GetChildren(patient);
 			meetingsDataGrid.ItemsSource = patient.Meetings.OrderBy(m => m.Date).Reverse();
 		}
 	}

@@ -26,33 +26,33 @@
 
 		<ScrollViewer  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7">
 			<StackPanel Margin="10">
-				<GroupBox Header="עבודה">
-					<DatePicker x:Name="CreationDate"/>
+				<GroupBox Header="תאריך">
+					<DatePicker SelectedDate="{Binding Path=Diagnostic.CreationDate,Mode=TwoWay}"/>
 				</GroupBox>
 				<Border Height="10"/>
-				
+
 				<GroupBox Header="עבודה">
-					<TextBox x:Name="Profession"/>
+					<TextBox Text="{Binding Path=Diagnostic.Profession,Mode=TwoWay}"/>
 				</GroupBox>
 				<Border Height="10"/>
 
 				<GroupBox Header="תלונה עיקרית">
-					<local:WTextBox x:Name="MainComplaint" Height="100"/>
+					<local:WTextBox Text="{Binding Path=Diagnostic.MainComplaint,Mode=TwoWay}" Height="100"/>
 				</GroupBox>
 				<Border Height="10"/>
 
 				<GroupBox Header="תלונה מישנית">
-					<local:WTextBox x:Name="SeconderyComlaint" Height="100"/>
+					<local:WTextBox Text="{Binding Path=Diagnostic.SeconderyComlaint,Mode=TwoWay}" Height="100"/>
 				</GroupBox>
 				<Border Height="10"/>
 
 				<GroupBox Header="תרופות בשימוש">
-					<TextBox x:Name="DrugsUsed" Height="100" KeyDown="Enter"/>
+					<local:WTextBox Text="{Binding Path=Diagnostic.DrugsUsed,Mode=TwoWay}" Height="100"/>
 				</GroupBox>
 				<Border Height="10"/>
 
 				<GroupBox Header="בדיקות שנעשו">
-					<TextBox x:Name="TestsMade" Height="100" KeyDown="Enter"/>
+					<local:WTextBox Text="{Binding Path=Diagnostic.TestsMade,Mode=TwoWay}" Height="100"/>
 				</GroupBox>
 				<Border Height="10"/>
 
@@ -71,7 +71,7 @@
 							<RadioButton x:Name="PainNo" Content="לא" DataContext="False" GroupName="Pain" Grid.Column="3"/>
 						</Grid>
 						<Border Height="3"/>
-						<TextBox x:Name="Pain" Height="100" KeyDown="Enter"/>
+						<local:WTextBox Text="{Binding Path=Diagnostic.PainInfo,Mode=TwoWay}" Height="100"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -91,7 +91,7 @@
 							<RadioButton x:Name="PainPreviousEvaluationsNo" Content="לא" DataContext="False" GroupName="PainPreviousEvaluations" Grid.Column="3"/>
 						</Grid>
 						<Border Height="3"/>
-						<TextBox x:Name="PainPreviousEvaluations" Height="100" KeyDown="Enter"/>
+						<local:WTextBox Text="{Binding Path=Diagnostic.PainPreviousEvaluationsInfo,Mode=TwoWay}" Height="100"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -110,7 +110,7 @@
 							<RadioButton x:Name="ScansYas" Content="כן" DataContext="True" GroupName="Scans" Grid.Column="1"/>
 							<RadioButton x:Name="ScansNo" Content="לא" DataContext="False" GroupName="Scans" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="Scans" Height="100" KeyDown="Enter"/>
+						<local:WTextBox Text="{Binding Path=Diagnostic.ScansInfo,Mode=TwoWay}" Height="100"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -129,7 +129,7 @@
 							<RadioButton x:Name="UnderStressYas" Content="כן" DataContext="True" GroupName="UnderStress" Grid.Column="1"/>
 							<RadioButton x:Name="UnderStressNo" Content="לא" DataContext="False" GroupName="UnderStress" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="UnderStress" />
+						<TextBox Text="{Binding Path=Diagnostic.UnderStressInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -148,7 +148,7 @@
 							<RadioButton x:Name="TenseMusclesYas" Content="כן" DataContext="True" GroupName="TenseMuscles" Grid.Column="1"/>
 							<RadioButton x:Name="TenseMusclesNo" Content="לא" DataContext="False" GroupName="TenseMuscles" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="TenseMuscles" />
+						<TextBox Text="{Binding Path=Diagnostic.TenseMusclesInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -167,7 +167,7 @@
 							<RadioButton x:Name="HighBloodPressureOrColesterolYas" Content="כן" DataContext="True" GroupName="HighBloodPressureOrColesterol" Grid.Column="1"/>
 							<RadioButton x:Name="HighBloodPressureOrColesterolNo" Content="לא" DataContext="False" GroupName="HighBloodPressureOrColesterol" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="HighBloodPressureOrColesterol" />
+						<TextBox Text="{Binding Path=Diagnostic.HighBloodPressureOrColesterolInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -186,7 +186,7 @@
 							<RadioButton x:Name="GoodSleepYas" Content="כן" DataContext="True" GroupName="GoodSleep" Grid.Column="1"/>
 							<RadioButton x:Name="GoodSleepNo" Content="לא" DataContext="False" GroupName="GoodSleep" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="GoodSleep" />
+						<TextBox Text="{Binding Path=Diagnostic.HighBloodPressureOrColesterolInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -205,7 +205,7 @@
 							<RadioButton x:Name="FallenToSleepProblemYas" Content="כן" DataContext="True" GroupName="FallenToSleepProblem" Grid.Column="1"/>
 							<RadioButton x:Name="FallenToSleepProblemNo" Content="לא" DataContext="False" GroupName="FallenToSleepProblem" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="FallenToSleepProblem" />
+						<TextBox Text="{Binding Path=Diagnostic.FallenToSleepProblemInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -224,13 +224,13 @@
 							<RadioButton x:Name="PalpitationsYas" Content="כן" DataContext="True" GroupName="Palpitations" Grid.Column="1"/>
 							<RadioButton x:Name="PalpitationsNo" Content="לא" DataContext="False" GroupName="Palpitations" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="Palpitations" />
+						<TextBox Text="{Binding Path=Diagnostic.PalpitationsInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
 
 				<GroupBox Header="מהי תדירות היציאות (צואה) ?">
-					<TextBox x:Name="DefeationRegularity" />
+					<TextBox Text="{Binding Path=Diagnostic.DefeationRegularity,Mode=TwoWay}"/>
 				</GroupBox>
 				<Border Height="10"/>
 
@@ -248,7 +248,7 @@
 							<RadioButton x:Name="FatigueOrFeelsFulAfterEatingYas" Content="כן" DataContext="True" GroupName="FatigueOrFeelsFulAfterEating" Grid.Column="1"/>
 							<RadioButton x:Name="FatigueOrFeelsFulAfterEatingNo" Content="לא" DataContext="False" GroupName="FatigueOrFeelsFulAfterEating" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="FatigueOrFeelsFulAfterEating" />
+						<TextBox Text="{Binding Path=Diagnostic.FatigueOrFeelsFulAfterEatingInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -267,7 +267,7 @@
 							<RadioButton x:Name="DesireForSweetsAfterEatingYas" Content="כן" DataContext="True" GroupName="DesireForSweetsAfterEating" Grid.Column="1"/>
 							<RadioButton x:Name="DesireForSweetsAfterEatingNo" Content="לא" DataContext="False" GroupName="DesireForSweetsAfterEating" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="DesireForSweetsAfterEating" />
+						<TextBox Text="{Binding Path=Diagnostic.DesireForSweetsAfterEatingInfo,Mode=TwoWay}"/>
 						<!--האם יש לך קשיי ריכוז ?-->
 					</StackPanel>
 				</GroupBox>
@@ -287,7 +287,7 @@
 							<RadioButton x:Name="DifficultyConcentatingYas" Content="כן" DataContext="True" GroupName="DifficultyConcentating" Grid.Column="1"/>
 							<RadioButton x:Name="DifficultyConcentatingNo" Content="לא" DataContext="False" GroupName="DifficultyConcentating" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="DifficultyConcentating" />
+						<TextBox Text="{Binding Path=Diagnostic.DifficultyConcentatingInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -306,7 +306,7 @@
 							<RadioButton x:Name="OftenIllYas" Content="כן" DataContext="True" GroupName="OftenIll" Grid.Column="1"/>
 							<RadioButton x:Name="OftenIllNo" Content="לא" DataContext="False" GroupName="OftenIll" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="OftenIll" />
+						<TextBox Text="{Binding Path=Diagnostic.OftenIllInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -325,7 +325,7 @@
 							<RadioButton x:Name="SufferingFromMucusYas" Content="כן" DataContext="True" GroupName="SufferingFromMucus" Grid.Column="1"/>
 							<RadioButton x:Name="SufferingFromMucusNo" Content="לא" DataContext="False" GroupName="SufferingFromMucus" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="SufferingFromMucus" />
+						<TextBox Text="{Binding Path=Diagnostic.SufferingFromMucusInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -345,7 +345,7 @@
 							<RadioButton x:Name="CoughOrAllergySuffersYas" Content="כן" DataContext="True" GroupName="CoughOrAllergySuffers" Grid.Column="1"/>
 							<RadioButton x:Name="CoughOrAllergySuffersNo" Content="לא" DataContext="False" GroupName="CoughOrAllergySuffers" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="CoughOrAllergySuffers" />
+						<TextBox Text="{Binding Path=Diagnostic.CoughOrAllergySuffersInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -364,7 +364,7 @@
 							<RadioButton x:Name="SmokingYas" Content="כן" DataContext="True" GroupName="Smoking" Grid.Column="1"/>
 							<RadioButton x:Name="SmokingNo" Content="לא" DataContext="False" GroupName="Smoking" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="Smoking" />
+						<TextBox Text="{Binding Path=Diagnostic.SmokingInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -383,7 +383,7 @@
 							<RadioButton x:Name="FrequentOrUrgentUrinationYas" Content="כן" DataContext="True" GroupName="FrequentOrUrgentUrination" Grid.Column="1"/>
 							<RadioButton x:Name="FrequentOrUrgentUrinationNo" Content="לא" DataContext="False" GroupName="FrequentOrUrgentUrination" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="FrequentOrUrgentUrination" />
+						<TextBox Text="{Binding Path=Diagnostic.FrequentOrUrgentUrinationInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -402,7 +402,7 @@
 							<RadioButton x:Name="Hot" Content="חום" DataContext="True" GroupName="PreferColdOrHot" Grid.Column="1"/>
 							<RadioButton x:Name="Cold" Content="קור" DataContext="False" GroupName="PreferColdOrHot" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="PreferColdOrHot" />
+						<TextBox Text="{Binding Path=Diagnostic.PreferColdOrHotInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -421,7 +421,7 @@
 							<RadioButton x:Name="SuffersFromColdOrHotYas" Content="כן" DataContext="True" GroupName="SuffersFromColdOrHot" Grid.Column="1"/>
 							<RadioButton x:Name="SuffersFromColdOrHotNo" Content="לא" DataContext="False" GroupName="SuffersFromColdOrHot" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="SuffersFromColdOrHot" />
+						<TextBox Text="{Binding Path=Diagnostic.SuffersFromColdOrHotInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -440,7 +440,7 @@
 							<RadioButton x:Name="SatisfiedDientsYas" Content="כן" DataContext="True" GroupName="SatisfiedDients" Grid.Column="1"/>
 							<RadioButton x:Name="SatisfiedDientsNo" Content="לא" DataContext="False" GroupName="SatisfiedDients" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="SatisfiedDients" />
+						<TextBox Text="{Binding Path=Diagnostic.SatisfiedDientsInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -459,7 +459,7 @@
 							<RadioButton x:Name="WantToLostWeightYas" Content="כן" DataContext="True" GroupName="WantToLostWeight" Grid.Column="1"/>
 							<RadioButton x:Name="WantToLostWeightNo" Content="לא" DataContext="False" GroupName="WantToLostWeight" Grid.Column="3"/>
 						</Grid>
-						<TextBox x:Name="WantToLostWeight" />
+						<TextBox Text="{Binding Path=Diagnostic.WantToLostWeightInfo,Mode=TwoWay}"/>
 					</StackPanel>
 				</GroupBox>
 				<Border Height="10"/>
@@ -499,7 +499,7 @@
 									<RadioButton x:Name="CycleRegularYas" Content="כן" DataContext="True" GroupName="CycleRegular" Grid.Column="1"/>
 									<RadioButton x:Name="CycleRegularNo" Content="לא" DataContext="False" GroupName="CycleRegular" Grid.Column="3"/>
 								</Grid>
-								<TextBox x:Name="CycleRegular" />
+								<TextBox Text="{Binding Path=Diagnostic.CycleRegularInfo,Mode=TwoWay}"/>
 							</StackPanel>
 						</GroupBox>
 						<Border Height="10"/>
@@ -518,7 +518,7 @@
 									<RadioButton x:Name="SufferingFromCrampsOrNervousBeforeMenstruationYas" Content="כן" DataContext="True" GroupName="SufferingFromCrampsOrNervousBeforeMenstruation" Grid.Column="1"/>
 									<RadioButton x:Name="SufferingFromCrampsOrNervousBeforeMenstruationNo" Content="לא" DataContext="False" GroupName="SufferingFromCrampsOrNervousBeforeMenstruation" Grid.Column="3"/>
 								</Grid>
-								<TextBox x:Name="SufferingFromCrampsOrNervousBeforeMenstruation" />
+								<TextBox Text="{Binding Path=Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruationInfo,Mode=TwoWay}"/>
 							</StackPanel>
 						</GroupBox>
 						<Border Height="10"/>
@@ -537,18 +537,18 @@
 									<RadioButton x:Name="SufferingFromMenpauseYas" Content="כן" DataContext="True" GroupName="SufferingFromMenpause" Grid.Column="1"/>
 									<RadioButton x:Name="SufferingFromMenpauseNo" Content="לא" DataContext="False" GroupName="SufferingFromMenpause" Grid.Column="3"/>
 								</Grid>
-								<TextBox x:Name="SufferingFromMenpause"/>
+								<TextBox Text="{Binding Path=Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruationInfo,Mode=TwoWay}"/>
 							</StackPanel>
 						</GroupBox>
 						<Border Height="10"/>
 
 						<GroupBox Header=" כמה שעות בשבוע אתה מוכן להשקיע בשביל לשפר את איכות חייך ?">
-							<TextBox x:Name="HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife" Height="100" KeyDown="Enter"/>
+							<local:WTextBox Text="{Binding Path=Diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife,Mode=TwoWay}" Height="100"/>
 						</GroupBox>
 						<Border Height="10"/>
 
 						<GroupBox Header=" איזה שינוי אתה מצפה לראות בעקבות הטיפול">
-							<TextBox x:Name="WhatChangesDoYouExpectToSeeFromTreatment" Height="100" KeyDown="Enter"/>
+							<local:WTextBox Text="{Binding Path=Diagnostic.WhatChangesDoYouExpectToSeeFromTreatment,Mode=TwoWay}" Height="100" />
 						</GroupBox>
 					</StackPanel>
 				</GroupBox>

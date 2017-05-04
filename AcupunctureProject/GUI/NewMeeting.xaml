@@ -3,6 +3,7 @@
 	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:local="clr-namespace:AcupunctureProject.GUI"
 	  mc:Ignorable="d" 
 	  d:DesignHeight="300" d:DesignWidth="1000"
 	  Title="Main" FlowDirection="RightToLeft" Background="GhostWhite">
@@ -47,7 +48,14 @@
 			<TextBox x:Name="patientSearchTextBox" Grid.Column="0" GotFocus="PatientSearchTextBox_GotFocus" LostFocus="PatientSearchTextBox_LostFocus" TextChanged="PatientSearchTextBox_TextChanged"/>
 			<Button x:Name="openPatientButton" Content="מידע" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" Grid.Column="2" Click="OpenPatientButton_Click"/>
 		</Grid>
-		<ListView x:Name="patientSearchList" Grid.Column="2" Grid.Row="0" Grid.RowSpan="6" Visibility="Hidden" GotFocus="PatientSearchList_GotFocus" LostFocus="PatientSearchList_LostFocus" Panel.ZIndex="20" MouseDoubleClick="PatientSearchList_MouseDoubleClick"/>
+		<ListView x:Name="patientSearchList" Grid.Column="2" Grid.Row="0" Grid.RowSpan="6" Visibility="Hidden" GotFocus="PatientSearchList_GotFocus" LostFocus="PatientSearchList_LostFocus" Panel.ZIndex="20" MouseDoubleClick="PatientSearchList_MouseDoubleClick">
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Header="שם" DisplayMemberBinding="{Binding Path=Name,Mode=OneWay}" FrameworkElement.FlowDirection="RightToLeft"/>
+					<GridViewColumn Header="תאריך לידה" DisplayMemberBinding="{Binding Path=BirthdaySort,Mode=OneWay}" FrameworkElement.FlowDirection="RightToLeft"/>
+				</GridView>
+			</ListView.View>
+		</ListView>
 		<Button x:Name="copyFromLastMeeting" Content="טען פגישה אחרונה" Grid.Column="4" Grid.Row="0" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" Click="CopyFromLastMeeting_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 		<!--#endregion-->
 		<!--#region date -->
@@ -57,7 +65,7 @@
 		<!--#region symptoms -->
 		<Label Content="סימפטומים" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center"/>
 		<TextBox x:Name="symptomSearch" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" Height="25" TextChanged="SymptomSearch_TextChanged" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" LostFocus="SymptomSearch_LostFocus" GotFocus="SymptomSearch_GotFocus" KeyDown="SymptomSearch_KeyDown"/>
-		<ListView x:Name="symptomSearchList" MaxHeight="100" SelectionMode="Single" Visibility="Hidden" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" LostFocus="SymptomSearchList_LostFocus" GotFocus="SymptomSearchList_GotFocus" KeyDown="SymptomSearchList_KeyDown" MouseDoubleClick="SymptomSearchList_MouseDoubleClick" Grid.RowSpan="3" Panel.ZIndex="20"/>
+		<ListView x:Name="symptomSearchList" ItemsSource="{Binding Path=SymptomSearchListItems,Mode=OneWay}" MaxHeight="100" SelectionMode="Single" Visibility="Hidden" Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" LostFocus="SymptomSearchList_LostFocus" GotFocus="SymptomSearchList_GotFocus" KeyDown="SymptomSearchList_KeyDown" MouseDoubleClick="SymptomSearchList_MouseDoubleClick" Grid.RowSpan="3" Panel.ZIndex="20"/>
 		<TreeView x:Name="symptomTreeView" Grid.Row="6" Grid.Column="2" Margin="0,0,0,0" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" MouseDoubleClick="SymptomTreeView_MouseDoubleClick" MouseMove="SymptomTreeView_MouseMove" />
 		<!--#region levels and delete for symptom tree -->
 		<Grid Grid.Row="8" Grid.Column="2">
@@ -97,7 +105,7 @@
 		<!--#region points that used -->
 		<Label Content="נקודות שטופלו" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center"/>
 		<TextBox x:Name="pointThatUsedSearch" Grid.Column="4" Grid.Row="4" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" GotFocus="PointThatUsedSearch_GotFocus" LostFocus="PointThatUsedSearch_LostFocus" FlowDirection="LeftToRight" TextChanged="PointThatUsedSearch_TextChanged"/>
-		<ListView x:Name="pointThatUsedSearchList" MaxHeight="100" SelectionMode="Single" VerticalAlignment="Top" Panel.ZIndex="20" Visibility="Hidden" Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" LostFocus="PointThatUsedSearchList_LostFocus" GotFocus="PointThatUsedSearchList_GotFocus" FlowDirection="LeftToRight" KeyDown="PointThatUsedSearchList_KeyDown" MouseDoubleClick="PointThatUsedSearchList_MouseDoubleClick"/>
+		<ListView x:Name="pointThatUsedSearchList" ItemsSource="{Binding Path=PointThatUsedSharhItems,Mode=OneWay}" MaxHeight="100" SelectionMode="Single" VerticalAlignment="Top" Panel.ZIndex="20" Visibility="Hidden" Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" LostFocus="PointThatUsedSearchList_LostFocus" GotFocus="PointThatUsedSearchList_GotFocus" FlowDirection="LeftToRight" KeyDown="PointThatUsedSearchList_KeyDown" MouseDoubleClick="PointThatUsedSearchList_MouseDoubleClick"/>
 		<ListBox x:Name="pointThatUsed" Grid.Row="6" Grid.Column="4" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" MouseDoubleClick="PointThatUsed_MouseDoubleClick" KeyDown="PointThatUsed_KeyDown" FlowDirection="LeftToRight" DragDrop.Drop="PointThatUsed_Drop" AllowDrop="True"/>
 		<!--#region points that used delete button -->
 		<Grid Grid.Column="4" Grid.Row="8">
@@ -122,10 +130,10 @@
 				<RowDefinition Height="1*"/>
 			</Grid.RowDefinitions>
 			<TextBox x:Name="TreatmentSearchTextBox" Grid.Row="0" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" TextChanged="TreatmentSearchTextBox_TextChanged" KeyDown="TreatmentSearchTextBox_KeyDown"/>
-			<ListView x:Name="TreatmentSearchList" Height="0" Grid.RowSpan="20" Visibility="Visible" Grid.Row="0" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" MouseDoubleClick="TreatmentSearchList_MouseDoubleClick" KeyDown="TreatmentSearchList_KeyDown" VerticalAlignment="Top" Panel.ZIndex="20"/>
+			<ListView x:Name="TreatmentSearchList" ItemsSource="{Binding Path=TreatmentSearchListItems,Mode=OneWay}" Height="0" Grid.RowSpan="20" Visibility="Visible" Grid.Row="0" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" MouseDoubleClick="TreatmentSearchList_MouseDoubleClick" KeyDown="TreatmentSearchList_KeyDown" VerticalAlignment="Top" Panel.ZIndex="20"/>
 			<ListBox x:Name="TreatmentList" Height="80" Grid.Row="2" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" SelectionMode="Single" MouseDoubleClick="TreatmentList_MouseDoubleClick" KeyDown="TreatmentList_KeyDown"/>
 			<Label Content="הערות" Grid.Row="4" HorizontalAlignment="Center"/>
-			<TextBox x:Name="notes" Grid.Row="6" KeyDown="Notes_KeyDown" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" TextWrapping="Wrap"/>
+			<local:WTextBox x:Name="notes" Grid.Row="6" IsEnabled="{Binding Path=Enable,Mode=TwoWay}"/>
 		</Grid>
 		<Grid Grid.Row="8" Grid.Column="6">
 			<Grid.ColumnDefinitions>
@@ -147,9 +155,9 @@
 				<RowDefinition Height="10"/>
 				<RowDefinition Height="auto"/>
 			</Grid.RowDefinitions>
-			<TextBox x:Name="summeryTextBox" Grid.Row="0" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" TextWrapping="Wrap" KeyDown="SummeryTextBox_KeyDown"/>
+			<local:WTextBox x:Name="summeryTextBox" Grid.Row="0" IsEnabled="{Binding Path=Enable,Mode=TwoWay}"/>
 			<Label Content="פרוט התוצאה" Grid.Row="2" HorizontalAlignment="Center"/>
-			<TextBox x:Name="resoltSummeryTextBox" Grid.Row="4" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" TextWrapping="Wrap" KeyDown="ResoltSummeryTextBox_KeyDown"/>
+			<local:WTextBox x:Name="resoltSummeryTextBox" Grid.Row="4" IsEnabled="{Binding Path=Enable,Mode=TwoWay}"/>
 			<StackPanel Orientation="Horizontal" Grid.Row="6">
 				<Label Content="תוצאה"/>
 				<Border Width="5"/>

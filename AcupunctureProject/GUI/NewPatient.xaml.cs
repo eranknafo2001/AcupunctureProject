@@ -13,76 +13,71 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using AcupunctureProject.Database;
 using AcupunctureProject.GUI.Exceptions;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace AcupunctureProject.GUI
 {
 	/// <summary>
 	/// Interaction logic for NewPatient.xaml
 	/// </summary>
-	public partial class NewPatient : Window
+	public partial class NewPatient : Window, INotifyPropertyChanged
 	{
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void PropertyChangedEvent([CallerMemberName] string name = null) =>
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+		private Patient _PatientItem;
+		public Patient PatientItem
+		{
+			get => _PatientItem;
+			set
+			{
+				if (value != _PatientItem)
+				{
+					_PatientItem = value;
+					PropertyChangedEvent();
+				}
+			}
+		}
 
 		public NewPatient()
 		{
+			DataContext = this;
 			InitializeComponent();
 			gender.Items.Add(new ComboBoxItem() { Content = Gender.MALE.MyToString(), DataContext = Gender.MALE });
 			gender.Items.Add(new ComboBoxItem() { Content = Gender.FEMALE.MyToString(), DataContext = Gender.FEMALE });
 			gender.Items.Add(new ComboBoxItem() { Content = Gender.OTHER.MyToString(), DataContext = Gender.OTHER });
+			gender.SelectedIndex = 0;
 		}
 
-		private bool SaveData()
+		private void SaveData()
 		{
-			bool secses = true;
-
-			if (name.Text == null || name.Text == "")
+			if (PatientItem.Name == null || PatientItem.Name == "")
 			{
 				MessageBox.Show(this, "חייב שם", "בעיה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
-				secses = false;
 			}
-
-			if (gender.SelectedIndex == -1)
-			{
-				MessageBox.Show(this, "חייב מין", "בעיה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
-				secses = false;
-			}
-
-			if ((cellphone.Text == null || cellphone.Text == "") && (telphone.Text == null || telphone.Text == ""))
+			else if ((PatientItem.Cellphone == null || PatientItem.Cellphone == "") && (PatientItem.Telephone == null || PatientItem.Telephone == ""))
 			{
 				MessageBox.Show(this, "חייב טלפון או פלפון", "בעיה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
-				secses = false;
 			}
-
-			if (!secses)
+			else
 			{
-				throw new NullValueException();
-			}
-
-			try
-			{
-				DatabaseConnection.Instance.Insert(new Patient()
+				try
 				{
-					Name = name.Text,
-					Telephone = telphone.Text,
-					Cellphone = cellphone.Text,
-					Birthday = (DateTime)berthday.SelectedDate,
-					Gend = (Gender)gender.SelectedIndex,
-					Address = address.Text,
-					Email = email.Text,
-					MedicalDescription = hestory.Text
-				});
+					DatabaseConnection.Insert(PatientItem);
+				}
+				catch (Exception e)
+				{
+					MessageBox.Show(this, "המטופל קיים", "אזרה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
+					throw e;
+				}
+				return;
 			}
-			catch (Exception e)
-			{
-				MessageBox.Show(this, "המטופל קיים", "אזרה", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
-				throw e;
-			}
-			return true;
+			throw new NullValueException();
 		}
 
-		private void Censel_Click(object sender, RoutedEventArgs e)
-		{
-			Close();
-		}
+		private void Censel_Click(object sender, RoutedEventArgs e) => Close();
 
 		private void SaveAndExit_Click(object sender, RoutedEventArgs e)
 		{
@@ -106,28 +101,14 @@ namespace AcupunctureProject.GUI
 
 		private void ClearAll()
 		{
-			name.Clear();
-			berthday.SelectedDate = null;
-			address.Clear();
-			cellphone.Clear();
-			telphone.Clear();
-			email.Clear();
-			gender.SelectedIndex = -1;
-			hestory.Clear();
-		}
-
-		private void Hestory_KeyDown(object sender, KeyEventArgs e)
-		{
-			if (e.Key == Key.Enter)
-				AddNewLine(hestory);
-		}
-
-		private void AddNewLine(TextBox textBox)
-		{
-			int temp = textBox.SelectionStart;
-			textBox.Text = textBox.Text.Remove(temp, textBox.SelectionLength);
-			textBox.Text = textBox.Text.Insert(temp, "\n");
-			textBox.SelectionStart = temp + 1;
+			PatientItem.Name = "";
+			PatientItem.Birthday = null;
+			PatientItem.Address = "";
+			PatientItem.Cellphone = "";
+			PatientItem.Telephone = "";
+			PatientItem.Email = "";
+			gender.SelectedIndex = 0;
+			PatientItem.MedicalDescription = "";
 		}
 	}
 }

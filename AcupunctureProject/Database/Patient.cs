@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace AcupunctureProject.Database
 {
@@ -29,40 +31,159 @@ namespace AcupunctureProject.Database
 	{
 		MALE, FEMALE, OTHER
 	}
-	public class Patient : ITable
+	public class Patient : ITable, INotifyPropertyChanged
 	{
-		[PrimaryKey,AutoIncrement]
-		public int Id { get; set; }
-		public string Name { get; set; }
-		public string Telephone { get; set; }
-		public string Cellphone { get; set; }
-		public DateTime Birthday { get; set; }
-		public Gender Gend { get; set; }
-		public string Address { get; set; }
-		public string Email { get; set; }
-		public string MedicalDescription { get; set; }
+		private int _Id;
+		[PrimaryKey, AutoIncrement]
+		public int Id
+		{
+			get => _Id;
+			set
+			{
+				if (value != _Id)
+				{
+					_Id = value;
+					PropertyChangedEvent();
+				}
+			}
+		}
+
+
+		private string _Name;
+		public string Name
+		{
+			get => _Name;
+			set
+			{
+				if (value != _Name)
+				{
+					_Name = value;
+					PropertyChangedEvent();
+				}
+			}
+		}
+
+		private string _Telephone;
+		public string Telephone
+		{
+			get => _Telephone;
+			set
+			{
+				if (value != _Telephone)
+				{
+					_Telephone = value;
+					PropertyChangedEvent();
+				}
+			}
+		}
+
+		private string _Cellphone;
+		public string Cellphone
+		{
+			get => _Cellphone;
+			set
+			{
+				if (value != _Cellphone)
+				{
+					_Cellphone = value;
+					PropertyChangedEvent();
+				}
+			}
+		}
+
+		private DateTime? _Birthday;
+		public DateTime? Birthday
+		{
+			get => _Birthday;
+			set
+			{
+				if (value != _Birthday)
+				{
+					_Birthday = value;
+					PropertyChangedEvent();
+				}
+			}
+		}
+
+		private Gender _Gend;
+		public Gender Gend
+		{
+			get => _Gend;
+			set
+			{
+				if (value != _Gend)
+				{
+					_Gend = value;
+					PropertyChangedEvent();
+				}
+			}
+		}
+
+		private string _Address;
+		public string Address
+		{
+			get => _Address;
+			set
+			{
+				if (value != _Address)
+				{
+					_Address = value;
+					PropertyChangedEvent();
+				}
+			}
+		}
+
+		private string _Email;
+		public string Email
+		{
+			get => _Email;
+			set
+			{
+				if (value != _Email)
+				{
+					_Email = value;
+					PropertyChangedEvent();
+				}
+			}
+		}
+
+		private string _MedicalDescription;
+		public string MedicalDescription
+		{
+			get => _MedicalDescription;
+			set
+			{
+				if (value != _MedicalDescription)
+				{
+					_MedicalDescription = value;
+					PropertyChangedEvent();
+				}
+			}
+		}
+
 		[OneToMany(CascadeOperations = CascadeOperation.All)]
 		public List<Meeting> Meetings { get; set; }
 		[OneToMany(CascadeOperations = CascadeOperation.All)]
 		public List<Diagnostic> Diagnostics { get; set; }
 		[Ignore]
-		public string BirthdaySort {
+		public string BirthdaySort
+		{
 			get
 			{
-				return Birthday.ToShortDateString();
+				return Birthday?.ToShortDateString();
 			}
 		}
 		[Ignore]
-		public string GendString {
+		public string GendString
+		{
 			get
 			{
 				return Gend.MyToString();
 			}
 		}
 
-		public string ToStringInSearch()
-		{
-			return Name + " - " + Birthday.ToShortDateString();
-		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void PropertyChangedEvent([CallerMemberName] string name = null) =>
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 	}
 }

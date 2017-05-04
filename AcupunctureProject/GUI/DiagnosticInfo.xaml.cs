@@ -5,102 +5,80 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using AcupunctureProject.Database;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace AcupunctureProject.GUI
 {
+
 	/// <summary>
 	/// Interaction logic for DiagnosticInfo.xaml
 	/// </summary>
-	public partial class DiagnosticInfo : Window
+	public partial class DiagnosticInfo : Window, INotifyPropertyChanged
 	{
-		public Diagnostic Diagnostic { get; set; }
-		private DiagnosticInfo()
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void PropertyChangedEvent([CallerMemberName] string name = null) =>
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+		private Diagnostic _Diagnostic;
+		public Diagnostic Diagnostic
 		{
-			InitializeComponent();
-		}
-		public DiagnosticInfo(Patient patient) : this()
-		{
-			Diagnostic = new Diagnostic() { Patient = patient };
-			Women.Visibility = patient == null ? Visibility.Visible : patient.Gend == Gender.FEMALE ? Visibility.Visible : Visibility.Collapsed;
-			CreationDate.SelectedDate = DateTime.Now;
-			SetYasNo(PainYas, PainNo, Diagnostic.Pain);
-			SetYasNo(PainPreviousEvaluationsYas, PainPreviousEvaluationsNo, Diagnostic.PainPreviousEvaluations);
-			SetYasNo(ScansYas, ScansNo, Diagnostic.Scans);
-			SetYasNo(UnderStressYas, UnderStressNo, Diagnostic.UnderStress);
-			SetYasNo(TenseMusclesYas, TenseMusclesNo, Diagnostic.TenseMuscles);
-			SetYasNo(HighBloodPressureOrColesterolYas, HighBloodPressureOrColesterolNo, Diagnostic.HighBloodPressureOrColesterol);
-			SetYasNo(GoodSleepYas, GoodSleepNo, Diagnostic.GoodSleep);
-			SetYasNo(FallenToSleepProblemYas, FallenToSleepProblemNo, Diagnostic.FallenToSleepProblem);
-			SetYasNo(PalpitationsYas, PalpitationsNo, Diagnostic.Palpitations);
-			SetYasNo(FatigueOrFeelsFulAfterEatingYas, FatigueOrFeelsFulAfterEatingNo, Diagnostic.FatigueOrFeelsFulAfterEating);
-			SetYasNo(DesireForSweetsAfterEatingYas, DesireForSweetsAfterEatingNo, Diagnostic.DesireForSweetsAfterEating);
-			SetYasNo(DifficultyConcentatingYas, DifficultyConcentatingNo, Diagnostic.DifficultyConcentating);
-			SetYasNo(OftenIllYas, OftenIllNo, Diagnostic.OftenIll);
-			SetYasNo(SufferingFromMucusYas, SufferingFromMucusNo, Diagnostic.SufferingFromMucus);
-			SetYasNo(CoughOrAllergySuffersYas, CoughOrAllergySuffersNo, Diagnostic.CoughOrAllergySuffers);
-			SetYasNo(SmokingYas, SmokingNo, Diagnostic.Smoking);
-			SetYasNo(FrequentOrUrgentUrinationYas, FrequentOrUrgentUrinationNo, Diagnostic.FrequentOrUrgentUrination);
-			if (Diagnostic.PreferColdOrHot != null)
+			get => _Diagnostic;
+			set
 			{
-				switch (Diagnostic.PreferColdOrHot.Value)
+				if (value != _Diagnostic)
 				{
-					case PreferColdOrHotType.COLD:
-						Cold.IsChecked = true;
-						Hot.IsChecked = false;
-						break;
-					case PreferColdOrHotType.HOT:
-						Hot.IsChecked = true;
-						Cold.IsChecked = false;
-						break;
-					case PreferColdOrHotType.NIETHER:
-					default:
-						Cold.IsChecked = false;
-						Hot.IsChecked = false;
-						break;
+					_Diagnostic = value;
+					PropertyChangedEvent();
 				}
 			}
-			SetYasNo(SuffersFromColdOrHotYas, SuffersFromColdOrHotNo, Diagnostic.SuffersFromColdOrHot);
-			SetYasNo(SatisfiedDientsYas, SatisfiedDientsNo, Diagnostic.SatisfiedDients);
-			SetYasNo(WantToLostWeightYas, WantToLostWeightNo, Diagnostic.WantToLostWeight);
-			SetYasNo(UsingContraceptionYas, UsingContraceptionNo, Diagnostic.UsingContraception);
-			SetYasNo(CycleRegularYas, CycleRegularNo, Diagnostic.CycleRegular);
-			SetYasNo(SufferingFromCrampsOrNervousBeforeMenstruationYas, SufferingFromCrampsOrNervousBeforeMenstruationNo, Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation);
-			SetYasNo(SufferingFromMenpauseYas, SufferingFromMenpauseNo, Diagnostic.SufferingFromMenpause);
-
 		}
-		public DiagnosticInfo(Diagnostic diagnostic) : this()
+
+		private DiagnosticInfo()
 		{
-			DatabaseConnection.Instance.GetChildren(diagnostic);
+			DataContext = this;
+			InitializeComponent();
+		}
+		public DiagnosticInfo(Patient patient) : this(new Diagnostic()
+		{
+			Patient = patient,
+			CreationDate = DateTime.Now,
+		}, false)
+		{ }
+
+		public DiagnosticInfo(Diagnostic diagnostic, bool exist = true) : this()
+		{
+			if (exist)
+				DatabaseConnection.GetChildren(diagnostic);
 			Diagnostic = diagnostic;
-			Patient patient = diagnostic.Patient;
-			Women.Visibility = patient == null || patient.Gend == Gender.FEMALE ? Visibility.Visible :
-																				  Visibility.Collapsed;
-			CreationDate.SelectedDate = diagnostic.CreationDate;
-			SetYasNo(PainYas, PainNo, Diagnostic.Pain);
-			SetYasNo(PainPreviousEvaluationsYas, PainPreviousEvaluationsNo, Diagnostic.PainPreviousEvaluations);
-			SetYasNo(ScansYas, ScansNo, Diagnostic.Scans);
-			SetYasNo(UnderStressYas, UnderStressNo, Diagnostic.UnderStress);
-			SetYasNo(TenseMusclesYas, TenseMusclesNo, Diagnostic.TenseMuscles);
-			SetYasNo(HighBloodPressureOrColesterolYas, HighBloodPressureOrColesterolNo, Diagnostic.HighBloodPressureOrColesterol);
-			SetYasNo(GoodSleepYas, GoodSleepNo, Diagnostic.GoodSleep);
-			SetYasNo(FallenToSleepProblemYas, FallenToSleepProblemNo, Diagnostic.FallenToSleepProblem);
-			SetYasNo(PalpitationsYas, PalpitationsNo, Diagnostic.Palpitations);
-			SetYasNo(FatigueOrFeelsFulAfterEatingYas, FatigueOrFeelsFulAfterEatingNo, Diagnostic.FatigueOrFeelsFulAfterEating);
-			SetYasNo(DesireForSweetsAfterEatingYas, DesireForSweetsAfterEatingNo, Diagnostic.DesireForSweetsAfterEating);
-			SetYasNo(DifficultyConcentatingYas, DifficultyConcentatingNo, Diagnostic.DifficultyConcentating);
-			SetYasNo(OftenIllYas, OftenIllNo, Diagnostic.OftenIll);
-			SetYasNo(SufferingFromMucusYas, SufferingFromMucusNo, Diagnostic.SufferingFromMucus);
-			SetYasNo(CoughOrAllergySuffersYas, CoughOrAllergySuffersNo, Diagnostic.CoughOrAllergySuffers);
-			SetYasNo(SmokingYas, SmokingNo, Diagnostic.Smoking);
-			SetYasNo(FrequentOrUrgentUrinationYas, FrequentOrUrgentUrinationNo, Diagnostic.FrequentOrUrgentUrination);
-			switch (Diagnostic.PreferColdOrHot.Value)
+			var patient = diagnostic.Patient;
+			Women.Visibility = patient?.Gend != Gender.MALE ? Visibility.Visible :
+															  Visibility.Collapsed;
+			//diagnostic.SetIfNotNull();
+			SetYasNo(PainYas, PainNo, Diagnostic.PainValue);
+			SetYasNo(PainPreviousEvaluationsYas, PainPreviousEvaluationsNo, Diagnostic.PainPreviousEvaluationsValue);
+			SetYasNo(ScansYas, ScansNo, Diagnostic.ScansValue);
+			SetYasNo(UnderStressYas, UnderStressNo, Diagnostic.UnderStressValue);
+			SetYasNo(TenseMusclesYas, TenseMusclesNo, Diagnostic.TenseMusclesValue);
+			SetYasNo(HighBloodPressureOrColesterolYas, HighBloodPressureOrColesterolNo, Diagnostic.HighBloodPressureOrColesterolValue);
+			SetYasNo(GoodSleepYas, GoodSleepNo, Diagnostic.GoodSleepValue);
+			SetYasNo(FallenToSleepProblemYas, FallenToSleepProblemNo, Diagnostic.FallenToSleepProblemValue);
+			SetYasNo(PalpitationsYas, PalpitationsNo, Diagnostic.PalpitationsValue);
+			SetYasNo(FatigueOrFeelsFulAfterEatingYas, FatigueOrFeelsFulAfterEatingNo, Diagnostic.FatigueOrFeelsFulAfterEatingValue);
+			SetYasNo(DesireForSweetsAfterEatingYas, DesireForSweetsAfterEatingNo, Diagnostic.DesireForSweetsAfterEatingValue);
+			SetYasNo(DifficultyConcentatingYas, DifficultyConcentatingNo, Diagnostic.DifficultyConcentatingValue);
+			SetYasNo(OftenIllYas, OftenIllNo, Diagnostic.OftenIllValue);
+			SetYasNo(SufferingFromMucusYas, SufferingFromMucusNo, Diagnostic.SufferingFromMucusValue);
+			SetYasNo(CoughOrAllergySuffersYas, CoughOrAllergySuffersNo, Diagnostic.CoughOrAllergySuffersValue);
+			SetYasNo(SmokingYas, SmokingNo, Diagnostic.SmokingValue);
+			SetYasNo(FrequentOrUrgentUrinationYas, FrequentOrUrgentUrinationNo, Diagnostic.FrequentOrUrgentUrinationValue);
+			switch (Diagnostic.PreferColdOrHotValue)
 			{
 				case PreferColdOrHotType.COLD:
 					Cold.IsChecked = true;
@@ -110,67 +88,18 @@ namespace AcupunctureProject.GUI
 					Hot.IsChecked = true;
 					Cold.IsChecked = false;
 					break;
-				case PreferColdOrHotType.NIETHER:
 				default:
 					Cold.IsChecked = false;
 					Hot.IsChecked = false;
 					break;
 			}
-			SetYasNo(SuffersFromColdOrHotYas, SuffersFromColdOrHotNo, Diagnostic.SuffersFromColdOrHot);
-			SetYasNo(SatisfiedDientsYas, SatisfiedDientsNo, Diagnostic.SatisfiedDients);
-			SetYasNo(WantToLostWeightYas, WantToLostWeightNo, Diagnostic.WantToLostWeight);
-			SetYasNo(UsingContraceptionYas, UsingContraceptionNo, Diagnostic.UsingContraception);
-			SetYasNo(CycleRegularYas, CycleRegularNo, Diagnostic.CycleRegular);
-			SetYasNo(SufferingFromCrampsOrNervousBeforeMenstruationYas, SufferingFromCrampsOrNervousBeforeMenstruationNo, Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation);
-			SetYasNo(SufferingFromMenpauseYas, SufferingFromMenpauseNo, Diagnostic.SufferingFromMenpause);
-			Profession.Text = Diagnostic.Profession;
-			MainComplaint.Text = Diagnostic.MainComplaint;
-			SeconderyComlaint.Text = Diagnostic.SeconderyComlaint;
-			DrugsUsed.Text = Diagnostic.DrugsUsed;
-			TestsMade.Text = Diagnostic.TestsMade;
-			Pain.Text = Diagnostic.Pain?.Info;
-			PainPreviousEvaluations.Text = Diagnostic.PainPreviousEvaluations?.Info;
-			Scans.Text = Diagnostic.Scans?.Info;
-			UnderStress.Text = Diagnostic.UnderStress?.Info;
-			TenseMuscles.Text = Diagnostic.TenseMuscles?.Info;
-			HighBloodPressureOrColesterol.Text = Diagnostic.HighBloodPressureOrColesterol?.Info;
-			GoodSleep.Text = Diagnostic.GoodSleep?.Info;
-			FallenToSleepProblem.Text = Diagnostic.FallenToSleepProblem?.Info;
-			Palpitations.Text = Diagnostic.Palpitations?.Info;
-			DefeationRegularity.Text = Diagnostic.DefeationRegularity;
-			FatigueOrFeelsFulAfterEating.Text = Diagnostic.FatigueOrFeelsFulAfterEating?.Info;
-			DesireForSweetsAfterEating.Text = Diagnostic.DesireForSweetsAfterEating?.Info;
-			DifficultyConcentating.Text = Diagnostic.DifficultyConcentating?.Info;
-			OftenIll.Text = Diagnostic.OftenIll?.Info;
-			SufferingFromMucus.Text = Diagnostic.SufferingFromMucus?.Info;
-			CoughOrAllergySuffers.Text = Diagnostic.CoughOrAllergySuffers?.Info;
-			Smoking.Text = Diagnostic.Smoking?.Info;
-			FrequentOrUrgentUrination.Text = Diagnostic.FrequentOrUrgentUrination?.Info;
-			PreferColdOrHot.Text = Diagnostic.PreferColdOrHot?.Info;
-			SuffersFromColdOrHot.Text = Diagnostic.SuffersFromColdOrHot?.Info;
-			SatisfiedDients.Text = Diagnostic.SatisfiedDients?.Info;
-			WantToLostWeight.Text = Diagnostic.WantToLostWeight?.Info;
-			UsingContraception.Text = Diagnostic.UsingContraception?.Info;
-			CycleRegular.Text = Diagnostic.CycleRegular?.Info;
-			SufferingFromCrampsOrNervousBeforeMenstruation.Text = Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation?.Info;
-			SufferingFromMenpause.Text = Diagnostic.SufferingFromMenpause?.Info;
-			HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife.Text = Diagnostic.HowManyHoursAWeekAreYouWillingToInvestToImproveTheQualtyOfLife;
-			WhatChangesDoYouExpectToSeeFromTreatment.Text = Diagnostic.WhatChangesDoYouExpectToSeeFromTreatment;
-		}
-
-		private void Enter(object sender, KeyEventArgs e)
-		{
-			if (sender.GetType() != typeof(TextBox))
-				return;
-			if (e.Key == Key.Enter)
-			{
-				TextBox textBox = (TextBox)sender;
-				int temp = textBox.SelectionStart;
-				textBox.Text = textBox.Text.Remove(temp, textBox.SelectionLength);
-				textBox.Text = textBox.Text.Insert(temp, "\n");
-				textBox.SelectionLength = 0;
-				textBox.SelectionStart = temp + 1;
-			}
+			SetYasNo(SuffersFromColdOrHotYas, SuffersFromColdOrHotNo, Diagnostic.SuffersFromColdOrHotValue);
+			SetYasNo(SatisfiedDientsYas, SatisfiedDientsNo, Diagnostic.SatisfiedDientsValue);
+			SetYasNo(WantToLostWeightYas, WantToLostWeightNo, Diagnostic.WantToLostWeightValue);
+			SetYasNo(UsingContraceptionYas, UsingContraceptionNo, Diagnostic.UsingContraceptionValue);
+			SetYasNo(CycleRegularYas, CycleRegularNo, Diagnostic.CycleRegularValue);
+			SetYasNo(SufferingFromCrampsOrNervousBeforeMenstruationYas, SufferingFromCrampsOrNervousBeforeMenstruationNo, Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruationValue);
+			SetYasNo(SufferingFromMenpauseYas, SufferingFromMenpauseNo, Diagnostic.SufferingFromMenpauseValue);
 		}
 
 		private bool? GetYasNo(RadioButton yas, RadioButton no)
@@ -183,9 +112,9 @@ namespace AcupunctureProject.GUI
 				return null;
 		}
 
-		private void SetYasNo(RadioButton yas, RadioButton no, ValueInfo<bool?> Value)
+		private void SetYasNo(RadioButton yas, RadioButton no, bool? Value)
 		{
-			if (Value?.Value == null)
+			if (Value == null)
 			{
 				yas.IsChecked = false;
 				no.IsChecked = false;
@@ -199,60 +128,50 @@ namespace AcupunctureProject.GUI
 
 		private void SaveData()
 		{
-			Diagnostic.Pain = new ValueInfo<bool?>(GetYasNo(PainYas, PainNo), Pain.Text);
-			Diagnostic.PainPreviousEvaluations = new ValueInfo<bool?>(GetYasNo(PainPreviousEvaluationsYas, PainPreviousEvaluationsNo), PainPreviousEvaluations.Text);
-			Diagnostic.Scans = new ValueInfo<bool?>(GetYasNo(ScansYas, ScansNo), Scans.Text);
-			Diagnostic.UnderStress = new ValueInfo<bool?>(GetYasNo(UnderStressYas, UnderStressNo), UnderStress.Text);
-			Diagnostic.TenseMuscles = new ValueInfo<bool?>(GetYasNo(TenseMusclesYas, TenseMusclesNo), TenseMuscles.Text);
-			Diagnostic.HighBloodPressureOrColesterol = new ValueInfo<bool?>(GetYasNo(HighBloodPressureOrColesterolYas, HighBloodPressureOrColesterolNo), HighBloodPressureOrColesterol.Text);
-			Diagnostic.GoodSleep = new ValueInfo<bool?>(GetYasNo(GoodSleepYas, GoodSleepNo), GoodSleep.Text);
-			Diagnostic.FallenToSleepProblem = new ValueInfo<bool?>(GetYasNo(FallenToSleepProblemYas, FallenToSleepProblemNo), FallenToSleepProblem.Text);
-			Diagnostic.Palpitations = new ValueInfo<bool?>(GetYasNo(PalpitationsYas, PalpitationsNo), Palpitations.Text);
-			Diagnostic.FatigueOrFeelsFulAfterEating = new ValueInfo<bool?>(GetYasNo(FatigueOrFeelsFulAfterEatingYas, FatigueOrFeelsFulAfterEatingNo), FatigueOrFeelsFulAfterEating.Text);
-			Diagnostic.DesireForSweetsAfterEating = new ValueInfo<bool?>(GetYasNo(DesireForSweetsAfterEatingYas, DesireForSweetsAfterEatingNo), DesireForSweetsAfterEating.Text);
-			Diagnostic.DifficultyConcentating = new ValueInfo<bool?>(GetYasNo(DifficultyConcentatingYas, DifficultyConcentatingNo), DifficultyConcentating.Text);
-			Diagnostic.OftenIll = new ValueInfo<bool?>(GetYasNo(OftenIllYas, OftenIllNo), OftenIll.Text);
-			Diagnostic.SufferingFromMucus = new ValueInfo<bool?>(GetYasNo(SufferingFromMucusYas, SufferingFromMucusNo), SufferingFromMucus.Text);
-			Diagnostic.CoughOrAllergySuffers = new ValueInfo<bool?>(GetYasNo(CoughOrAllergySuffersYas, CoughOrAllergySuffersNo), CoughOrAllergySuffers.Text);
-			Diagnostic.Smoking = new ValueInfo<bool?>(GetYasNo(SmokingYas, SmokingNo), Smoking.Text);
-			Diagnostic.FrequentOrUrgentUrination = new ValueInfo<bool?>(GetYasNo(FrequentOrUrgentUrinationYas, FrequentOrUrgentUrinationNo), FrequentOrUrgentUrination.Text);
-			Diagnostic.SuffersFromColdOrHot = new ValueInfo<bool?>(GetYasNo(SuffersFromColdOrHotYas, SuffersFromColdOrHotNo), SuffersFromColdOrHot.Text);
-			Diagnostic.SatisfiedDients = new ValueInfo<bool?>(GetYasNo(SatisfiedDientsYas, SatisfiedDientsNo), SatisfiedDients.Text);
-			Diagnostic.WantToLostWeight = new ValueInfo<bool?>(GetYasNo(WantToLostWeightYas, WantToLostWeightNo), WantToLostWeight.Text);
-			Diagnostic.UsingContraception = new ValueInfo<bool?>(GetYasNo(UsingContraceptionYas, UsingContraceptionNo), UsingContraception.Text);
-			Diagnostic.CycleRegular = new ValueInfo<bool?>(GetYasNo(CycleRegularYas, CycleRegularNo), CycleRegular.Text);
-			Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation = new ValueInfo<bool?>(GetYasNo(SufferingFromCrampsOrNervousBeforeMenstruationYas, SufferingFromCrampsOrNervousBeforeMenstruationNo), SufferingFromCrampsOrNervousBeforeMenstruation.Text);
-			Diagnostic.SufferingFromMenpause = new ValueInfo<bool?>(GetYasNo(SufferingFromMenpauseYas, SufferingFromMenpauseNo), SufferingFromMenpause.Text);
+			Diagnostic.PainValue = GetYasNo(PainYas, PainNo);
+			Diagnostic.PainPreviousEvaluationsValue = GetYasNo(PainPreviousEvaluationsYas, PainPreviousEvaluationsNo);
+			Diagnostic.ScansValue = GetYasNo(ScansYas, ScansNo);
+			Diagnostic.UnderStressValue = GetYasNo(UnderStressYas, UnderStressNo);
+			Diagnostic.TenseMusclesValue = GetYasNo(TenseMusclesYas, TenseMusclesNo);
+			Diagnostic.HighBloodPressureOrColesterolValue = GetYasNo(HighBloodPressureOrColesterolYas, HighBloodPressureOrColesterolNo);
+			Diagnostic.GoodSleepValue = GetYasNo(GoodSleepYas, GoodSleepNo);
+			Diagnostic.FallenToSleepProblemValue = GetYasNo(FallenToSleepProblemYas, FallenToSleepProblemNo);
+			Diagnostic.PalpitationsValue = GetYasNo(PalpitationsYas, PalpitationsNo);
+			Diagnostic.FatigueOrFeelsFulAfterEatingValue = GetYasNo(FatigueOrFeelsFulAfterEatingYas, FatigueOrFeelsFulAfterEatingNo);
+			Diagnostic.DesireForSweetsAfterEatingValue = GetYasNo(DesireForSweetsAfterEatingYas, DesireForSweetsAfterEatingNo);
+			Diagnostic.DifficultyConcentatingValue = GetYasNo(DifficultyConcentatingYas, DifficultyConcentatingNo);
+			Diagnostic.OftenIllValue = GetYasNo(OftenIllYas, OftenIllNo);
+			Diagnostic.SufferingFromMucusValue = GetYasNo(SufferingFromMucusYas, SufferingFromMucusNo);
+			Diagnostic.CoughOrAllergySuffersValue = GetYasNo(CoughOrAllergySuffersYas, CoughOrAllergySuffersNo);
+			Diagnostic.SmokingValue = GetYasNo(SmokingYas, SmokingNo);
+			Diagnostic.FrequentOrUrgentUrinationValue = GetYasNo(FrequentOrUrgentUrinationYas, FrequentOrUrgentUrinationNo);
+			Diagnostic.SuffersFromColdOrHotValue = GetYasNo(SuffersFromColdOrHotYas, SuffersFromColdOrHotNo);
+			Diagnostic.SatisfiedDientsValue = GetYasNo(SatisfiedDientsYas, SatisfiedDientsNo);
+			Diagnostic.WantToLostWeightValue = GetYasNo(WantToLostWeightYas, WantToLostWeightNo);
+			Diagnostic.UsingContraceptionValue = GetYasNo(UsingContraceptionYas, UsingContraceptionNo);
+			Diagnostic.CycleRegularValue = GetYasNo(CycleRegularYas, CycleRegularNo);
+			Diagnostic.SufferingFromCrampsOrNervousBeforeMenstruationValue = GetYasNo(SufferingFromCrampsOrNervousBeforeMenstruationYas, SufferingFromCrampsOrNervousBeforeMenstruationNo);
+			Diagnostic.SufferingFromMenpauseValue = GetYasNo(SufferingFromMenpauseYas, SufferingFromMenpauseNo);
 			bool? PreferColdOrHotBool = GetYasNo(Cold, Hot);
-			Diagnostic.PreferColdOrHot = new ValueInfo<PreferColdOrHotType>(PreferColdOrHotBool == null ? 
-																			PreferColdOrHotType.NIETHER : 
-																			PreferColdOrHotBool == true ? 
-																			PreferColdOrHotType.COLD : 
-																			PreferColdOrHotType.HOT, 
-																			PreferColdOrHot.Text);
-			Diagnostic.Profession = Profession.Text;
-			Diagnostic.MainComplaint = MainComplaint.Text;
-			Diagnostic.SeconderyComlaint = SeconderyComlaint.Text;
-			Diagnostic.DrugsUsed = DrugsUsed.Text;
-			Diagnostic.TestsMade = TestsMade.Text;
-			Diagnostic.CreationDate = (DateTime)CreationDate.SelectedDate;
-			Diagnostic = DatabaseConnection.Instance.Set(Diagnostic);
+			Diagnostic.PreferColdOrHotValue = PreferColdOrHotBool == null ?
+											   PreferColdOrHotType.NIETHER :
+											   PreferColdOrHotBool == true ?
+											   PreferColdOrHotType.COLD :
+											   PreferColdOrHotType.HOT;
+			Diagnostic = DatabaseConnection.SetWithChildren(Diagnostic);
 		}
 
-		private void Censel_Click(object sender, RoutedEventArgs e)
-		{
+		private void Censel_Click(object sender, RoutedEventArgs e) =>
 			Close();
-		}
 
-		private void Save_Click(object sender, RoutedEventArgs e)
-		{
+		private void Save_Click(object sender, RoutedEventArgs e) =>
 			SaveData();
-		}
 
 		private void SaveClose_Click(object sender, RoutedEventArgs e)
 		{
 			SaveData();
 			Close();
 		}
+
 	}
 }

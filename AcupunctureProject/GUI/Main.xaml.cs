@@ -53,7 +53,7 @@ namespace AcupunctureProject.GUI
 		{
 			//AllocConsole();
 			InitializeComponent();
-			AllPoints = DatabaseConnection.Instance.GetAllPoints();
+			AllPoints = DatabaseConnection.GetAllPoints();
 			if (!AllPoints[0].Image.EndsWith(".jpg") || AllPoints[0].Image.EndsWith("..jpg"))
 			{
 				foreach (var point in AllPoints)
@@ -65,17 +65,17 @@ namespace AcupunctureProject.GUI
 						img = img.Remove(img.LastIndexOf('.')+1);
 					img += "jpg";
 					point.Image = img;
-					DatabaseConnection.Instance.Update(point);
+					DatabaseConnection.Update(point);
 				}
 			}
-			AllTreatments = DatabaseConnection.Instance.GetAllTreatments();
-			DatabaseConnection.Instance.TableChangedEvent += new DatabaseConnection.TableChanged(
+			AllTreatments = DatabaseConnection.GetAllTreatments();
+			DatabaseConnection.TableChangedEvent += new TableChangedEventHendler(
 				(t, i) =>
 				{
 					if (t == typeof(DPoint))
-						AllPoints = DatabaseConnection.Instance.GetAllPoints();
+						AllPoints = DatabaseConnection.GetAllPoints();
 					else if (t == typeof(DTreatment))
-						AllTreatments = DatabaseConnection.Instance.GetAllTreatments();
+						AllTreatments = DatabaseConnection.GetAllTreatments();
 				});
 			Perent = perent;
 			Folder = System.Reflection.Assembly.GetEntryAssembly().Location;

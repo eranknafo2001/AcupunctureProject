@@ -19,10 +19,8 @@ namespace AcupunctureProject.GUI
 	/// </summary>
 	public partial class ChannelInfo : Window
 	{
-		public ChannelInfo()
-		{
+		public ChannelInfo()=>
 			InitializeComponent();
-		}
 
 		private void PlaceTextbox_KeyDown(object sender, KeyEventArgs e)
 		{
