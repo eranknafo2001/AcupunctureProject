@@ -33,7 +33,7 @@ namespace AcupunctureProject.Database
 	}
 	public class Meeting : ITable
 	{
-		[PrimaryKey, AutoIncrement]
+		[PrimaryKey, Unique, AutoIncrement]
 		public int Id { get; set; }
 		[ForeignKey(typeof(Patient))]
 		public int PatientId { get; set; }

@@ -7,9 +7,9 @@ namespace AcupunctureProject.Database
 {
 	public class Channel : ITable
 	{
-		[PrimaryKey]
+		[PrimaryKey, Unique]
 		public int Id { get; set; }
-		[Unique,NotNull]
+		[Unique, NotNull]
 		public string Name { get; set; }
 		[Unique, NotNull]
 		public string Rt { get; set; }

@@ -83,7 +83,6 @@ namespace AcupunctureProject.GUI
 		private List<Symptom> SymptomsToRemove;
 		private List<DTreatment> TreatmentsToAdd;
 		private List<DTreatment> TreatmentsToRemove;
-		private MeetingListByPatient MeetingList;
 
 		private MeetingInfoPage()
 		{
@@ -91,13 +90,10 @@ namespace AcupunctureProject.GUI
 			InitializeComponent();
 		}
 
-		public MeetingInfoPage(Window perent, Meeting meeting, MeetingListByPatient meetingList = null) : this()
+		public MeetingInfoPage(Window perent, Meeting meeting) : this()
 		{
 			Perent = perent;
 			Meeting = meeting;
-			MeetingList = meetingList;
-			if (meetingList != null)
-				perent.Title += meeting.Patient.Name;
 			PointsToAdd = new List<DPoint>();
 			PointsToRemove = new List<DPoint>();
 			SymptomsToAdd = new List<Symptom>();

@@ -9,7 +9,7 @@ namespace AcupunctureProject.Database
 {
 	public class Color : ITable
 	{
-		[PrimaryKey]
+		[PrimaryKey, Unique]
 		public int Id { get; set; }
 		public byte R { get; set; }
 		public byte G { get; set; }
@@ -17,7 +17,7 @@ namespace AcupunctureProject.Database
 
 		public MColor GetColor()
 		{
-			return new MColor() { R = R, G = G, B = B , A = 255 };
+			return new MColor() { R = R, G = G, B = B, A = 255 };
 		}
 	}
 }

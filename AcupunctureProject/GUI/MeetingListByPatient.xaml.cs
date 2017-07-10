@@ -29,17 +29,17 @@ namespace AcupunctureProject.GUI
 			Title += patient.Name;
 			this.patient = patient;
 			meetingsDataGrid.ItemsSource = patient.Meetings;
-			DatabaseConnection.TableChangedEvent += new TableChangedEventHendler(UpdateData);
+			DatabaseConnection.TableChangedEvent += UpdateData;
 		}
 
-		~MeetingListByPatient()=> DatabaseConnection.TableChangedEvent += new TableChangedEventHendler(UpdateData);
+		~MeetingListByPatient() => DatabaseConnection.TableChangedEvent += UpdateData;
 
 		private void MeetingsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			Meeting item = (Meeting)meetingsDataGrid.SelectedItem;
 			if (item == null)
 				return;
-			new MeetingInfoWindow(item, this).Show();
+			new MeetingInfoWindow(item).Show();
 		}
 
 		private void Delete_Click(object sender, RoutedEventArgs e)

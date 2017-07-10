@@ -2,7 +2,7 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:local="clr-namespace:AcupunctureProject">
 	<Style x:Key="Ver" TargetType="Label">
-		<Setter Property="Content" Value="Ver: beta-0.8.9"/>
+		<Setter Property="Content" Value="Ver: beta-0.9"/>
 		<Setter Property="Visibility" Value="Visible"/>
 	</Style>
 

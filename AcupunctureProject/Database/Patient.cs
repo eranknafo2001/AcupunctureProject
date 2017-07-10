@@ -34,7 +34,7 @@ namespace AcupunctureProject.Database
 	public class Patient : ITable, INotifyPropertyChanged
 	{
 		private int _Id;
-		[PrimaryKey, AutoIncrement]
+		[PrimaryKey, Unique, AutoIncrement]
 		public int Id
 		{
 			get => _Id;
@@ -47,7 +47,6 @@ namespace AcupunctureProject.Database
 				}
 			}
 		}
-
 
 		private string _Name;
 		public string Name
@@ -101,6 +100,7 @@ namespace AcupunctureProject.Database
 				{
 					_Birthday = value;
 					PropertyChangedEvent();
+					PropertyChangedEvent(nameof(BirthdaySort));
 				}
 			}
 		}
@@ -115,6 +115,7 @@ namespace AcupunctureProject.Database
 				{
 					_Gend = value;
 					PropertyChangedEvent();
+					PropertyChangedEvent(nameof(GendString));
 				}
 			}
 		}
@@ -163,24 +164,15 @@ namespace AcupunctureProject.Database
 
 		[OneToMany(CascadeOperations = CascadeOperation.All)]
 		public List<Meeting> Meetings { get; set; }
+
 		[OneToMany(CascadeOperations = CascadeOperation.All)]
 		public List<Diagnostic> Diagnostics { get; set; }
+
 		[Ignore]
-		public string BirthdaySort
-		{
-			get
-			{
-				return Birthday?.ToShortDateString();
-			}
-		}
+		public string BirthdaySort => Birthday?.ToShortDateString();
+
 		[Ignore]
-		public string GendString
-		{
-			get
-			{
-				return Gend.MyToString();
-			}
-		}
+		public string GendString => Gend.MyToString();
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		private void PropertyChangedEvent([CallerMemberName] string name = null) =>

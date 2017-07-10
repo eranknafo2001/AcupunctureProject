@@ -20,10 +20,10 @@ namespace AcupunctureProject.GUI
 	/// </summary>
 	public partial class MeetingInfoWindow : Window
 	{
-		public MeetingInfoWindow(Meeting meeting, MeetingListByPatient meetingList)
+		public MeetingInfoWindow(Meeting meeting)
 		{
 			InitializeComponent();
-			Content = new MeetingInfoPage(this, meeting, meetingList);
+			Content = new MeetingInfoPage(this, meeting);
 		}
 	}
 }

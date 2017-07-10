@@ -10,7 +10,7 @@ namespace AcupunctureProject.Database
 {
 	public class Symptom : ITable
 	{
-		[PrimaryKey,AutoIncrement]
+		[PrimaryKey, Unique, AutoIncrement]
 		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Comment { get; set; }
@@ -24,9 +24,7 @@ namespace AcupunctureProject.Database
 		public List<ChannelSymptom> ChannelConnections { get; set; }
 		[ManyToMany(typeof(MeetingSymptom))]
 		public List<Meeting> Meeting { get; set; }
-		public override string ToString()
-		{
-			return Name;
-		}
+
+		public override string ToString() => Name;
 	}
 }

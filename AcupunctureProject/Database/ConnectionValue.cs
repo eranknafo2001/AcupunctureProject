@@ -16,7 +16,7 @@ namespace AcupunctureProject.Database
 
 	public class SymptomPoint : IConnectionValue
 	{
-		[PrimaryKey, AutoIncrement]
+		[PrimaryKey, Unique, AutoIncrement]
 		public int Id { get; set; }
 		[ForeignKey(typeof(Symptom))]
 		public int SymptomId { get; set; }
@@ -31,7 +31,7 @@ namespace AcupunctureProject.Database
 	}
 	public class ChannelSymptom : IConnectionValue
 	{
-		[PrimaryKey, AutoIncrement]
+		[PrimaryKey, Unique, AutoIncrement]
 		public int Id { get; set; }
 		[ForeignKey(typeof(Symptom))]
 		public int SymptomId { get; set; }

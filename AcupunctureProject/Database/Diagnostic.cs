@@ -1,13 +1,9 @@
-﻿using System;
+﻿using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using SQLite.Net.Attributes;
-using SQLiteNetExtensions.Attributes;
-using SQLiteNetExtensions.Extensions.TextBlob;
 namespace AcupunctureProject.Database
 {
 	public static partial class Ex
@@ -25,9 +21,9 @@ namespace AcupunctureProject.Database
 
 	public class Diagnostic : ITable, INotifyPropertyChanged
 	{
-		#region all the variables
+		#region all of the variables
 		private int _Id;
-		[PrimaryKey, AutoIncrement]
+		[PrimaryKey, Unique, AutoIncrement]
 		public int Id
 		{
 			get => _Id;
@@ -851,6 +847,7 @@ namespace AcupunctureProject.Database
 			}
 		}
 
+		[Ignore]
 		public string CreationDateString
 		{
 			get => CreationDate?.ToShortDateString();

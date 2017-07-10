@@ -12,7 +12,7 @@ namespace AcupunctureProject.Database
 {
 	public class Treatment : ITable, INotifyPropertyChanged
 	{
-		[PrimaryKey, AutoIncrement]
+		[PrimaryKey, Unique, AutoIncrement]
 		public int Id { get; set; }
 
 		string _Name;
@@ -46,11 +46,10 @@ namespace AcupunctureProject.Database
 		public List<Meeting> Meetings { get; set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
-		void PropertyChangedEvent([CallerMemberName] string name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+		void PropertyChangedEvent([CallerMemberName] string name = null) =>
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-		public override string ToString()
-		{
-			return Name;
-		}
+		public override string ToString() => Name;
+
 	}
 }

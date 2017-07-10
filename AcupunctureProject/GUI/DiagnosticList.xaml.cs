@@ -29,17 +29,18 @@ namespace AcupunctureProject.GUI
 			DatabaseConnection.GetChildren(patient);
 			this.patient = patient;
 			Data.ItemsSource = patient.Diagnostics;
-
+			DatabaseConnection.TableChangedEvent += TableChanged;
 		}
 
-		~DiagnosticList() => DatabaseConnection.TableChangedEvent -=
-				new TableChangedEventHendler((t, I) =>
-				{
-					if (t != typeof(Diagnostic))
-						return;
-					DatabaseConnection.GetChildren(patient);
-					Data.ItemsSource = patient.Diagnostics;
-				});
+		~DiagnosticList() => DatabaseConnection.TableChangedEvent -= TableChanged;
+
+		private void TableChanged(Type t, object I)
+		{
+			if (t != typeof(Diagnostic))
+				return;
+			DatabaseConnection.GetChildren(patient);
+			Data.ItemsSource = patient.Diagnostics;
+		}
 
 		private void Button_Click(object sender, RoutedEventArgs e) =>
 			new DiagnosticInfo(patient).Show();
