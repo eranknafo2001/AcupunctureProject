@@ -51,7 +51,7 @@ namespace AcupunctureProject.GUI
 			patient.Cellphone = cellphone.Text;
 			patient.Telephone = telphone.Text;
 			patient.MedicalDescription = hestory.Text;
-			patient.Gend = (Gender)gender.DataContext;
+			patient.Gend = (Gender)gender.SelectedIndex;
 			patient.Email = email.Text;
 			DatabaseConnection.Update(patient);
 		}
