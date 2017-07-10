@@ -92,6 +92,7 @@ namespace AcupunctureProject.GUI
 
 		public MeetingInfoPage(Window perent, Meeting meeting) : this()
 		{
+			DatabaseConnection.GetChildren(meeting);
 			Perent = perent;
 			Meeting = meeting;
 			PointsToAdd = new List<DPoint>();
@@ -248,9 +249,11 @@ namespace AcupunctureProject.GUI
 
 		private void SddItemToSymptomTree(Symptom symptom)
 		{
+			DatabaseConnection.GetChildren(symptom);
 			TreeViewItem sym = new TreeViewItem() { Header = symptom.ToString(), DataContext = symptom, IsExpanded = true };
 			foreach (var symcon in symptom.PointsConnections)
 			{
+				DatabaseConnection.GetChildren(symcon);
 				sym.Items.Add(new TreeViewItem()
 				{
 					Header = symcon.Point.ToString(),
@@ -263,6 +266,7 @@ namespace AcupunctureProject.GUI
 			}
 			foreach (var symchan in symptom.ChannelConnections)
 			{
+				DatabaseConnection.GetChildren(symchan);
 				sym.Items.Add(new TreeViewItem()
 				{
 					Header = symchan.Channel.ToString(),

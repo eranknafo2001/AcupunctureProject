@@ -124,7 +124,7 @@
 			<ListView x:Name="TreatmentSearchList" Height="0" Grid.RowSpan="20" Visibility="Visible" Grid.Row="0" GotFocus="TreatmentSearchVisTrue" LostFocus="TreatmentSearchVisFalse" MouseDoubleClick="TreatmentSearchList_MouseDoubleClick" KeyDown="TreatmentSearchList_KeyDown" VerticalAlignment="Top" Panel.ZIndex="20"/>
 			<ListBox x:Name="TreatmentList" Height="80" Grid.Row="2" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" SelectionMode="Single" MouseDoubleClick="TreatmentList_MouseDoubleClick" KeyDown="TreatmentList_KeyDown"/>
 			<Label Content="הערות" Grid.Row="4" HorizontalAlignment="Center"/>
-			<local:WTextBox x:Name="notes" Grid.Row="6" KeyDown="Notes_KeyDown" IsEnabled="{Binding Path=Enable,Mode=TwoWay}"/>
+			<local:WTextBox x:Name="notes" Grid.Row="6" IsEnabled="{Binding Path=Enable,Mode=TwoWay}"/>
 		</Grid>
 		<Grid Grid.Row="8" Grid.Column="6">
 			<Grid.ColumnDefinitions>

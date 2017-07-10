@@ -41,60 +41,6 @@ namespace AcupunctureProject.GUI
 				o.Add((T)k);
 			return o;
 		}
-
-		//public static void SetIfNotNull(this Diagnostic diagnostic)
-		//{
-		//	if (diagnostic.Pain == null)
-		//		diagnostic.Pain = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.PainPreviousEvaluations == null)
-		//		diagnostic.PainPreviousEvaluations = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.Scans == null)
-		//		diagnostic.Scans = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.UnderStress == null)
-		//		diagnostic.UnderStress = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.TenseMuscles == null)
-		//		diagnostic.TenseMuscles = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.HighBloodPressureOrColesterol == null)
-		//		diagnostic.HighBloodPressureOrColesterol = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.GoodSleep == null)
-		//		diagnostic.GoodSleep = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.FallenToSleepProblem == null)
-		//		diagnostic.FallenToSleepProblem = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.Palpitations == null)
-		//		diagnostic.Palpitations = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.FatigueOrFeelsFulAfterEating == null)
-		//		diagnostic.FatigueOrFeelsFulAfterEating = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.DesireForSweetsAfterEating == null)
-		//		diagnostic.DesireForSweetsAfterEating = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.DifficultyConcentating == null)
-		//		diagnostic.DifficultyConcentating = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.OftenIll == null)
-		//		diagnostic.OftenIll = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.SufferingFromMucus == null)
-		//		diagnostic.SufferingFromMucus = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.CoughOrAllergySuffers == null)
-		//		diagnostic.CoughOrAllergySuffers = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.Smoking == null)
-		//		diagnostic.Smoking = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.FrequentOrUrgentUrination == null)
-		//		diagnostic.FrequentOrUrgentUrination = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.PreferColdOrHot == null)
-		//		diagnostic.PreferColdOrHot = new ValueInfo<PreferColdOrHotType?>(null, "");
-		//	if (diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation == null)
-		//		diagnostic.SufferingFromCrampsOrNervousBeforeMenstruation = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.SufferingFromMenpause == null)
-		//		diagnostic.SufferingFromMenpause = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.SuffersFromColdOrHot == null)
-		//		diagnostic.SuffersFromColdOrHot = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.SatisfiedDients == null)
-		//		diagnostic.SatisfiedDients = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.CycleRegular == null)
-		//		diagnostic.CycleRegular = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.UsingContraception == null)
-		//		diagnostic.UsingContraception = new ValueInfo<bool?>(null, "");
-		//	if (diagnostic.WantToLostWeight == null)
-		//		diagnostic.WantToLostWeight = new ValueInfo<bool?>(null, "");
-		//}
 	}
 }
 

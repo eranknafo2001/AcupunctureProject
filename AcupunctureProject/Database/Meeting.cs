@@ -58,6 +58,28 @@ namespace AcupunctureProject.Database
 		[ManyToMany(typeof(TreatmentsMeetings))]
 		public List<Treatment> Treatments { get; set; }
 
+		[Ignore]
+		public string DateString => Date.ToShortDateString();
+		[Ignore]
+		public string SmallDescription
+		{
+			get
+			{
+				string ret = "";
+				IEnumerable<string> splited = Description.Split(' ');
+				if (splited.Count() < 10)
+					return Description;
+				splited = splited.Take(10);
+				foreach(var word in splited)
+				{
+					ret += word + " ";
+				}
+				ret = ret.Trim();
+				ret += "...";
+				return ret;
+			}
+		}
+
 		public override int GetHashCode() => Id.GetHashCode();
 	}
 }

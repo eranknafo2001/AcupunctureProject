@@ -58,5 +58,19 @@ namespace AcupunctureProject.GUI
 			DatabaseConnection.GetChildren(patient);
 			meetingsDataGrid.ItemsSource = patient.Meetings.OrderBy(m => m.Date).Reverse();
 		}
+
+		bool work = true;
+		private void TextBox_SelectionChanged(object sender, RoutedEventArgs e)
+		{
+			if (work)
+			{
+				if (sender is TextBox send)
+				{
+					work = false;
+					send.Select(0, 0);
+					work = true;
+				}
+			}
+		}
 	}
 }
