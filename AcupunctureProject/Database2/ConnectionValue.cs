@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
 
-namespace AcupunctureProject.Database2
+namespace AcupunctureProject.Database
 {
 	public interface IConnectionValue : ITable
 	{
-		int Imaportance { get; set; }
+		int Importance { get; set; }
 		string Comment { get; set; }
 	}
 
@@ -26,7 +26,7 @@ namespace AcupunctureProject.Database2
 		public int PointId { get; set; }
 		[ManyToOne]
 		public Point Point { get; set; }
-		public int Imaportance { get; set; }
+		public int Importance { get; set; }
 		public string Comment { get; set; }
 	}
 	public class ChannelSymptom : IConnectionValue
@@ -41,7 +41,7 @@ namespace AcupunctureProject.Database2
 		public int ChannelId { get; set; }
 		[ManyToOne]
 		public Channel Channel { get; set; }
-		public int Imaportance { get; set; }
+		public int Importance { get; set; }
 		public string Comment { get; set; }
 	}
 	public class MeetingPoint

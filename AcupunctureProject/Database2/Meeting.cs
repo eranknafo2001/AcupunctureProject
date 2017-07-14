@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
 
-namespace AcupunctureProject.Database2
+namespace AcupunctureProject.Database
 {
 	public static partial class Ex
 	{
@@ -38,7 +38,20 @@ namespace AcupunctureProject.Database2
 		[ForeignKey(typeof(Patient))]
 		public int PatientId { get; set; }
 		public string Purpose { get; set; }
-		public DateTime Date { get; set; }
+
+		[Ignore]
+		public DateTime? Date
+		{
+			get
+			{
+				if (DateNum == null)
+					return null;
+				return DateTime.FromFileTime(DateNum.Value);
+			}
+			set => DateNum = value?.ToFileTime();
+		}
+		public long? DateNum { get; set; }
+
 		public string Description { get; set; }
 		public string Summery { get; set; }
 		public string ResultDescription { get; set; }
@@ -59,7 +72,7 @@ namespace AcupunctureProject.Database2
 		public List<Treatment> Treatments { get; set; }
 
 		[Ignore]
-		public string DateString => Date.ToShortDateString();
+		public string DateString => Date?.ToShortDateString();
 		[Ignore]
 		public string SmallDescription
 		{
@@ -70,7 +83,7 @@ namespace AcupunctureProject.Database2
 				if (splited.Count() < 10)
 					return Description;
 				splited = splited.Take(10);
-				foreach(var word in splited)
+				foreach (var word in splited)
 				{
 					ret += word + " ";
 				}

@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 
-namespace AcupunctureProject.Database2
+namespace AcupunctureProject.Database
 {
 	public class Point : ITable
 	{

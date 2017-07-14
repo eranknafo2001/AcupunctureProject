@@ -45,6 +45,7 @@ namespace AcupunctureProject.GUI
 		{
 			DataContext = this;
 			InitializeComponent();
+			PatientItem = new Patient();
 			gender.Items.Add(new ComboBoxItem() { Content = Gender.MALE.MyToString(), DataContext = Gender.MALE });
 			gender.Items.Add(new ComboBoxItem() { Content = Gender.FEMALE.MyToString(), DataContext = Gender.FEMALE });
 			gender.Items.Add(new ComboBoxItem() { Content = Gender.OTHER.MyToString(), DataContext = Gender.OTHER });
@@ -102,7 +103,7 @@ namespace AcupunctureProject.GUI
 		private void ClearAll()
 		{
 			PatientItem.Name = "";
-			PatientItem.Birthday = null;
+			//PatientItem.Birthday = null;
 			PatientItem.Address = "";
 			PatientItem.Cellphone = "";
 			PatientItem.Telephone = "";

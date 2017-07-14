@@ -7,7 +7,7 @@ using SQLiteNetExtensions.Extensions;
 using System.IO;
 using System;
 
-namespace AcupunctureProject.Database
+namespace AcupunctureProject.Database2
 {
 	public delegate void TableChangedEventHendler(Type table, object item);
 
@@ -114,6 +114,10 @@ namespace AcupunctureProject.Database
 		public static List<Symptom> FindSymptom(string name) => (from symptom in Connection.Table<Symptom>()
 																 where symptom.Name.ToLower().Contains(name.ToLower())
 																 select symptom).ToList();
+
+		public static List<Channel> GetAllChannels() => (from s in Connection.Table<Channel>()
+														 where true
+														 select s).ToList();
 
 		public static List<Patient> FindPatient(string name) => (from patient in Connection.Table<Patient>()
 																 where patient.Name.ToLower().Contains(name.ToLower())

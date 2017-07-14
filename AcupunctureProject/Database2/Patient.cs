@@ -8,7 +8,7 @@ using SQLiteNetExtensions.Attributes;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace AcupunctureProject.Database2
+namespace AcupunctureProject.Database
 {
 	public static partial class Ex
 	{
@@ -90,16 +90,29 @@ namespace AcupunctureProject.Database2
 			}
 		}
 
-		private DateTime? _Birthday;
+		[Ignore]
 		public DateTime? Birthday
 		{
-			get => _Birthday;
+			get
+			{
+				if (BirthdayNum == null)
+					return null;
+				return DateTime.FromFileTime(BirthdayNum.Value);
+			}
+			set => BirthdayNum = value?.ToFileTime();
+		}
+
+		private long? _BirthdayNum;
+		public long? BirthdayNum
+		{
+			get => _BirthdayNum;
 			set
 			{
-				if (value != _Birthday)
+				if (value != _BirthdayNum)
 				{
-					_Birthday = value;
+					_BirthdayNum = value;
 					PropertyChangedEvent();
+					PropertyChangedEvent(nameof(Birthday));
 					PropertyChangedEvent(nameof(BirthdaySort));
 				}
 			}

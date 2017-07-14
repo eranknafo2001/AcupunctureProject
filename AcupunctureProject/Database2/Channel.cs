@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
 
-namespace AcupunctureProject.Database2
+namespace AcupunctureProject.Database
 {
 	public class Channel : ITable
 	{

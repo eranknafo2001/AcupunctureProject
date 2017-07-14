@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-namespace AcupunctureProject.Database2
+namespace AcupunctureProject.Database
 {
 	public static partial class Ex
 	{
@@ -833,16 +833,30 @@ namespace AcupunctureProject.Database2
 		[OneToMany]
 		public List<Meeting> Meetings { get; set; }
 
-		private DateTime? _CreationDate;
+		[Ignore]
 		public DateTime? CreationDate
 		{
-			get => _CreationDate;
+			get
+			{
+				if (CreationDateNum == null)
+					return null;
+				return DateTime.FromFileTime(CreationDateNum.Value);
+			}
+			set => CreationDateNum = value?.ToFileTime();
+		}
+
+		private long? _CreationDateNum;
+		public long? CreationDateNum
+		{
+			get => _CreationDateNum;
 			set
 			{
-				if (value != _CreationDate)
+				if (value != _CreationDateNum)
 				{
-					_CreationDate = value;
+					_CreationDateNum = value;
 					PropertyChangedEvent();
+					PropertyChangedEvent(nameof(CreationDate));
+					PropertyChangedEvent(nameof(CreationDateString));
 				}
 			}
 		}

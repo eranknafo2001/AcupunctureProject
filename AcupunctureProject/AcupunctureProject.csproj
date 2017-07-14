@@ -51,6 +51,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -137,6 +138,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Database2\Channel.cs" />
+    <Compile Include="Database2\Color.cs" />
+    <Compile Include="Database2\ConnectionValue.cs" />
+    <Compile Include="Database2\DatabaseConnection.cs" />
+    <Compile Include="Database2\Diagnostic.cs" />
+    <Compile Include="Database2\Meeting.cs" />
+    <Compile Include="Database2\Patient.cs" />
+    <Compile Include="Database2\Point.cs" />
+    <Compile Include="Database2\Symptom.cs" />
+    <Compile Include="Database2\Treatment.cs" />
     <Compile Include="Database\Channel.cs" />
     <Compile Include="Database\Color.cs" />
     <Compile Include="Database\ConnectionValue.cs" />
