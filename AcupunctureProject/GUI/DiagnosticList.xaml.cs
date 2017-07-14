@@ -13,18 +13,39 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using AcupunctureProject.Database;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace AcupunctureProject.GUI
 {
 	/// <summary>
 	/// Interaction logic for Diagnostic.xaml
 	/// </summary>
-	public partial class DiagnosticList : Window
+	public partial class DiagnosticList : Window, INotifyPropertyChanged
 	{
 		private Patient patient;
 
+		private Diagnostic _SelectedItem;
+		public Diagnostic SelectedItem
+		{
+			get => _SelectedItem;
+			set
+			{
+				if(value!=_SelectedItem)
+				{
+					_SelectedItem = value;
+					CallPropertyChanged();
+				}
+			}
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void CallPropertyChanged([CallerMemberName] string name = null) =>
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
 		public DiagnosticList(Patient patient)
 		{
+			DataContext = this;
 			InitializeComponent();
 			DatabaseConnection.GetChildren(patient);
 			this.patient = patient;
@@ -54,8 +75,11 @@ namespace AcupunctureProject.GUI
 				new DiagnosticInfo(item).Show();
 		}
 
-		//private void Delete_Click(object sender, RoutedEventArgs e)
-		//{
-		//}
+		private void Delete_Click(object sender, RoutedEventArgs e)
+		{
+			if (SelectedItem == null)
+				return;
+			DatabaseConnection.Delete(SelectedItem);
+		}
 	}
 }

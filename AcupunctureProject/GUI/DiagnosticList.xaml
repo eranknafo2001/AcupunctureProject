@@ -18,12 +18,12 @@
 			<ColumnDefinition Width="5"/>
 			<ColumnDefinition Width="auto"/>
 		</Grid.ColumnDefinitions>
-		<DataGrid x:Name="Data" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" MouseDoubleClick="Data_MouseDoubleClick" CanUserAddRows="False" CanUserDeleteRows="False">
+		<DataGrid x:Name="Data" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" SelectedItem="{Binding Path=SelectedItem,Mode=TwoWay}" AutoGenerateColumns="False" MouseDoubleClick="Data_MouseDoubleClick" CanUserAddRows="False" CanUserDeleteRows="False">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="תאריך" Binding="{Binding CreationDateString}" CanUserReorder="False" CanUserResize="False" CanUserSort="False" IsReadOnly="True" Width="1*"/>
 			</DataGrid.Columns>
 		</DataGrid>
-		<!--<Button Grid.Row="2" Grid.Column="1" Content="מחק אבחון" Click="Delete_Click"/>-->
+		<Button Grid.Row="2" Grid.Column="1" Content="מחק אבחון" Click="Delete_Click"/>
 		<Button Grid.Row="2" Grid.Column="3" Content="אבחון חדש" Click="Button_Click"/>
 	</Grid>
 </Window>
