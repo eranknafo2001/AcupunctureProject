@@ -401,7 +401,7 @@ namespace AcupunctureProject.GUI
 					Summery = summeryTextBox.Text,
 					ResultDescription = resoltSummeryTextBox.Text,
 					Result = (ResultValue)((ComboBoxItem)resolt.SelectedItem).DataContext,
-					Symptoms = symptomTreeView.Items.ToList(s => (Symptom)s),
+					Symptoms = symptomTreeView.Items.ToList(s => (Symptom)((TreeViewItem)s).DataContext),
 					Points = pointThatUsed.Items.ToList(p => (DPoint)p),
 					Treatments = TreatmentList.Items.ToList(t => (DTreatment)t),
 					Diagnostic = selectedPatient.Diagnostics?.OrderByDescending(d => d.CreationDate).FirstOrDefault()
