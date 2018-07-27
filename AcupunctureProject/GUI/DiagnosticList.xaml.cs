@@ -31,7 +31,7 @@ namespace AcupunctureProject.GUI
 			get => _SelectedItem;
 			set
 			{
-				if(value!=_SelectedItem)
+				if (value != _SelectedItem)
 				{
 					_SelectedItem = value;
 					CallPropertyChanged();

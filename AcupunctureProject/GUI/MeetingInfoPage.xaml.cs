@@ -126,8 +126,10 @@ namespace AcupunctureProject.GUI
 			resoltSummeryTextBox.Text = meeting.ResultDescription;
 			resolt.SelectedItem = meeting.Result;
 			summeryTextBox.Text = meeting.Summery;
+			TreatmentList.ItemsSource = meeting.Treatments;
 			TreatmentsToAdd = new List<DTreatment>();
 			TreatmentsToRemove = new List<DTreatment>();
+			TreatmentSearchList.ItemsSource = Main.AllTreatments;
 		}
 
 		private void SymptomSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -439,16 +441,16 @@ namespace AcupunctureProject.GUI
 			ReloadPointThatUsedSearchList();
 		}
 
-		private void PointThatUsedSearch_LostFocus(object sender, RoutedEventArgs e) => 
+		private void PointThatUsedSearch_LostFocus(object sender, RoutedEventArgs e) =>
 			SetPointThatUsedSearchListViability(false);
 
-		private void PointThatUsedSearchList_LostFocus(object sender, RoutedEventArgs e) => 
+		private void PointThatUsedSearchList_LostFocus(object sender, RoutedEventArgs e) =>
 			SetPointThatUsedSearchListViability(false);
 
-		private void PointThatUsedSearchList_GotFocus(object sender, RoutedEventArgs e) => 
+		private void PointThatUsedSearchList_GotFocus(object sender, RoutedEventArgs e) =>
 			SetPointThatUsedSearchListViability(true);
 
-		private void PointThatUsedSearch_TextChanged(object sender, TextChangedEventArgs e) => 
+		private void PointThatUsedSearch_TextChanged(object sender, TextChangedEventArgs e) =>
 			ReloadPointThatUsedSearchList();
 
 		private void PointThatUsedSearchList_KeyDown(object sender, KeyEventArgs e)
@@ -472,7 +474,7 @@ namespace AcupunctureProject.GUI
 				SelectPointThatUsed();
 		}
 
-		private void PointThatUsedSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e) => 
+		private void PointThatUsedSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e) =>
 			SelectPointThatUsed();
 
 		private void PointThatUsedDelete_Click(object sender, RoutedEventArgs e)
@@ -560,7 +562,7 @@ namespace AcupunctureProject.GUI
 				new Treatment((DTreatment)s.SelectedItem).Show();
 		}
 
-		private void TreatmentSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e) => 
+		private void TreatmentSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e) =>
 			SelectTreatment();
 
 		private void TreatmentSearchList_KeyDown(object sender, KeyEventArgs e)
@@ -586,13 +588,13 @@ namespace AcupunctureProject.GUI
 				.FindAll(t => t.Name.ToLower().Contains(((TextBox)sender).Text.ToLower()));
 		}
 
-		private void TreatmentSearchVisFalse(object sender, RoutedEventArgs e) => 
+		private void TreatmentSearchVisFalse(object sender, RoutedEventArgs e) =>
 			SetTreatmentSearchListViability(false);
 
-		private void TreatmentSearchVisTrue(object sender, RoutedEventArgs e) => 
+		private void TreatmentSearchVisTrue(object sender, RoutedEventArgs e) =>
 			SetTreatmentSearchListViability(true);
 
-		private void SetTreatmentSearchListViability(bool val) => 
+		private void SetTreatmentSearchListViability(bool val) =>
 			SetVis(TreatmentSearchList, TreatmentSearchTextBox, val);
 
 		private void SetVis(ListView o, TextBox textBox, bool val)
@@ -610,7 +612,7 @@ namespace AcupunctureProject.GUI
 			}
 		}
 
-		private void TreatmentSearchTextBox_KeyDown(object sender, KeyEventArgs e) => 
+		private void TreatmentSearchTextBox_KeyDown(object sender, KeyEventArgs e) =>
 			SelectTreatment();
 
 		private void DeleteTreatment_Click(object sender, RoutedEventArgs e)
