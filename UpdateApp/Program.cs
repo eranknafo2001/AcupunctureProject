@@ -4,47 +4,65 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinSCP;
+using Newtonsoft.Json;
 
 namespace UpdateApp
 {
 	class Program
 	{
+		const string settingsFile = @"UpdateSettings.json";
 		static void Main(string[] args)
 		{
-			string[] tempFolder = System.Reflection.Assembly.GetEntryAssembly().Location.Split('\\');
-			string folder = "";
-			for (int i = 0; i < tempFolder.Length - 1; i++)
+			if (!File.Exists(settingsFile))
+				File.WriteAllBytes(settingsFile, Properties.Resources.DefaultSettings);
+			dynamic settings = JsonConvert.DeserializeObject(File.ReadAllText(settingsFile));
+			if ((bool)settings.isActivated)
 			{
-				folder += tempFolder[i] + "\\";
-			}
-
-			var githubToken = "updateToken";
-			var url = "https://github.com/eranknafo2001/AcupunctureProject/raw/master/AcupunctureProject/bin/Release/AcupunctureProject.exe";
-			var path = folder + "AcupunctureProject.exe";
-
-			Console.WriteLine("delete old file");
-			while (true)
-			{
-				try
+				using (Session s = new Session())
 				{
-					File.Delete(path);
-					break;
-				}
-				catch (Exception) { }
-			}
-			Console.WriteLine("download new file");
-			using (var client = new System.Net.Http.HttpClient())
-			{
-				var credentials = string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}:", githubToken);
-				credentials = Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(credentials));
-				client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentials);
-				var contents = client.GetByteArrayAsync(url).Result;
-				System.IO.File.WriteAllBytes(path, contents);
-			}
+					Console.WriteLine("connecting to server");
+					s.Open(new SessionOptions
+					{
+						Protocol = Protocol.Ftp,
+						HostName = settings.host,
+						UserName = settings.user,
+						Password = settings.password
+					});
+					Console.WriteLine("downloading the number of the newest ver");
+					s.GetFiles(@"/LastUpdate.json", @"newUpdate.json",
+						false, new TransferOptions
+						{ TransferMode = TransferMode.Ascii }).Check();
+					Console.WriteLine("downloaded the number of the newest ver");
+					dynamic nj = JsonConvert.DeserializeObject(File.ReadAllText(@"newUpdate.json"));
+					if (File.Exists(@"LastUpdate.json"))
+					{
+						dynamic lj = JsonConvert.DeserializeObject(File.ReadAllText(@"LastUpdate.json"));
+						File.Delete(@"LastUpdate.json");
 
-			Console.WriteLine("open new file");
-			System.Diagnostics.Process.Start(folder + "AcupunctureProject.exe");
-			Environment.Exit(0);
+						if (nj.ver == lj.ver)
+						{
+							Console.WriteLine("allready up to date");
+							System.Diagnostics.Process.Start("AcupunctureProject.exe");
+							return;
+						}
+					}
+					File.Move(@"newUpdate.json", @"LastUpdate.json");
+					Console.WriteLine("downloading update");
+					var tr = s.GetFiles(@"/Updates/*", @".\",
+						false, new TransferOptions
+						{
+							TransferMode = TransferMode.Binary,
+							OverwriteMode = OverwriteMode.Overwrite
+						});
+					tr.Check();
+					foreach (TransferEventArgs transfer in tr.Transfers)
+						Console.WriteLine($"the file {transfer.Destination} as been downloaded");
+					Console.WriteLine("downloaded update");
+
+					System.Diagnostics.Process.Start("AcupunctureProject.exe");
+				}
+			}
 		}
 	}
 }

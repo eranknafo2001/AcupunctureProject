@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcupunctureProject", "Acupu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateApp", "UpdateApp\UpdateApp.csproj", "{B97B3FB2-D684-46D1-BB8B-EBA3E694C59A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiliToDate", "MiliToDate\MiliToDate.csproj", "{F84292E5-C9A7-4964-A37F-AF5DEC31D502}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,20 +41,11 @@ Global
 		{B97B3FB2-D684-46D1-BB8B-EBA3E694C59A}.Release|x64.Build.0 = Release|Any CPU
 		{B97B3FB2-D684-46D1-BB8B-EBA3E694C59A}.Release|x86.ActiveCfg = Release|Any CPU
 		{B97B3FB2-D684-46D1-BB8B-EBA3E694C59A}.Release|x86.Build.0 = Release|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Debug|x64.Build.0 = Debug|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Debug|x86.Build.0 = Debug|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Release|x64.ActiveCfg = Release|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Release|x64.Build.0 = Release|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Release|x86.ActiveCfg = Release|Any CPU
-		{F84292E5-C9A7-4964-A37F-AF5DEC31D502}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6BC9B7B9-6F4C-4BEA-A6B2-EA20B79126C6}
 	EndGlobalSection
 EndGlobal
