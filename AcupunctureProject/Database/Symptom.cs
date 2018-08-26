@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
 
-namespace AcupunctureProject.Database2
+namespace AcupunctureProject.Database
 {
 	public class Symptom : ITable
 	{
@@ -23,7 +23,7 @@ namespace AcupunctureProject.Database2
 		[OneToMany(CascadeOperations = CascadeOperation.All)]
 		public List<ChannelSymptom> ChannelConnections { get; set; }
 		[ManyToMany(typeof(MeetingSymptom))]
-		public List<Meeting> Meeting { get; set; }
+		public List<Meeting> Meetings { get; set; }
 
 		public override string ToString() => Name;
 	}

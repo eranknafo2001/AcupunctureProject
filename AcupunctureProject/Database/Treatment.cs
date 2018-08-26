@@ -8,7 +8,7 @@ using SQLiteNetExtensions.Attributes;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
 
-namespace AcupunctureProject.Database2
+namespace AcupunctureProject.Database
 {
 	public class Treatment : ITable, INotifyPropertyChanged
 	{

@@ -104,7 +104,7 @@
 		<!--#endregion-->
 		<!--#region points that used -->
 		<Label Content="נקודות שטופלו" Grid.Column="4" Grid.Row="2" HorizontalAlignment="Center"/>
-		<TextBox x:Name="pointThatUsedSearch" Grid.Column="4" Grid.Row="4" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" GotFocus="PointThatUsedSearch_GotFocus" LostFocus="PointThatUsedSearch_LostFocus" FlowDirection="LeftToRight" TextChanged="PointThatUsedSearch_TextChanged"/>
+		<TextBox x:Name="pointThatUsedSearch" Grid.Column="4" Grid.Row="4" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" GotFocus="PointThatUsedSearch_GotFocus" LostFocus="PointThatUsedSearch_LostFocus" FlowDirection="LeftToRight" TextChanged="PointThatUsedSearch_TextChanged" KeyDown="pointThatUsedSearch_KeyDown"/>
 		<ListView x:Name="pointThatUsedSearchList" ItemsSource="{Binding Path=PointThatUsedSharhItems,Mode=OneWay}" MaxHeight="100" SelectionMode="Single" VerticalAlignment="Top" Panel.ZIndex="20" Visibility="Hidden" Grid.Column="4" Grid.Row="4" Grid.RowSpan="3" LostFocus="PointThatUsedSearchList_LostFocus" GotFocus="PointThatUsedSearchList_GotFocus" FlowDirection="LeftToRight" KeyDown="PointThatUsedSearchList_KeyDown" MouseDoubleClick="PointThatUsedSearchList_MouseDoubleClick"/>
 		<ListBox x:Name="pointThatUsed" Grid.Row="6" Grid.Column="4" IsEnabled="{Binding Path=Enable,Mode=TwoWay}" MouseDoubleClick="PointThatUsed_MouseDoubleClick" KeyDown="PointThatUsed_KeyDown" FlowDirection="LeftToRight" DragDrop.Drop="PointThatUsed_Drop" AllowDrop="True"/>
 		<!--#region points that used delete button -->

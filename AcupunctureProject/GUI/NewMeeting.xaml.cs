@@ -107,6 +107,8 @@ namespace AcupunctureProject.GUI
 			level4.Background = new SolidColorBrush() { Color = DatabaseConnection.GetLevel(4) };
 			level5.Background = new SolidColorBrush() { Color = DatabaseConnection.GetLevel(5) };
 			TreatmentSearchListItems = Main.AllTreatments;
+			symptomSearchList.Margin = new Thickness(symptomSearch.Margin.Left, symptomSearch.Margin.Top + symptomSearch.ExtentHeight, 0, 0);
+			symptomSearchList.MaxHeight = 100;
 		}
 
 		private void SymptomSearch_TextChanged(object sender, TextChangedEventArgs e) =>
@@ -167,12 +169,10 @@ namespace AcupunctureProject.GUI
 			{
 				symptomSearchList.Margin = new Thickness(symptomSearch.Margin.Left, symptomSearch.Margin.Top + symptomSearch.ExtentHeight, 0, 0);
 				symptomSearchList.Visibility = Visibility.Visible;
-				symptomSearchList.MaxHeight = 100;
 			}
 			else
 			{
 				symptomSearchList.Visibility = Visibility.Hidden;
-				symptomSearchList.MaxHeight = 0;
 			}
 		}
 
@@ -234,8 +234,8 @@ namespace AcupunctureProject.GUI
 			}
 			AddItemToSymptomTree(item);
 			RefindConnectedPoint();
-			SetSymptomListVisibility(false);
-			symptomSearch.Clear();
+			if (!symptomSearch.IsFocused)
+				SetSymptomListVisibility(false);
 			RelaodSymptomList();
 		}
 
@@ -458,7 +458,9 @@ namespace AcupunctureProject.GUI
 			if (item == null)
 				return;
 			AddItemToPointThatUsed(item);
-			SetPointThatUsedSearchListViability(false);
+			pointThatUsedSearch.Clear();
+			if (!pointThatUsedSearch.IsFocused)
+				SetPointThatUsedSearchListViability(false);
 		}
 
 		private void AddItemToPointThatUsed(DPoint point)
@@ -474,12 +476,7 @@ namespace AcupunctureProject.GUI
 		private void PointThatUsed_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter)
-				SelectPointThatUsed();
-			else if (e.Key == Key.Escape)
-			{
-				Focus();
-				SetPatientListVisibility(false);
-			}
+				ShowSelectedPoint();
 		}
 
 		private void PointThatUsedSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e) =>
@@ -502,7 +499,10 @@ namespace AcupunctureProject.GUI
 				symptomTreeView.Items.Remove(item);
 		}
 
-		private void PointThatUsed_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		private void PointThatUsed_MouseDoubleClick(object sender, MouseButtonEventArgs e) =>
+			ShowSelectedPoint();
+
+		private void ShowSelectedPoint()
 		{
 			if (pointThatUsed.SelectedIndex == -1)
 				return;
@@ -628,6 +628,18 @@ namespace AcupunctureProject.GUI
 			if (TreatmentList.SelectedIndex == -1)
 				return;
 			TreatmentList.Items.RemoveAt(TreatmentList.SelectedIndex);
+		}
+
+		private void pointThatUsedSearch_KeyDown(object sender, KeyEventArgs e)
+		{
+			switch (e.Key)
+			{
+				case Key.Enter:
+					SelectPointThatUsed();
+					break;
+				default:
+					break;
+			}
 		}
 	}
 }

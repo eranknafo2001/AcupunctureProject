@@ -126,7 +126,8 @@ namespace AcupunctureProject.GUI
 			resoltSummeryTextBox.Text = meeting.ResultDescription;
 			resolt.SelectedItem = meeting.Result;
 			summeryTextBox.Text = meeting.Summery;
-			TreatmentList.ItemsSource = meeting.Treatments;
+			foreach (var t in meeting.Treatments)
+				TreatmentList.Items.Add(t);
 			TreatmentsToAdd = new List<DTreatment>();
 			TreatmentsToRemove = new List<DTreatment>();
 			TreatmentSearchList.ItemsSource = Main.AllTreatments;
@@ -412,7 +413,7 @@ namespace AcupunctureProject.GUI
 			TreatmentsToAdd.Clear();
 			TreatmentsToRemove.Clear();
 
-			DatabaseConnection.Update(Meeting);
+			DatabaseConnection.UpdateWithChildren(Meeting);
 		}
 
 		private void SaveAndExit_Click(object sender, RoutedEventArgs e)
@@ -465,13 +466,15 @@ namespace AcupunctureProject.GUI
 			if (item == null)
 				return;
 			AddItemToPointThatUsed(item);
-			SetPointThatUsedSearchListViability(false);
+			pointThatUsedSearch.Clear();
+			if (!pointThatUsedSearch.IsFocused)
+				SetPointThatUsedSearchListViability(false);
 		}
 
 		private void PointThatUsed_KeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key == Key.Enter)
-				SelectPointThatUsed();
+				ShowSelectedPoint();
 		}
 
 		private void PointThatUsedSearchList_MouseDoubleClick(object sender, MouseButtonEventArgs e) =>
@@ -498,7 +501,10 @@ namespace AcupunctureProject.GUI
 			SymptomsToRemove.Add((Symptom)item.DataContext);
 		}
 
-		private void PointThatUsed_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		private void PointThatUsed_MouseDoubleClick(object sender, MouseButtonEventArgs e) =>
+			ShowSelectedPoint();
+
+		private void ShowSelectedPoint()
 		{
 			if (pointThatUsed.SelectedIndex == -1)
 				return;
@@ -539,6 +545,7 @@ namespace AcupunctureProject.GUI
 					return;
 			}
 			pointThatUsed.Items.Add(point);
+			PointsToAdd.Add(point);
 		}
 
 		private void TreatmentList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -575,8 +582,14 @@ namespace AcupunctureProject.GUI
 		{
 			if (TreatmentSearchList.SelectedIndex == -1)
 				return;
-			TreatmentList.Items.Add((DTreatment)TreatmentSearchList.SelectedItem);
-			TreatmentsToAdd.Add((DTreatment)TreatmentSearchList.SelectedItem);
+			if (!TreatmentSearchTextBox.IsFocused)
+				SetTreatmentSearchListViability(false);
+			var item = (DTreatment)TreatmentSearchList.SelectedItem;
+			if (!TreatmentList.Items.Contains(item))
+			{
+				TreatmentList.Items.Add(item);
+				TreatmentsToAdd.Add(item);
+			}
 		}
 
 		private void TreatmentSearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -622,6 +635,18 @@ namespace AcupunctureProject.GUI
 				return;
 			TreatmentsToRemove.Add(selectedItem);
 			TreatmentList.Items.RemoveAt(TreatmentList.SelectedIndex);
+		}
+
+		private void pointThatUsedSearch_KeyDown(object sender, KeyEventArgs e)
+		{
+			switch (e.Key)
+			{
+				case Key.Enter:
+					SelectPointThatUsed();
+					break;
+				default:
+					break;
+			}
 		}
 	}
 }

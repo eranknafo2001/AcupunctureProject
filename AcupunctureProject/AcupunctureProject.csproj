@@ -137,23 +137,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Database2\Channel.cs" />
-    <Compile Include="Database2\Color.cs" />
-    <Compile Include="Database2\ConnectionValue.cs" />
-    <Compile Include="Database2\DatabaseConnection.cs" />
-    <Compile Include="Database2\Diagnostic.cs" />
-    <Compile Include="Database2\Meeting.cs" />
-    <Compile Include="Database2\Patient.cs" />
-    <Compile Include="Database2\Point.cs" />
-    <Compile Include="Database2\Symptom.cs" />
-    <Compile Include="Database2\Treatment.cs" />
     <Compile Include="Database\Channel.cs" />
     <Compile Include="Database\Color.cs" />
     <Compile Include="Database\ConnectionValue.cs" />
+    <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\Diagnostic.cs" />
     <Compile Include="Database\Meeting.cs" />
     <Compile Include="Database\Patient.cs" />
-    <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\Point.cs" />
     <Compile Include="Database\Symptom.cs" />
     <Compile Include="Database\Treatment.cs" />

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SQLite.Net.Attributes;
 using MColor = System.Windows.Media.Color;
-namespace AcupunctureProject.Database2
+namespace AcupunctureProject.Database
 {
 	public class Color : ITable
 	{
